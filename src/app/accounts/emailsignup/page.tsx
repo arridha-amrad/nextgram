@@ -1,10 +1,9 @@
 import FacebookButton from "@/components/button/facebook-btn";
-import LoginForm from "@/components/form/login-form";
+import SignUpForm from "@/components/form/signup-form";
 import NavbarAuth from "@/components/button/theme-btn";
-import PhoneSlide from "@/components/phone-slide";
-import { Divider, Spacer, Link } from "@nextui-org/react";
+import { Divider, Spacer } from "@nextui-org/react";
 import Image from "next/image";
-import NextLink from "next/link";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -12,45 +11,34 @@ export default function Page() {
       <div className="fixed bottom-5 right-5">
         <NavbarAuth />
       </div>
-      <div className="lg:w-[936.62px] w-full flex">
-        <div className="flex-1 lg:block hidden">
-          <div className="h-full w-full mr-0">
-            <PhoneSlide />
-          </div>
-        </div>
+      <div className="w-full flex">
         <div className="flex-1">
-          <div className="max-w-sm lg:mx-0 mx-auto">
+          <div className="max-w-sm mx-auto">
             <div className="border border-skin-base rounded-lg px-4">
-              <Spacer y={9} />
+              <Spacer y={6} />
               <h1 className="text-5xl text-center font-display">nextgram</h1>
-              <Spacer y={9} />
-              <LoginForm />
+              <Spacer y={6} />
+              <h1 className="text-skin-accent text-lg font-semibold whitespace-pre-line break-words text-center">
+                Sign up to see photos and videos from your friends
+              </h1>
+              <Spacer y={2} />
+              <FacebookButton type="solid" />
+              <Spacer y={2} />
               <div className="my-6 relative">
                 <Divider />
                 <p className="absolute bg-background px-4 py-1 top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 font-bold text-skin-accent">
                   OR
                 </p>
               </div>
-              <FacebookButton type="light" />
-              <Spacer y={2} />
-              <div className="w-full text-center">
-                <Link size="sm" as={NextLink} href="/accounts/password/reset">
-                  forgot password?
-                </Link>
-              </div>
+              <SignUpForm />
               <Spacer y={4} />
             </div>
             <Spacer y={4} />
             <div className="max-w-sm border border-skin-base rounded-lg py-6">
               <p className="text-center text-small">
-                Don't have an account?{" "}
-                <Link
-                  as={NextLink}
-                  size="sm"
-                  className="font-bold text-primary"
-                  href="/accounts/emailsignup"
-                >
-                  Create
+                Have an account?{" "}
+                <Link className="font-bold text-primary" href="/accounts/login">
+                  Login
                 </Link>
               </p>
             </div>

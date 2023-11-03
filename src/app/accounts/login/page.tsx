@@ -1,10 +1,9 @@
 import FacebookButton from "@/components/button/facebook-btn";
 import LoginForm from "@/components/form/login-form";
 import NavbarAuth from "@/components/button/theme-btn";
-import PhoneSlide from "@/components/phone-slide";
-import { Divider, Spacer, Link } from "@nextui-org/react";
+import { Divider, Spacer } from "@nextui-org/react";
 import Image from "next/image";
-import NextLink from "next/link";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -12,14 +11,9 @@ export default function Page() {
       <div className="fixed bottom-5 right-5">
         <NavbarAuth />
       </div>
-      <div className="lg:w-[936.62px] w-full flex">
-        <div className="flex-1 lg:block hidden">
-          <div className="h-full w-full mr-0">
-            <PhoneSlide />
-          </div>
-        </div>
+      <div className="w-full flex">
         <div className="flex-1">
-          <div className="max-w-sm lg:mx-0 mx-auto">
+          <div className="max-w-sm mx-auto">
             <div className="border border-skin-base rounded-lg px-4">
               <Spacer y={9} />
               <h1 className="text-5xl text-center font-display">nextgram</h1>
@@ -34,7 +28,10 @@ export default function Page() {
               <FacebookButton type="light" />
               <Spacer y={2} />
               <div className="w-full text-center">
-                <Link size="sm" as={NextLink} href="/accounts/password/reset">
+                <Link
+                  href="/accounts/password/reset"
+                  className="text-small text-blue-500 hover:underline"
+                >
                   forgot password?
                 </Link>
               </div>
@@ -45,8 +42,6 @@ export default function Page() {
               <p className="text-center text-small">
                 Don't have an account?{" "}
                 <Link
-                  as={NextLink}
-                  size="sm"
                   className="font-bold text-primary"
                   href="/accounts/emailsignup"
                 >
