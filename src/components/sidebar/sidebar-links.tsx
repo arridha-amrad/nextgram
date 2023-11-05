@@ -2,7 +2,6 @@
 
 import HomeModernIcon from "@heroicons/react/24/outline/HomeIcon";
 import HomeModernFilled from "@heroicons/react/24/solid/HomeIcon";
-
 import SearchIcon from "@heroicons/react/24/outline/MagnifyingGlassIcon";
 import SearchFilled from "@heroicons/react/24/solid/MagnifyingGlassCircleIcon";
 import ExploreIcon from "@heroicons/react/24/outline/RocketLaunchIcon";
@@ -19,7 +18,11 @@ import PlusIconFilled from "@heroicons/react/24/solid/PlusCircleIcon";
 import { usePathname, useRouter } from "next/navigation";
 import { Button, Tooltip } from "@nextui-org/react";
 import useMeasure from "react-use-measure";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import SearchSidebar from "./SearchSidebar";
+import { useBreakpoint } from "use-breakpoint";
+import { BREAKPOINTS } from "@/utils/breakpoints";
 
 const links = [
   {
@@ -75,33 +78,78 @@ export default function SidebarLinks() {
 
   const pathname = usePathname();
 
+  const [openSearch, setOpenSearch] = useState(false);
+
+  const { breakpoint } = useBreakpoint(BREAKPOINTS, "xs");
+
+  useEffect(() => {
+    if (breakpoint === "lg") {
+      setOpenSearch(false);
+    }
+  }, [breakpoint]);
+
   return (
-    <div ref={ref} className="flex flex-col w-full">
-      {links.map(({ icon, link, name, filledIcon }) => (
-        <Tooltip
-          className="xl:opacity-0 opacity-100"
-          placement="right"
-          content={name}
-          key={name}
-        >
-          <Button
-            radius="full"
-            variant="light"
-            isIconOnly={isIconOnly}
-            className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
-            onClick={() => navigate.push(link)}
-          >
-            {link === pathname ? filledIcon : icon}
-            <span
-              className={`xl:block hidden ${
-                link === pathname ? "font-bold" : "font-normal"
-              }`}
+    <>
+      <div ref={ref} className="flex flex-col w-full">
+        {links.map(({ icon, link, name, filledIcon }) =>
+          name === "Search" ? (
+            <Tooltip
+              className="xl:opacity-0 opacity-100"
+              placement="right"
+              content={name}
+              key={name}
             >
-              {name}
-            </span>
-          </Button>
-        </Tooltip>
-      ))}
-    </div>
+              <Button
+                radius="full"
+                variant="light"
+                isIconOnly={isIconOnly}
+                className="text-lg xl:self-start lg:hidden xl:w-max w-12 self-center xl:h-14 h-12 sm:flex items-center xl:gap-5 xl:px-4"
+                onClick={() => setOpenSearch(true)}
+              >
+                {link === pathname ? filledIcon : icon}
+                <span
+                  className={`xl:block hidden ${
+                    link === pathname ? "font-bold" : "font-normal"
+                  }`}
+                >
+                  {name}
+                </span>
+              </Button>
+            </Tooltip>
+          ) : (
+            <Tooltip
+              className="xl:opacity-0 opacity-100"
+              placement="right"
+              content={name}
+              key={name}
+            >
+              <Button
+                radius="full"
+                variant="light"
+                isIconOnly={isIconOnly}
+                className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
+                onClick={() => navigate.push(link)}
+              >
+                {link === pathname ? filledIcon : icon}
+                <span
+                  className={`xl:block hidden ${
+                    link === pathname ? "font-bold" : "font-normal"
+                  }`}
+                >
+                  {name}
+                </span>
+              </Button>
+            </Tooltip>
+          )
+        )}
+      </div>
+
+      {openSearch &&
+        typeof window === "object" &&
+        createPortal(
+          <SearchSidebar close={() => setOpenSearch(false)} />,
+          document.body
+        )}
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import BottomBar from "@/components/bottom-bar/BottomBar";
 import PostCard from "@/components/card/PostCard";
 import SuggestedUserCard from "@/components/card/SuggestedUserCard";
 import HomeFooter from "@/components/footer/HomeFooter";
@@ -9,6 +10,7 @@ import { Button, Spacer } from "@nextui-org/react";
 export default function HomePage() {
   return (
     <div className="flex min-h-screen w-full">
+      <BottomBar />
       <div className="w-14 xl:w-max sticky top-0 h-screen hidden sm:block">
         <Sidebar />
       </div>
@@ -17,7 +19,8 @@ export default function HomePage() {
           <div className="sticky top-0 h-max w-full xl:pb-6 z-50 bg-background">
             <HomeTopBar />
           </div>
-          <div className="mx-auto z-50 h-max lg:max-w-lg md:max-w-md max-w-sm flex flex-col gap-10 xl:pb-20 pb-10">
+
+          <div className="mx-auto z-50 h-max lg:max-w-lg md:max-w-md sm:max-w-sm w-full flex flex-col gap-10 xl:pb-20 pb-10">
             <PostCard />
             <PostCard />
           </div>

@@ -20,6 +20,7 @@ const links = [
 export default function HomeFooter() {
   return links.map((val, i) => (
     <Link
+      key={val.name}
       className="text-skin-accent text-xs font-medium"
       size="sm"
       as={NextLink}

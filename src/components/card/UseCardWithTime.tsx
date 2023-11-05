@@ -100,36 +100,6 @@ const PostOptions = () => {
                     </ListboxItem>
                   </ListboxSection>
                 ))}
-                {/* <ListboxSection showDivider>
-                  <ListboxItem
-                    key="report"
-                    className="text-red-500 font-bold"
-                    color="danger"
-                  >
-                    Report
-                  </ListboxItem>
-                </ListboxSection>
-                <ListboxSection showDivider>
-                  <ListboxItem
-                    key="report"
-                    className="text-red-500 font-bold"
-                    color="danger"
-                  >
-                    Report
-                  </ListboxItem>
-                </ListboxSection>
-                <ListboxSection showDivider>
-                  <ListboxItem key="new">New file</ListboxItem>
-                </ListboxSection>
-                <ListboxSection showDivider>
-                  <ListboxItem key="copy">Copy link</ListboxItem>
-                </ListboxSection>
-                <ListboxSection showDivider>
-                  <ListboxItem key="edit">Edit file</ListboxItem>
-                </ListboxSection>
-                <ListboxSection>
-                  <ListboxItem key="cancel">Cancel</ListboxItem>
-                </ListboxSection> */}
               </Listbox>
             </>
           )}

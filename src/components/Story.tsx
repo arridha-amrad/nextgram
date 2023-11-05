@@ -41,7 +41,6 @@ const Story = ({ url }: Props, ref: Ref<HTMLDivElement>) => {
       <Modal
         classNames={{
           closeButton: ["fixed", "right-5", "top-5"],
-          base: ["h-[95%]"],
         }}
         backdrop="blur"
         size="md"
