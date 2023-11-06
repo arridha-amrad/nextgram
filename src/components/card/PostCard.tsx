@@ -45,7 +45,7 @@ export default function PostCard() {
   return (
     <article className="w-full">
       <UserCardWithTime />
-      <div className="w-full h-max relative max-h-[900px] border border-skin-base">
+      <div className="w-full h-full relative max-h-[900px] overflow-hidden border border-skin-base">
         <Image
           className="object-cover w-full h-auto"
           width={1000}

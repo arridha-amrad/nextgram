@@ -11,10 +11,8 @@ import {
 } from "@nextui-org/react";
 import Image from "next/image";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { useRef } from "react";
 
 export default function UserCardWithTime() {
-  const ref = useRef<typeof Image>(null);
   return (
     <div className="flex justify-between py-2 px-2">
       <div className="flex items-start gap-4">

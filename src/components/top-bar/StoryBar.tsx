@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import useMeasure from "react-use-measure";
 import Story from "@/components/Story";
 
-export default function HomeTopBar() {
+export default function StoryBar() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [showPrevBtn, setShowPrevBtn] = useState(false);
   const [showNextBtn, setShowNextBtn] = useState(true);

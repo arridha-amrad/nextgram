@@ -29,8 +29,11 @@ export default function SearchSidebar({ close }: Props) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             variant="flat"
-            size="lg"
+            size="sm"
             fullWidth
+            classNames={{
+              input: ["text-base"],
+            }}
             type="text"
             placeholder="Search"
             onClear={() => setSearch("")}

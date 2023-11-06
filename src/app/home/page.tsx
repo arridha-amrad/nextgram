@@ -4,7 +4,8 @@ import SuggestedUserCard from "@/components/card/SuggestedUserCard";
 import HomeFooter from "@/components/footer/HomeFooter";
 import SearchInput from "@/components/input/search-input";
 import Sidebar from "@/components/sidebar";
-import HomeTopBar from "@/components/top-bar/HomeTopBar";
+import StoryBar from "@/components/top-bar/StoryBar";
+import TopBar from "@/components/top-bar/TopBar";
 import { Button, Spacer } from "@nextui-org/react";
 
 export default function HomePage() {
@@ -16,10 +17,10 @@ export default function HomePage() {
       </div>
       <div className="flex h-full w-full gap-4">
         <div className="flex-[2] h-full w-full">
-          <div className="sticky top-0 h-max w-full xl:pb-6 z-50 bg-background">
-            <HomeTopBar />
+          <TopBar />
+          <div className="h-max w-full xl:pb-6">
+            <StoryBar />
           </div>
-
           <div className="mx-auto z-50 h-max lg:max-w-lg md:max-w-md sm:max-w-sm w-full flex flex-col gap-10 xl:pb-20 pb-10">
             <PostCard />
             <PostCard />

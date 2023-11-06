@@ -34,11 +34,12 @@ export default function SearchInput() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         variant="flat"
-        size="lg"
+        size="sm"
         fullWidth
         type="text"
         placeholder="Search"
         onClear={() => setSearch("")}
+        classNames={{ input: ["text-md"] }}
         startContent={<SearchIcon className="w-5 h-5 pointer-events-none" />}
       />
       {typeof window === "object" &&
