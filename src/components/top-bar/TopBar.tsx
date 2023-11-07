@@ -8,7 +8,7 @@ import {
   NavbarItem,
   Button,
 } from "@nextui-org/react";
-import { PiMessengerLogo, PiBell, PiMagnifyingGlass } from "react-icons/pi";
+import { PiMessengerLogo, PiBell } from "react-icons/pi";
 import { useBreakpoint } from "use-breakpoint";
 import { BREAKPOINTS } from "@/utils/breakpoints";
 

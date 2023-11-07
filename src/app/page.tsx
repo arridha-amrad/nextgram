@@ -43,7 +43,7 @@ export default function Page() {
             <Spacer y={4} />
             <div className="max-w-sm border border-skin-base rounded-lg py-6">
               <p className="text-center text-small">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
                   as={NextLink}
                   size="sm"

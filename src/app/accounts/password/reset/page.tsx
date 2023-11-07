@@ -27,8 +27,8 @@ export default function PasswordReset() {
             <h1 className="font-semibold text-center">Trouble logging in?</h1>
             <Spacer y={2} />
             <p className="text-skin-accent text-sm text-center w-[80%] mx-auto">
-              Enter your email, phone, or username and we'll send you a link to
-              get back into your account.
+              Enter your email, phone, or username and we&apos;ll send you a
+              link to get back into your account.
             </p>
             <Spacer y={5} />
             <ForgotPasswordReset />

@@ -1,12 +1,13 @@
 "use client";
 
-import { Avatar, Button, Spacer, Tooltip, User } from "@nextui-org/react";
-import SidebarLinks from "./sidebar-links";
+import { Button, Spacer, Tooltip } from "@nextui-org/react";
+import SidebarLinks from "./SidebarLinks";
 import { FaInstagram } from "react-icons/fa";
 import { FaThreads } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import SidebarMenu from "./sidebar-menu";
+import SidebarMenu from "./SidebarMenu";
 import useMeasure from "react-use-measure";
+import SidebarUser from "./SidebarUser";
 
 export default function Sidebar() {
   const route = useRouter();
@@ -26,42 +27,7 @@ export default function Sidebar() {
         </Tooltip>
       </div>
       <SidebarLinks />
-      <div
-        onClick={() => route.push("/arridha")}
-        className="py-2 flex-1 cursor-pointer"
-      >
-        <div className="xl:block hidden">
-          <User
-            classNames={{
-              base: [
-                "px-3",
-                "py-2",
-                "hover:dark:bg-neutral-800",
-                "hover:bg-neutral-100",
-                "w-full",
-                "flex",
-                "justify-start",
-                "rounded-full",
-              ],
-              wrapper: ["pl-2"],
-              name: ["font-semibold", "text-base"],
-              description: ["text-sm", "text-skin-accent"],
-            }}
-            name="Jane Doe"
-            description="@jane_doe"
-            avatarProps={{
-              src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-              size: "md",
-            }}
-          />
-        </div>
-        <div className="flex xl:hidden items-center justify-center">
-          <Avatar
-            size="md"
-            src="https://i.pravatar.cc/150?u=a04258114e29026702d"
-          />
-        </div>
-      </div>
+      <SidebarUser />
       <div ref={ref} className="flex flex-col w-full">
         <Tooltip
           className="xl:opacity-0 opacity-100"

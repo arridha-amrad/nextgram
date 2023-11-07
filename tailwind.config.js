@@ -1,5 +1,5 @@
-const withOpacity = (variableName: string) => {
-  return ({ opacityValue }: { opacityValue: any }) => {
+const withOpacity = (variableName) => {
+  return ({ opacityValue }) => {
     if (!opacityValue) {
       return `rgba(${variableName})`;
     }
@@ -9,10 +9,9 @@ const withOpacity = (variableName: string) => {
 
 // tailwind.config.js
 import { nextui } from "@nextui-org/react";
-import { Config } from "tailwindcss";
 
 /** @type {import('tailwindcss').Config} */
-const config: Config = {
+const config = {
   content: [
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -63,15 +62,15 @@ const config: Config = {
           colors: {
             primary: {
               DEFAULT: "#0095F6",
-              "100": "#CBF6FE",
-              "200": "#98E8FE",
-              "300": "#64D2FC",
-              "400": "#3EBAF9",
-              "500": "#0095F6",
-              "600": "#0073D3",
-              "700": "#0056B1",
-              "800": "#003D8E",
-              "900": "#002B76",
+              100: "#CBF6FE",
+              200: "#98E8FE",
+              300: "#64D2FC",
+              400: "#3EBAF9",
+              500: "#0095F6",
+              600: "#0073D3",
+              700: "#0056B1",
+              800: "#003D8E",
+              900: "#002B76",
             },
           },
         },
@@ -79,15 +78,15 @@ const config: Config = {
           colors: {
             primary: {
               DEFAULT: "#0095F6",
-              "100": "#CBF6FE",
-              "200": "#98E8FE",
-              "300": "#64D2FC",
-              "400": "#3EBAF9",
-              "500": "#0095F6",
-              "600": "#0073D3",
-              "700": "#0056B1",
-              "800": "#003D8E",
-              "900": "#002B76",
+              100: "#CBF6FE",
+              200: "#98E8FE",
+              300: "#64D2FC",
+              400: "#3EBAF9",
+              500: "#0095F6",
+              600: "#0073D3",
+              700: "#0056B1",
+              800: "#003D8E",
+              900: "#002B76",
             },
           },
         },
