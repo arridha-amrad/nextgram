@@ -9,7 +9,7 @@ export default function LoginForm() {
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   return (
-    <form>
+    <form className="px-4">
       <Input variant="flat" size="sm" type="text" label="username or email" />
       <Spacer y={2} />
       <Input

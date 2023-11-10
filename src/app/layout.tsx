@@ -1,16 +1,12 @@
 // app/layout.tsx
 import { Providers } from "@/components/providers";
-import "./globals.css";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Nextgram",
-  description: "Instagram alternative",
-};
-
-const testNetwork = async () => {
-  return fetch("http://dummyjson.com/test").then((res) => res.json());
+  description: "Instagram Future",
 };
 
 export default async function RootLayout({
@@ -20,16 +16,10 @@ export default async function RootLayout({
 }) {
   const theme = cookies().get("theme")?.value;
 
-  const networkResult = (await testNetwork()) as { status: string };
-
   return (
     <html lang="en" className={theme ?? "dark"}>
       <body>
-        {networkResult.status === "ok" ? (
-          <Providers>{children}</Providers>
-        ) : (
-          <p>Connection failure</p>
-        )}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

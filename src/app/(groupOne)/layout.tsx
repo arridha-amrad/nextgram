@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import { ReactNode } from "react";
 
-const Sidebar = dynamic(() => import("@/components/sidebar"), { ssr: false });
+const Sidebar = dynamic(() => import("@/components/sidebar"), { ssr: true });
 const BottomBar = dynamic(() => import("@/components/bottom-bar/BottomBar"), {
   ssr: false,
 });

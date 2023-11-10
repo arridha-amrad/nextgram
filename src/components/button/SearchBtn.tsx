@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@nextui-org/react";
+import { Button, Tooltip } from "@nextui-org/react";
 import SearchSidebar from "../sidebar/SearchSidebar";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -19,17 +19,24 @@ export default function SearchButton() {
   }, [breakpoint]);
   return (
     <>
-      <Button
-        radius="full"
-        variant="light"
-        isIconOnly={true}
-        className="xl:self-start lg:hidden xl:w-max sm:w-12 self-center xl:h-14 sm:h-12 sm:flex items-center xl:gap-5 xl:px-4"
-        onClick={() => setOpenSearch(true)}
+      <Tooltip
+        classNames={{
+          content: ["hidden", "sm:block"],
+        }}
+        placement="right"
+        content="search"
       >
-        <SearchIcon className="w-6 h-6" />
-      </Button>
+        <Button
+          radius="full"
+          variant="light"
+          isIconOnly={true}
+          className="xl:self-start lg:hidden xl:w-max sm:w-12 self-center xl:h-14 sm:h-12 sm:flex items-center xl:gap-5 xl:px-4"
+          onClick={() => setOpenSearch(true)}
+        >
+          <SearchIcon className="w-6 h-6" />
+        </Button>
+      </Tooltip>
       {openSearch &&
-        typeof window === "object" &&
         createPortal(
           <SearchSidebar close={() => setOpenSearch(false)} />,
           document.body

@@ -1,7 +1,7 @@
-export default function UserProfilePage() {
+export default function ProfilePostsPage() {
   return (
-    <div>
-      <h1>This is profile page</h1>
+    <div className="h-[200vh]">
+      <h1>Profile Posts Page</h1>
     </div>
   );
 }
