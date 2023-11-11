@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Navbar,
-  NavbarContent,
-  NavbarItem,
-  Link,
-  Button,
-} from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarItem, Button } from "@nextui-org/react";
 import {
   Bars3Icon,
   ChevronDownIcon,
@@ -14,11 +8,11 @@ import {
 
 export default function ProfileTopBar() {
   return (
-    <Navbar isBordered shouldHideOnScroll>
+    <Navbar className="sm:hidden block" isBordered shouldHideOnScroll>
       <NavbarContent justify="start">
         <NavbarItem>
           <Button variant="light" color="default">
-            <span className="text-large font-semibold">Arridha</span>
+            <span className="text-large font-semibold">btldilsah</span>
             <ChevronDownIcon className="w-6 h-6" />
           </Button>
         </NavbarItem>

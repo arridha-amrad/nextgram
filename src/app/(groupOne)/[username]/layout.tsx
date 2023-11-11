@@ -10,7 +10,7 @@ type Props = {
 
 export default function ProfileLayout({ children }: Props) {
   return (
-    <main className="w-full">
+    <main className="w-full max-w-5xl mx-auto sm:mt-4 sm:pl-10">
       <ProfileTopBar />
       <ProfileData />
       <Spacer y={4} />
