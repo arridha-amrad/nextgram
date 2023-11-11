@@ -14,7 +14,7 @@ export default function GroupOneLayout({ children }: Props) {
   return (
     <div className="flex min-h-screen w-full">
       <BottomBar />
-      <div className="w-14 xl:w-max sticky top-0 h-screen hidden sm:block">
+      <div className="w-14 xl:w-max sticky top-0 h-screen overflow-auto hidden sm:block">
         <Sidebar />
       </div>
       {children}
