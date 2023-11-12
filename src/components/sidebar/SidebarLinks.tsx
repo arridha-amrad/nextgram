@@ -15,11 +15,9 @@ import NotificationIconFilled from "@heroicons/react/24/solid/BellIcon";
 import PlusIcon from "@heroicons/react/24/outline/PlusCircleIcon";
 import PlusIconFilled from "@heroicons/react/24/solid/PlusCircleIcon";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Button, Tooltip } from "@nextui-org/react";
 import SearchButton from "../button/SearchBtn";
-import { useBreakpoint } from "use-breakpoint";
-import { BREAKPOINTS } from "@/utils/breakpoints";
 import Link from "next/link";
 
 const links = [
@@ -68,44 +66,66 @@ const links = [
 ];
 
 export default function SidebarLinks() {
-  const navigate = useRouter();
-  const { minWidth } = useBreakpoint(BREAKPOINTS, "lg");
-
-  const isIconOnly = minWidth <= 1024;
-
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col w-full">
-      {links.map(({ icon, link, name, filledIcon }) =>
-        name === "Search" ? (
-          <SearchButton key={name} />
-        ) : (
-          <Tooltip
-            className="xl:opacity-0 opacity-100"
-            placement="right"
-            content={name}
-            key={name}
-          >
-            <Button
-              as={Link}
-              href={link}
-              radius="full"
-              variant="light"
-              className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
+    <>
+      <div className="xl:flex flex-col w-full hidden">
+        {links.map(({ icon, link, name, filledIcon }) =>
+          name === "Search" ? (
+            <SearchButton key={name} />
+          ) : (
+            <Tooltip
+              className="xl:opacity-0 opacity-100"
+              placement="right"
+              content={name}
+              key={name}
             >
-              {link === pathname ? filledIcon : icon}
-              <span
-                className={`xl:block hidden ${
-                  link === pathname ? "font-bold" : "font-normal"
-                }`}
+              <Button
+                as={Link}
+                href={link}
+                radius="full"
+                variant="light"
+                className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
               >
-                {name}
-              </span>
-            </Button>
-          </Tooltip>
-        )
-      )}
-    </div>
+                {link === pathname ? filledIcon : icon}
+                <span
+                  className={`xl:block hidden ${
+                    link === pathname ? "font-bold" : "font-normal"
+                  }`}
+                >
+                  {name}
+                </span>
+              </Button>
+            </Tooltip>
+          )
+        )}
+      </div>
+      <div className="flex xl:hidden flex-col w-full ">
+        {links.map(({ icon, link, name, filledIcon }) =>
+          name === "Search" ? (
+            <SearchButton key={name} />
+          ) : (
+            <Tooltip
+              className="xl:opacity-0 opacity-100"
+              placement="right"
+              content={name}
+              key={name}
+            >
+              <Button
+                isIconOnly
+                as={Link}
+                href={link}
+                radius="full"
+                variant="light"
+                className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
+              >
+                {link === pathname ? filledIcon : icon}
+              </Button>
+            </Tooltip>
+          )
+        )}
+      </div>
+    </>
   );
 }

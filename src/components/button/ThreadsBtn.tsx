@@ -16,7 +16,7 @@ export default function ThreadButton() {
           variant="light"
           className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
         >
-          <FaThreads className="w-7 h-7" />
+          <FaThreads className="w-6 h-6" />
           <span className="xl:block hidden">Threads</span>
         </Button>
       </Tooltip>

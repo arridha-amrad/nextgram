@@ -17,6 +17,7 @@ import MoonIcon from "@heroicons/react/24/outline/MoonIcon";
 import SunIcon from "@heroicons/react/24/outline/SunIcon";
 import { switchTheme } from "@/utils/switch-theme";
 import useMeasure from "react-use-measure";
+import MenuIcon from "@heroicons/react/24/solid/EllipsisHorizontalIcon";
 
 export default function SidebarMenu() {
   const [ref, { width }] = useMeasure();
@@ -30,8 +31,8 @@ export default function SidebarMenu() {
             isIconOnly={width <= 80}
             className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
           >
-            <FiMenu className="w-6 h-6" />
-            <span className="xl:block hidden">Threads</span>
+            <MenuIcon className="w-7 h-7" />
+            <span className="xl:block hidden">Menu</span>
           </Button>
         </DropdownTrigger>
       </div>

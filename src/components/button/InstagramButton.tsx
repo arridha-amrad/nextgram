@@ -11,10 +11,11 @@ export default function InstagramButton() {
       <Button
         variant="light"
         onClick={() => router.push("/home")}
-        className="xl:hidden flex mx-2"
+        className="xl:hidden flex"
         isIconOnly
-        startContent={<FaInstagram className="h-6 w-6" />}
-      />
+      >
+        <FaInstagram className="h-6 w-6" />
+      </Button>
     </Tooltip>
   );
 }

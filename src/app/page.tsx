@@ -1,10 +1,15 @@
-import FacebookButton from "@/components/button/facebook-btn";
-import LoginForm from "@/components/form/login-form";
-import NavbarAuth from "@/components/button/theme-btn";
-import PhoneSlide from "@/components/phone-slide";
 import { Divider, Spacer, Link } from "@nextui-org/react";
-import Image from "next/image";
+
 import NextLink from "next/link";
+import dynamic from "next/dynamic";
+
+const Image = dynamic(() => import("next/image"), { ssr: true });
+const FacebookButton = dynamic(
+  () => import("@/components/button/facebook-btn")
+);
+const LoginForm = dynamic(() => import("@/components/form/login-form"));
+const NavbarAuth = dynamic(() => import("@/components/button/theme-btn"));
+const PhoneSlide = dynamic(() => import("@/components/phone-slide"));
 
 export default function Page() {
   return (

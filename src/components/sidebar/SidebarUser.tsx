@@ -1,46 +1,44 @@
 "use client";
 
-import { Avatar, User } from "@nextui-org/react";
+import { Avatar, Button, User } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 export default function SidebarUser() {
   const router = useRouter();
+  const ref = useRef<HTMLDivElement | null>(null);
   return (
     <div
-      onClick={() => router.push("/arridha")}
-      className="py-2 flex-1 cursor-pointer"
+      ref={ref}
+      onClick={() => router.push("/ari")}
+      className="py-2 h-full flex items-center flex-1 cursor-pointer xl:mx-0 mx-auto"
     >
-      <div className="xl:block hidden">
-        <User
-          classNames={{
-            base: [
-              "px-3",
-              "py-2",
-              "hover:dark:bg-neutral-800",
-              "hover:bg-neutral-100",
-              "w-full",
-              "flex",
-              "justify-start",
-              "rounded-full",
-            ],
-            wrapper: ["pl-2"],
-            name: ["font-semibold", "text-base"],
-            description: ["text-sm", "text-skin-accent"],
-          }}
-          name="Jane Doe"
-          description="@jane_doe"
-          avatarProps={{
-            src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-            size: "md",
-          }}
-        />
-      </div>
-      <div className="flex xl:hidden items-center justify-center">
+      <Button
+        onClick={() => ref.current?.click()}
+        className="py-2 h-max xl:flex hidden"
+        radius="full"
+        variant="flat"
+      >
         <Avatar
           size="md"
           src="https://i.pravatar.cc/150?u=a04258114e29026702d"
         />
-      </div>
+        <div className="flex flex-col items-start pl-1">
+          <h1 className="text-lg">Dilšah Bülüt</h1>
+          <h1 className="text-skin-accent">@jane_doe</h1>
+        </div>
+      </Button>
+      <Button
+        onClick={() => ref.current?.click()}
+        isIconOnly
+        radius="full"
+        className="xl:hidden"
+      >
+        <Avatar
+          size="md"
+          src="https://i.pravatar.cc/150?u=a04258114e29026702d"
+        />
+      </Button>
     </div>
   );
 }

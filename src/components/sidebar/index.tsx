@@ -7,8 +7,8 @@ import InstagramButton from "../button/InstagramButton";
 
 export default function Sidebar() {
   return (
-    <div className="flex flex-col h-full xl:px-4">
-      <div className="h-[90px] flex items-center cursor-pointer">
+    <div className="flex flex-col h-full xl:px-4 overflow-y-auto overflow-x-hidden">
+      <div className="h-[90px] justify-center xl:justify-start flex-shrink-0 flex items-center cursor-pointer">
         <h1 className="font-display xl:block hidden text-2xl px-4">nextgram</h1>
         <InstagramButton />
       </div>
