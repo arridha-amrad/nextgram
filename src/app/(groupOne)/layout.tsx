@@ -12,12 +12,13 @@ type Props = {
 
 export default function GroupOneLayout({ children }: Props) {
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <BottomBar />
       <div className="w-max h-screen sticky inset-y-0 left-0 hidden sm:block border-r border-skin-base">
         <Sidebar />
       </div>
-      <div className="flex-1">{children}</div>
+      {/* <div className="sm:flex-1">{children}</div> */}
+      <div className="w-full">{children}</div>
     </div>
   );
 }

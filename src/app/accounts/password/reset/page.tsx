@@ -2,7 +2,7 @@ import ForgotPasswordReset from "@/components/form/forgot-password-form";
 import { Divider, Link, Spacer } from "@nextui-org/react";
 import { CiLock } from "react-icons/ci";
 import NextLink from "next/link";
-import ThemeButton from "@/components/button/theme-btn";
+import ThemeButton from "@/components/button/ThemeButton";
 
 export default function PasswordReset() {
   return (

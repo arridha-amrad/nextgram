@@ -1,14 +1,21 @@
 import PostCard from "@/components/card/PostCard";
 import SuggestedUserCard from "@/components/card/SuggestedUserCard";
 import HomeFooter from "@/components/footer/HomeFooter";
-import SearchInput from "@/components/input/search-input";
 import StoryBar from "@/components/top-bar/StoryBar";
 
-import { Button, Spacer } from "@nextui-org/react";
+import { Button, Spacer, Spinner } from "@nextui-org/react";
 import dynamic from "next/dynamic";
 
 const TopBar = dynamic(() => import("@/components/top-bar/TopBar"), {
   ssr: false,
+});
+const SearchInput = dynamic(() => import("@/components/input/SearchInput"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex justify-center w-full">
+      <Spinner size="md" />
+    </div>
+  ),
 });
 
 export default function HomePage() {

@@ -2,10 +2,12 @@
 
 import SearchIcon from "@heroicons/react/24/outline/MagnifyingGlassIcon";
 import { Input } from "@nextui-org/react";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
-import SearchResult from "../SearchResult";
+
+const SearchResult = dynamic(() => import("../SearchResult"), { ssr: false });
 
 export default function SearchInput() {
   const [search, setSearch] = useState("");
@@ -42,17 +44,15 @@ export default function SearchInput() {
         classNames={{ input: ["text-md"] }}
         startContent={<SearchIcon className="w-5 h-5 pointer-events-none" />}
       />
-      {typeof window === "object" &&
+      {isFocus &&
         createPortal(
-          isFocus && (
-            <div
-              style={{ ...styles.popper, width: referenceElement?.clientWidth }}
-              {...attributes.popper}
-              ref={setPopperElement}
-            >
-              <SearchResult searchKey={search} />
-            </div>
-          ),
+          <div
+            style={{ ...styles.popper, width: referenceElement?.clientWidth }}
+            {...attributes.popper}
+            ref={setPopperElement}
+          >
+            <SearchResult searchKey={search} />
+          </div>,
           document.body
         )}
     </div>

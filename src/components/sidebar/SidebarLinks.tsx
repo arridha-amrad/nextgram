@@ -69,63 +69,37 @@ export default function SidebarLinks() {
   const pathname = usePathname();
 
   return (
-    <>
-      <div className="xl:flex flex-col w-full hidden">
-        {links.map(({ icon, link, name, filledIcon }) =>
-          name === "Search" ? (
-            <SearchButton key={name} />
-          ) : (
-            <Tooltip
-              className="xl:opacity-0 opacity-100"
-              placement="right"
-              content={name}
-              key={name}
+    <div className="flex flex-col w-full">
+      {links.map(({ icon, link, name, filledIcon }) =>
+        name === "Search" ? (
+          <SearchButton key={name} />
+        ) : (
+          <Tooltip
+            className="xl:opacity-0 opacity-100"
+            placement="right"
+            content={name}
+            key={name}
+          >
+            <Button
+              as={Link}
+              href={link}
+              isIconOnly
+              radius="full"
+              variant="light"
+              className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
             >
-              <Button
-                as={Link}
-                href={link}
-                radius="full"
-                variant="light"
-                className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
+              {link === pathname ? filledIcon : icon}
+              <span
+                className={`xl:block pl-4 hidden ${
+                  link === pathname ? "font-bold" : "font-normal"
+                }`}
               >
-                {link === pathname ? filledIcon : icon}
-                <span
-                  className={`xl:block hidden ${
-                    link === pathname ? "font-bold" : "font-normal"
-                  }`}
-                >
-                  {name}
-                </span>
-              </Button>
-            </Tooltip>
-          )
-        )}
-      </div>
-      <div className="flex xl:hidden flex-col w-full ">
-        {links.map(({ icon, link, name, filledIcon }) =>
-          name === "Search" ? (
-            <SearchButton key={name} />
-          ) : (
-            <Tooltip
-              className="xl:opacity-0 opacity-100"
-              placement="right"
-              content={name}
-              key={name}
-            >
-              <Button
-                isIconOnly
-                as={Link}
-                href={link}
-                radius="full"
-                variant="light"
-                className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
-              >
-                {link === pathname ? filledIcon : icon}
-              </Button>
-            </Tooltip>
-          )
-        )}
-      </div>
-    </>
+                {name}
+              </span>
+            </Button>
+          </Tooltip>
+        )
+      )}
+    </div>
   );
 }

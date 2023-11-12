@@ -1,9 +1,14 @@
 import { Spacer } from "@nextui-org/react";
-import SidebarLinks from "./SidebarLinks";
-import SidebarMenu from "./SidebarMenu";
-import SidebarUser from "./SidebarUser";
-import ThreadButton from "../button/ThreadsBtn";
-import InstagramButton from "../button/InstagramButton";
+
+import dynamic from "next/dynamic";
+
+const SidebarLinks = dynamic(() => import("./SidebarLinks"));
+const SidebarMenu = dynamic(() => import("./SidebarMenu"));
+const SidebarUser = dynamic(() => import("./SidebarUser"));
+const ThreadButton = dynamic(() => import("@/components/button/ThreadsBtn"));
+const InstagramButton = dynamic(
+  () => import("@/components/button/InstagramBtn")
+);
 
 export default function Sidebar() {
   return (

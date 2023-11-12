@@ -11,14 +11,24 @@ export default function ThreadButton() {
         placement="right"
         content="Threads"
       >
-        <Button
-          radius="full"
-          variant="light"
-          className="text-lg xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
-        >
-          <FaThreads className="w-6 h-6" />
-          <span className="xl:block hidden">Threads</span>
-        </Button>
+        <>
+          <Button
+            radius="full"
+            variant="light"
+            className="text-lg hidden xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 xl:flex items-center xl:gap-5 xl:px-4"
+          >
+            <FaThreads className="w-6 h-6" />
+            <span className="xl:block hidden">Threads</span>
+          </Button>
+          <Button
+            isIconOnly
+            radius="full"
+            variant="light"
+            className="text-lg xl:hidden xl:self-start xl:w-max w-12 self-center xl:h-14 h-12 flex items-center xl:gap-5 xl:px-4"
+          >
+            <FaThreads className="w-6 h-6" />
+          </Button>
+        </>
       </Tooltip>
     </div>
   );

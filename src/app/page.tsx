@@ -5,10 +5,10 @@ import dynamic from "next/dynamic";
 
 const Image = dynamic(() => import("next/image"), { ssr: true });
 const FacebookButton = dynamic(
-  () => import("@/components/button/facebook-btn")
+  () => import("@/components/button/FacebookButton")
 );
 const LoginForm = dynamic(() => import("@/components/form/login-form"));
-const NavbarAuth = dynamic(() => import("@/components/button/theme-btn"));
+const NavbarAuth = dynamic(() => import("@/components/button/ThemeButton"));
 const PhoneSlide = dynamic(() => import("@/components/phone-slide"));
 
 export default function Page() {
