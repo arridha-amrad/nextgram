@@ -7,14 +7,14 @@ import { FaInstagram } from "react-icons/fa6";
 export default function InstagramButton() {
   const router = useRouter();
   return (
-    <Tooltip placement="right" content="nextgram">
+    <Tooltip content="nextgram">
       <Button
         variant="light"
         onClick={() => router.push("/home")}
         className="xl:hidden flex"
         isIconOnly
       >
-        <FaInstagram className="h-6 w-6" />
+        <FaInstagram className="h-8 w-8" />
       </Button>
     </Tooltip>
   );

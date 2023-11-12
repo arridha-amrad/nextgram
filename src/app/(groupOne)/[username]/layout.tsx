@@ -6,13 +6,19 @@ import { ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
+  params: {
+    username: string;
+  };
 };
 
-export default async function ProfileLayout({ children }: Props) {
+export default async function ProfileLayout({
+  children,
+  params: { username },
+}: Props) {
   return (
     <main className="w-full max-w-5xl mx-auto sm:mt-4 sm:pl-10">
       <ProfileTopBar />
-      <ProfileData />
+      <ProfileData username={username} />
       <Spacer y={4} />
       <div className="w-full">
         <ProfileTab />

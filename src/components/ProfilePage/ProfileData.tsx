@@ -8,7 +8,11 @@ import SuggestUserButton from "./SuggestUserBtn";
 import MessageButton from "./MessageBtn";
 import FollowButton from "./FollowButton";
 
-export default function ProfileData() {
+type Props = {
+  username: string;
+};
+
+export default function ProfileData({ username }: Props) {
   return (
     <div className="px-4">
       <div className="h-24 md:h-max w-full md:gap-10 px-4 flex items-center justify-between">
@@ -20,7 +24,7 @@ export default function ProfileData() {
         </div>
         <div className="md:flex-3 md:space-y-2 w-full">
           <div className="md:flex hidden items-center gap-4">
-            <h1 className="text-lg">bltdilsah</h1>
+            <h1 className="text-lg">{username}</h1>
             <ProfileEditButton />
             <ProfileViewArchiveButton />
             <ProfileSettingsButton />

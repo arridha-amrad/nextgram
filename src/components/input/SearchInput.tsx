@@ -45,6 +45,7 @@ export default function SearchInput() {
         startContent={<SearchIcon className="w-5 h-5 pointer-events-none" />}
       />
       {isFocus &&
+        typeof window === "object" &&
         createPortal(
           <div
             style={{ ...styles.popper, width: referenceElement?.clientWidth }}

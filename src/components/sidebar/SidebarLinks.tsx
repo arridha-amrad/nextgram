@@ -76,7 +76,6 @@ export default function SidebarLinks() {
         ) : (
           <Tooltip
             className="xl:opacity-0 opacity-100"
-            placement="right"
             content={name}
             key={name}
           >
