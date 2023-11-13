@@ -1,4 +1,4 @@
-import ForgotPasswordReset from "@/components/form/forgot-password-form";
+import ForgotPasswordReset from "@/components/form/ForgotPasswordForm";
 import { Divider, Link, Spacer } from "@nextui-org/react";
 import { CiLock } from "react-icons/ci";
 import NextLink from "next/link";

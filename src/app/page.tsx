@@ -7,15 +7,15 @@ const Image = dynamic(() => import("next/image"), { ssr: true });
 const FacebookButton = dynamic(
   () => import("@/components/button/FacebookButton")
 );
-const LoginForm = dynamic(() => import("@/components/form/login-form"));
-const NavbarAuth = dynamic(() => import("@/components/button/ThemeButton"));
+const LoginForm = dynamic(() => import("@/components/form/LoginForm"));
+const ThemeButton = dynamic(() => import("@/components/button/ThemeButton"));
 const PhoneSlide = dynamic(() => import("@/components/phone-slide"));
 
 export default function Page() {
   return (
     <div className="min-h-screen flex items-center justify-center py-8 px-4">
       <div className="fixed bottom-5 right-5">
-        <NavbarAuth />
+        <ThemeButton />
       </div>
       <div className="lg:w-[936.62px] w-full flex">
         <div className="flex-1 lg:block hidden">

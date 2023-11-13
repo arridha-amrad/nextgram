@@ -1,5 +1,5 @@
 import FacebookButton from "@/components/button/FacebookButton";
-import SignUpForm from "@/components/form/signup-form";
+import SignUpForm from "@/components/form/SignupForm";
 import NavbarAuth from "@/components/button/ThemeButton";
 import { Divider, Spacer } from "@nextui-org/react";
 import Image from "next/image";

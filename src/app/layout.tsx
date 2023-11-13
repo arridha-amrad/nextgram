@@ -1,9 +1,11 @@
 // app/layout.tsx
-import { Providers } from "@/components/providers";
+import AuthProvider from "@/providers/AuthProvider";
+import { Providers } from "@/providers/UiProvider";
 import type { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import { cookies } from "next/headers";
-import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Nextgram",
@@ -17,11 +19,15 @@ export default async function RootLayout({
 }) {
   const theme = cookies().get("theme")?.value;
 
+  const session = await getServerSession();
+
   return (
     <html lang="en" className={theme ?? "dark"}>
       <body>
-        <NextTopLoader showSpinner={false} color="#0095F6" />
-        <Providers>{children}</Providers>
+        <AuthProvider session={session}>
+          <NextTopLoader showSpinner={false} color="#0095F6" />
+          <Providers>{children}</Providers>
+        </AuthProvider>
       </body>
     </html>
   );

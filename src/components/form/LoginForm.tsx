@@ -33,16 +33,14 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginDto) => {
     try {
       setLoginError(null);
-      await new Promise((res) => setTimeout(res, 3000));
       const result = await signIn("credentials", {
         ...data,
         redirect: false,
       });
-      if (result && result.status >= 400) {
-        setLoginError(result.error);
-      }
-      if (result && result.status === 200) {
+      if (!result?.error) {
         router.replace("/home");
+      } else {
+        setLoginError(result.error);
       }
     } catch (err) {
       console.log(err);

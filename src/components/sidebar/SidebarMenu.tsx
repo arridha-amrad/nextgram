@@ -16,8 +16,12 @@ import MoonIcon from "@heroicons/react/24/outline/MoonIcon";
 import SunIcon from "@heroicons/react/24/outline/SunIcon";
 import { switchTheme } from "@/utils/switch-theme";
 import MenuIcon from "@heroicons/react/24/solid/EllipsisHorizontalIcon";
+import { signOut } from "next-auth/react";
 
 export default function SidebarMenu() {
+  const logout = async () => {
+    await signOut({ callbackUrl: "/accounts/login", redirect: true });
+  };
   return (
     <Dropdown backdrop="opaque" placement="top-start">
       <div className="mx-auto xl:mx-0">
@@ -78,6 +82,7 @@ export default function SidebarMenu() {
           Report a problem
         </DropdownItem>
         <DropdownItem
+          onClick={logout}
           className="h-10"
           startContent={<LogoutIcon className="w-5 h-5" />}
           key="logout"

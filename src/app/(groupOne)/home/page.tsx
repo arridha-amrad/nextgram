@@ -4,14 +4,21 @@ import HomeFooter from "@/components/footer/HomeFooter";
 import StoryBar from "@/components/top-bar/StoryBar";
 
 import { Button, Spacer } from "@nextui-org/react";
+import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
+import { redirect } from "next/navigation";
 
 const TopBar = dynamic(() => import("@/components/top-bar/TopBar"), {
   ssr: false,
 });
 const SearchInput = dynamic(() => import("@/components/input/SearchInput"));
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await getServerSession();
+  if (!session) {
+    redirect("/login?prev=home");
+  }
+
   return (
     <div className="flex h-full w-full gap-4">
       <div className="flex-[2] h-full w-full">
