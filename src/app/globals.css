@@ -1,18 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Grandstander:wght@100;200;300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Grandstander:wght@100;200;300;400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
-  :root {
-    --color-border: rgb(223, 230, 231);
-    --color-fill: #0095f6;
-    --text-secondary: 115,115,115
-  }
+    :root {
+        --color-border: rgb(223, 230, 231);
+        --color-fill: #0095f6;
+        --text-secondary: 115, 115, 115;
+    }
 
-  .dark {
-    --color-border: rgb(47,51,54);
-  }
+    .dark {
+        --color-border: rgb(47, 51, 54);
+    }
 }

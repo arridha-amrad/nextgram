@@ -8,27 +8,27 @@ import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nextgram",
-  description: "Instagram Future",
+    title: "Nextgram",
+    description: "Instagram Future",
 };
 
 export default async function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  const theme = cookies().get("theme")?.value;
+    const theme = cookies().get("theme")?.value;
 
-  const session = await getServerSession();
+    const session = await getServerSession();
 
-  return (
-    <html lang="en" className={theme ?? "dark"}>
-      <body>
-        <AuthProvider session={session}>
-          <NextTopLoader showSpinner={false} color="#0095F6" />
-          <Providers>{children}</Providers>
-        </AuthProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en" className={theme ?? "dark"}>
+            <body>
+                <AuthProvider session={session}>
+                    <NextTopLoader showSpinner={false} color="#0095F6" />
+                    <Providers>{children}</Providers>
+                </AuthProvider>
+            </body>
+        </html>
+    );
 }

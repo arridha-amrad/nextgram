@@ -26,7 +26,7 @@ const Story = ({ url }: Props, ref: Ref<HTMLDivElement>) => {
       <div
         onClick={handleOpen}
         ref={ref}
-        className="bg-gradient-to-tr cursor-pointer flex-shrink-0 from-yellow-500 to-purple-500 via-red-500 rounded-full p-0.5"
+        className="bg-gradient-to-tr cursor-pointer flex-shrink-0 from-blue-500 to-red-500 via-indigo-300 rounded-full p-1"
       >
         <div className="bg-background p-1 rounded-full">
           <Image
