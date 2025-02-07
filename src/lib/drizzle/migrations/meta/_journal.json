@@ -1,0 +1,90 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1717676902735,
+      "tag": "0000_daffy_leper_queen",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1717782685430,
+      "tag": "0001_perpetual_leopardon",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1718121815364,
+      "tag": "0002_chief_rafael_vega",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1718177048190,
+      "tag": "0003_bizarre_daimon_hellstrom",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1718357290138,
+      "tag": "0004_military_iron_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1718875811701,
+      "tag": "0005_red_power_pack",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1718894826000,
+      "tag": "0006_nifty_dorian_gray",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1718962840174,
+      "tag": "0007_black_dakota_north",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1737517550877,
+      "tag": "0008_parallel_hellfire_club",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1737522801532,
+      "tag": "0009_sticky_jocasta",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1737534907423,
+      "tag": "0010_daffy_lake",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1738930676335,
+      "tag": "0011_funny_whiplash",
+      "breakpoints": true
+    }
+  ]
+}
