@@ -14,12 +14,10 @@ import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
 
 type Props = {
-  postsPromise: Promise<TInfiniteResult<TFeedPost>>;
+  posts: TInfiniteResult<TFeedPost>;
 };
 
-export default function FeedPosts({ postsPromise }: Props) {
-  const initPosts = use(postsPromise);
-
+export default function FeedPosts({ posts: initPosts }: Props) {
   const addPosts = useFeedPosts((state) => state.addPosts);
   const page = useFeedPosts((state) => state.page);
   const posts = useFeedPosts((state) => state.posts);
@@ -80,7 +78,9 @@ export default function FeedPosts({ postsPromise }: Props) {
     overscan: 5,
   });
 
-  if (posts.length === 0) return null;
+  if (posts.length === 0) {
+    return null;
+  }
 
   return (
     <section

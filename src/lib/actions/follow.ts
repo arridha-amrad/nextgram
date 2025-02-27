@@ -6,7 +6,7 @@ import { fetchUserFollowers } from "../drizzle/queries/users/fetchUserFollowers"
 import FollowService from "../drizzle/services/FollowService";
 import { authActionClient } from "../safeAction";
 import { revalidateTag } from "next/cache";
-import { USERS } from "../cacheKeys";
+import { POST, USERS } from "../cacheKeys";
 
 const schema = z.object({
   followId: z.string(),
@@ -29,6 +29,7 @@ export const follow = authActionClient
     }
     revalidateTag(USERS.profile);
     revalidateTag(USERS.suggestedUsers);
+    revalidateTag(POST.homePosts);
     return message;
   });
 

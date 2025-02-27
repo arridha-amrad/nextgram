@@ -1,34 +1,27 @@
-import { auth } from "@/auth";
-import FeedPosts from "./FeedPosts";
 import { fetchFeedPosts } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import Spinner from "@/components/Spinner";
-import { ErrorBoundary } from "react-error-boundary";
+import FeedPosts from "./FeedPosts";
+import { getAuth } from "@/lib/next.auth";
 
 export default async function Page() {
-  const session = await auth();
+  const session = await getAuth();
   const userId = session?.user.id;
 
   if (!userId) {
     redirect("/login");
   }
 
-  const postsPromise = fetchFeedPosts({ page: 1, userId });
+  const posts = await fetchFeedPosts({ page: 1, userId });
 
   return (
     <div className="py-4">
-      <ErrorBoundary fallback={<div>Something went wrong</div>}>
-        <Suspense
-          fallback={
-            <div>
-              <Spinner />
-            </div>
-          }
-        >
-          <FeedPosts postsPromise={postsPromise} />
-        </Suspense>
-      </ErrorBoundary>
+      {posts.total === 0 ? (
+        <div>
+          <h1>You need to follow some users to populate your feeds</h1>
+        </div>
+      ) : (
+        <FeedPosts posts={posts} />
+      )}
     </div>
   );
 }

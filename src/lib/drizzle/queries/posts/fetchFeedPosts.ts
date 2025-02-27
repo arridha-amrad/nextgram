@@ -3,13 +3,14 @@ import { db } from "@/lib/drizzle/db";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
 import {
   CommentsTable,
+  FollowingsTable,
   PostLikesTable,
   PostsTable,
   RepliesTable,
   SavedPostsTable,
   UsersTable,
 } from "@/lib/drizzle/schema";
-import { desc, eq, lt, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, lt, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 
 const LIMIT = 5;
@@ -17,9 +18,10 @@ const LIMIT = 5;
 type TArgs = {
   userId: string;
   date: Date;
+  followings: string[];
 };
 
-const runQuery = async ({ date, userId }: TArgs) => {
+const runQuery = async ({ date, userId, followings }: TArgs) => {
   return db
     .select({
       id: PostsTable.id,
@@ -60,7 +62,12 @@ const runQuery = async ({ date, userId }: TArgs) => {
       `,
     })
     .from(PostsTable)
-    .where(lt(PostsTable.createdAt, date))
+    .where(
+      and(
+        lt(PostsTable.createdAt, date),
+        inArray(PostsTable.userId, followings),
+      ),
+    )
     .leftJoin(PostLikesTable, eq(PostsTable.id, PostLikesTable.postId))
     .leftJoin(CommentsTable, eq(PostsTable.id, CommentsTable.postId))
     .leftJoin(RepliesTable, eq(CommentsTable.id, RepliesTable.commentId))
@@ -86,17 +93,32 @@ export const fetchFeedPosts = unstable_cache(
     date = new Date(),
     total = 0,
   }: Args): Promise<TInfiniteResult<TFeedPost>> => {
+    console.log("fetch feed posts");
+
+    const followings = await db
+      .select({
+        userId: FollowingsTable.followId,
+      })
+      .from(FollowingsTable)
+      .where(eq(FollowingsTable.userId, userId));
+    const users = followings.map((f) => f.userId);
+
     if (total === 0) {
       const [result] = await db
         .select({
           sum: sql<number>`CAST(COUNT(${PostsTable.id}) as int)`,
         })
         .from(PostsTable)
-        .where(lt(PostsTable.createdAt, date));
+        .where(
+          and(
+            lt(PostsTable.createdAt, date),
+            inArray(PostsTable.userId, users),
+          ),
+        );
       total = result.sum;
     }
 
-    const posts = await runQuery({ date, userId });
+    const posts = await runQuery({ date, userId, followings: users });
 
     return {
       data: posts,
@@ -108,5 +130,6 @@ export const fetchFeedPosts = unstable_cache(
   [POST.homePosts],
   {
     tags: [POST.homePosts],
+    revalidate: 60,
   },
 );
