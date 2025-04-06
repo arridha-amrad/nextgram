@@ -1,6 +1,13 @@
+import { getAuth } from "@/lib/next.auth";
+import { page } from "@/lib/pages";
+import { redirect } from "next/navigation";
 import FormChangeUsername from "./Form";
 
-const Page = () => {
+const Page = async () => {
+  const session = await getAuth();
+  if (!session) {
+    redirect(`/${page.login}?cbUrl=${page.changeUsername}`);
+  }
   return (
     <div className="w-full pl-14">
       <div>

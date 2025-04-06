@@ -1,12 +1,13 @@
 import { auth } from "@/auth";
 import Avatar from "@/components/Avatar";
+import { page } from "@/lib/pages";
 import { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Instagram",
+  title: "Nextgram",
   description: "Home",
 };
 
@@ -19,7 +20,7 @@ const Layout = async ({ children, suggestedUsers }: Props) => {
   const session = await auth();
 
   if (!session) {
-    redirect("/login");
+    redirect(page.login);
   }
 
   const { image, name, username } = session.user;

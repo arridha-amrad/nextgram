@@ -1,5 +1,15 @@
 @import "tailwindcss";
-@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-foreground: var(--foreground);
+  --color-skin-primary: var(--color-skin-primary);
+  --color-skin-muted: var(--color-skin-muted);
+  --color-skin-link: var(--color-skin-link);
+  --color-skin-separator: var(--color-skin-separator);
+  --color-skin-elevated-separator: var(--color-skin-elevated-separator);
+}
 
 @layer base {
   *,
@@ -11,75 +21,34 @@
   }
 
   :root {
-    --color-bg: rgb(255, 255, 255);
-    --color-text-base: rgb(0, 0, 0);
-    --color-text-muted: rgb(89, 89, 89);
-    --color-text-inverted: rgb(64, 54, 227);
-    --color-primary: rgb(64, 54, 227);
-    --color-button-accent: rgb(255, 255, 255);
-    --color-button-accent-hover: rgb(238, 242, 255);
-    --color-button-muted: rgb(99, 54, 241);
-    --color-border: rgb(217, 217, 217);
-    --color-input: rgb(255, 255, 255);
-    --color-error: rgb(239, 68, 68);
-    --scrollbar-thumb: rgb(161, 161, 161);
-    --scrollbar-thumb-hover: rgb(172, 172, 172);
-    --scrollbar-track: rgb(194, 194, 194);
+    --background: #ffffff;
+    --bg-secondary: rgb(255, 255, 255);
+    --foreground: #171717;
+    --color-skin-primary: rgb(0, 149, 246);
+    --color-skin-muted: rgb(168, 168, 168);
+    --color-skin-link: rgb(224, 241, 255);
+    --color-skin-separator: rgb(38, 38, 38);
+    --color-skin-elevated-separator: rgb(255, 255, 255);
   }
 
   .dark {
-    --color-bg: rgb(9, 13, 20);
-    --color-text-base: rgb(255, 255, 255);
-    --color-text-muted: rgb(191, 191, 191);
-    --color-text-inverted: rgb(79, 70, 229);
-    --color-primary: rgb(38, 28, 201);
-    --color-button-accent: rgb(255, 255, 255);
-    --color-button-accent-hover: rgb(106, 98, 234);
-    --color-button-muted: rgb(38, 28, 201);
-    --color-border: rgb(51, 58, 71);
-    --color-input: rgb(29, 36, 50);
-    --color-error: rgb(153, 27, 27);
-    --scrollbar-thumb: rgb(99, 99, 99);
-    --scrollbar-thumb-hover: rgb(85, 85, 85);
-    --scrollbar-track: rgb(61, 61, 61);
-  }
-
-  ::-webkit-scrollbar {
-    width: 1rem;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: var(--scrollbar-track);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb);
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--scrollbar-thumb-hover);
-  }
-
-  button {
-    cursor: pointer;
+    --background: #0a0a0a;
+    --bg-secondary: rgb(38, 38, 38);
+    --foreground: #ededed;
+    --color-skin-primary: rgb(0, 149, 246);
+    --color-skin-muted: rgb(168, 168, 168);
+    --color-skin-link: rgb(224, 241, 255);
+    --color-skin-separator: rgb(38, 38, 38);
+    --color-skin-elevated-separator: rgb(54, 54, 54);
   }
 }
 
-@theme {
-  --color-background: var(--color-bg);
-  --color-skin-primary: var(--color-primary);
-  --color-skin-input: var(--color-input);
-  --color-skin-border: var(--color-border);
-  --color-skin-base: var(--color-text-base);
-  --color-skin-error: var(--color-error);
-  --color-skin-muted: var(--color-text-muted);
-  --color-skin-inverted: var(--color-text-inverted);
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-geist-sans);
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-transition: "color 9999s ease-out, background-color 9999s ease-out";
-  -webkit-transition-delay: 9999s;
+button {
+  cursor: pointer;
 }

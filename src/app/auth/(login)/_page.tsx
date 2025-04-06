@@ -1,4 +1,4 @@
-import FormLogin from "@/app/(noAuth)/login/FormLogin";
+import FormLogin from "@/app/auth/(login)/_";
 import FacebookButton from "@/components/SocialButtons/FacebookButton";
 import GithubButton from "@/components/SocialButtons/GithubButton";
 import GoogleButton from "@/components/SocialButtons/GoogleButton";
@@ -28,7 +28,7 @@ const Page = async () => {
           <SvgInstagram className="fill-skin-primary" />
         </button>
         <section className="py-4 text-center">
-          <h1 className="text-2xl font-semibold text-skin-muted">
+          <h1 className="text-skin-muted text-2xl font-semibold">
             Sign in to your account
           </h1>
         </section>
@@ -40,7 +40,7 @@ const Page = async () => {
         <section className="w-full max-w-sm py-6">
           <span className="relative flex justify-center">
             <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-linear-to-r from-transparent via-slate-400 to-transparent opacity-75 dark:via-slate-500"></div>
-            <span className="relative z-10 bg-background px-6 text-skin-muted">
+            <span className="bg-background text-skin-muted relative z-10 px-6">
               Or
             </span>
           </span>

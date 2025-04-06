@@ -64,7 +64,7 @@ const FormLogin = () => {
           label="Show password"
         />
         <div className="h-4" />
-        <div className="text-center text-sm text-skin-inverted">
+        <div className="text-skin-inverted text-center text-sm">
           <Link href="/forgot-password">forgot password</Link>
         </div>
         <Button

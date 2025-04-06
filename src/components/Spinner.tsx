@@ -9,10 +9,7 @@ const Spinner = (props: Props) => {
       <svg
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        className={cn(
-          "aspect-square w-6 fill-slate-300 text-slate-600",
-          props.className,
-        )}
+        className={cn("size-6 fill-slate-300 text-slate-600", props.className)}
       >
         <g>
           <rect x="11" y="1" width="2" height="5" opacity=".14" />

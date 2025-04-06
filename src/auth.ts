@@ -37,7 +37,7 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
     strategy: "jwt",
   },
   pages: {
-    signIn: "/login",
+    signIn: "/auth",
   },
   providers,
   callbacks: {
@@ -73,7 +73,7 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
         }
         return true;
       } else {
-        return "/signin?e=invalid credentials";
+        return "/auth?e=invalid credentials";
       }
     },
 

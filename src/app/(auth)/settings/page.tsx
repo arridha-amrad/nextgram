@@ -3,12 +3,13 @@ import { fetchUserProfileDetails } from "@/lib/drizzle/queries/users/fetchUserPr
 
 import { redirect } from "next/navigation";
 import { getAuth } from "@/lib/next.auth";
+import { page } from "@/lib/pages";
 
 const Page = async () => {
   const session = await getAuth();
 
   if (!session) {
-    redirect("/login?cbUrl=/settings");
+    redirect(`/${page.login}?cbUrl=${page.settings}`);
   }
 
   const profile = await fetchUserProfileDetails({

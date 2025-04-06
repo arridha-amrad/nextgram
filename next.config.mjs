@@ -9,6 +9,18 @@ const nextConfig = {
       { hostname: "lh3.googleusercontent.com", protocol: "https" },
       { hostname: "avatars.githubusercontent.com", protocol: "https" },
       { hostname: "pink-main-limpet-182.mypinata.cloud", protocol: "https" },
+      {
+        hostname: "www.instagram.com",
+      },
+      {
+        hostname: "images.pexels.com",
+      },
+      {
+        hostname: "static.cdninstagram.com",
+      },
+      {
+        hostname: "instagram.fccu9-3.fna.fbcdn.net",
+      },
     ],
   },
 };
