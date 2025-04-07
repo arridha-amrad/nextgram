@@ -27,7 +27,7 @@ export default function InputWithFloatingLabel({
       <div className="relative w-full">
         <Label
           className={cn(
-            "text-skin-muted absolute top-1/2 left-4 -translate-y-1/2 text-sm transition-all duration-75 ease-in",
+            "text-skin-muted absolute top-1/2 left-4 -translate-y-1/2 text-sm transition-all duration-75 ease-in select-none",
             !!value && "top-[14px] left-3 text-xs tracking-wide",
           )}
         >

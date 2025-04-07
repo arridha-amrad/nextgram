@@ -1,6 +1,6 @@
 "use client";
 
-import { useUserPosts } from "@/app/(auth)/[username]/store";
+import { useUserPosts } from "./store";
 import Spinner from "@/components/Spinner";
 import { loadMoreUserPosts } from "@/lib/actions/post";
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";

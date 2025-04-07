@@ -13,10 +13,11 @@ export const metadata: Metadata = {
 
 type Props = {
   children: ReactNode;
+  stories: ReactNode;
   suggestedUsers: ReactNode;
 };
 
-const Layout = async ({ children, suggestedUsers }: Props) => {
+const Layout = async ({ children, suggestedUsers, stories }: Props) => {
   const session = await auth();
 
   if (!session) {
@@ -27,10 +28,11 @@ const Layout = async ({ children, suggestedUsers }: Props) => {
 
   return (
     <section className="flex w-full">
-      <section className="mx-auto min-h-screen w-full max-w-md flex-1">
+      <div className="mx-auto w-full flex-1 space-y-4 sm:px-4 md:max-w-[630px]">
+        {stories}
         {children}
-      </section>
-      <section className="sticky inset-y-0 hidden h-screen min-h-[500px] w-full max-w-xs shrink-0 lg:block">
+      </div>
+      <section className="sticky top-0 hidden min-h-screen shrink-0 basis-[300px] overflow-auto xl:block">
         <div className="flex items-center py-2 pb-4">
           <div className="flex w-full items-center gap-2 px-4 py-3">
             <div className="flex flex-1 basis-0 items-start justify-start gap-3">

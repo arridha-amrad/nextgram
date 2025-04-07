@@ -14,7 +14,7 @@ export default async function Page() {
   const posts = await fetchFeedPosts({ page: 1, userId });
 
   return (
-    <div className="py-4">
+    <div className="mx-auto w-full max-w-[468px] space-y-8 pb-16">
       {posts.total === 0 ? (
         <div>
           <h1>You need to follow some users to populate your feeds</h1>

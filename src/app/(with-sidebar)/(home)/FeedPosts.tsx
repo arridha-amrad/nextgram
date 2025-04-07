@@ -3,11 +3,11 @@
 import Spinner from "@/components/Spinner";
 import { useLastElement } from "@/hooks/useLastElement";
 import { loadMoreFeedPosts } from "@/lib/actions/post";
-import { useFeedPosts } from "@/app/(auth)/(home)/store";
+import { useFeedPosts } from "./store";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import FeedPost from "./FeedPost";
 import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";

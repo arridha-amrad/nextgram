@@ -1,4 +1,7 @@
-import Sidebar from "@/components/Sidebar";
+import BottomNavigationBar from "@/components/BottomNavigationBar";
+import { SidebarProvider } from "@/components/NewSidebar/Context";
+import Sidebar from "@/components/NewSidebar";
+import TopBar from "@/components/Topbar";
 import { getAuth } from "@/lib/next.auth";
 import { ReactNode } from "react";
 
@@ -11,17 +14,25 @@ const Layout = async ({ children, modal }: Props) => {
   const session = await getAuth();
 
   return (
-    <main className="mx-auto flex w-full max-w-[1200px]">
-      {session && (
-        <section className="border-skin-border sticky inset-y-0 h-screen w-full max-w-[60px] flex-none border-r px-1 py-4 xl:max-w-[250px] xl:px-4">
-          <Sidebar />
-        </section>
+    <div className="container mx-auto flex min-h-screen">
+      {session?.user && (
+        <>
+          <TopBar />
+          <SidebarProvider>
+            <Sidebar
+              avatarUrl={session.user.image ?? "/default.jpg"}
+              username={session.user.username}
+            />
+          </SidebarProvider>
+          <BottomNavigationBar
+            avatarUrl={session.user.image ?? "/default.jpg"}
+            username={session.user.username}
+          />
+        </>
       )}
-      <section className="mx-auto w-full max-w-[900px] flex-1 basis-0 px-4">
-        {children}
-        {modal}
-      </section>
-    </main>
+      {children}
+      {modal}
+    </div>
   );
 };
 

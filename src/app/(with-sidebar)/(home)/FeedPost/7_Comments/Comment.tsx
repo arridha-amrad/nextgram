@@ -1,4 +1,4 @@
-import { TFeedComment, useFeedPosts } from "@/app/(auth)/(home)/store";
+import { TFeedComment, useFeedPosts } from "../../store";
 import ButtonLike from "@/components/ButtonLike";
 import { likeComment as lc } from "@/lib/actions/comment";
 import Link from "next/link";
