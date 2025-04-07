@@ -1,25 +1,27 @@
 "use client";
 
-import Button from "@/components/core/Button";
-import TextInput from "@/components/core/TextInput";
+import InputWithFloatingLabel from "@/components/InputWithFloatingLabel";
 import { useAction } from "next-safe-action/hooks";
+import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { resetPassword } from "./action";
-import { useSearchParams } from "next/navigation";
+import SubmitButtonWithSpinner from "@/components/SubmitButtonWithSpinner";
 
-const Form = () => {
+function FormResetPassword() {
   const params = useSearchParams();
+
   const [state, setState] = useState({
     password: "",
     confirmPassword: "",
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
       [e.target.name]: e.target.value,
     });
   };
+
   const { execute, isPending, result } = useAction(
     resetPassword.bind(null, params.get("token")),
   );
@@ -29,40 +31,37 @@ const Form = () => {
     result.validationErrors?.confirmPassword?._errors;
   const actionError = result.serverError;
 
-  return (
-    <form className="space-y-3" action={execute}>
-      <section className="text-center text-sm">
-        {actionError && <p className="text-red-500">{actionError}</p>}
-      </section>
-      <fieldset className="space-y-3" disabled={isPending}>
-        <TextInput
-          onChange={handleChange}
-          value={state.password}
-          errorMessage={passwordError && passwordError[0]}
-          label="Password"
-          name="password"
-          id="password"
-          type="password"
-        />
-        <TextInput
-          onChange={handleChange}
-          value={state.confirmPassword}
-          errorMessage={confirmPasswordError && confirmPasswordError[0]}
-          label="Confirm Password"
-          name="confirmPassword"
-          id="confirmPassword"
-          type="password"
-        />
-        <Button
-          isLoading={isPending}
-          className="inline-flex w-full justify-center"
-          type="submit"
-        >
-          Submit
-        </Button>
-      </fieldset>
-    </form>
-  );
-};
+  console.log({ passwordError, confirmPasswordError });
 
-export default Form;
+  return (
+    <fieldset className="w-full" disabled={isPending}>
+      <form action={execute} className="w-full space-y-3">
+        <section className="pb-2 text-center text-sm">
+          {actionError && <p className="text-red-400">{actionError}</p>}
+        </section>
+        <InputWithFloatingLabel
+          label="New password"
+          name="password"
+          onChange={onChange}
+          type="password"
+          value={state.password}
+          error={passwordError && passwordError[0]}
+        />
+        <InputWithFloatingLabel
+          label="Confirm wew password"
+          name="confirmPassword"
+          onChange={onChange}
+          type="password"
+          value={state.confirmPassword}
+          error={confirmPasswordError && confirmPasswordError[0]}
+        />
+        <SubmitButtonWithSpinner
+          isLoading={isPending}
+          label="Reset my password"
+        />
+      </form>
+    </fieldset>
+  );
+}
+
+export default FormResetPassword;

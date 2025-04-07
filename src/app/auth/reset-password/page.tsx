@@ -1,50 +1,54 @@
-import SvgInstagram from "@/components/svg/SvgInstagram";
-import type { Metadata } from "next";
-import Form from "./Form";
 import Link from "next/link";
-import { Suspense } from "react";
+import FormResetPassword from "./Form";
+import InstagramLogo from "@/components/InstagramLogo";
+import { page } from "@/lib/pages";
+import InstagramDownloadLinks from "@/components/InstagramDownloadLinks";
 
-export const metadata: Metadata = {
-  title: "Instagram | Reset Password",
-  description: "Reset Password",
-};
-
-const Page = async () => {
+export default function Page() {
   return (
-    <section className="flex">
-      <div className="relative hidden w-full max-w-sm lg:block">
-        <div className="absolute inset-0 bg-black/20 dark:bg-black/50" />
-        <img
-          src="https://images.unsplash.com/photo-1621207849166-0ccb2a48147b?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="bg"
-          className="h-full w-full object-cover object-center"
-        />
-      </div>
-      <main className="flex min-h-screen w-full flex-col items-center justify-center">
-        <button>
-          <SvgInstagram className="fill-skin-primary" />
-        </button>
-        <section className="py-4 text-center">
-          <h1 className="text-2xl font-semibold text-skin-muted">
-            Reset Password
-          </h1>
-        </section>
-        <section className="w-full max-w-sm">
-          <Suspense>
-            <Form />
-          </Suspense>
-        </section>
-        <section className="pt-8">
-          <span className="text-sm">
-            Back to &nbsp;
-            <Link className="text-skin-inverted" href="/login">
-              login
-            </Link>
-          </span>
-        </section>
+    <main className="flex w-full max-w-[350px] flex-1 flex-col items-center justify-center gap-4">
+      <main className="border-skin-elevated-separator flex w-full flex-col items-center justify-center rounded-lg border px-8 py-4">
+        <div className="mt-6">
+          <InstagramLogo />
+        </div>
+        <div className="border-foreground/20 mt-6 mb-2 flex size-25 items-center justify-center rounded-full border">
+          <svg
+            fill="#fff"
+            height="50px"
+            width="50px"
+            version="1.1"
+            id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 485 485"
+            xmlSpace="preserve"
+          >
+            <g>
+              <path
+                d="M345,175v-72.5C345,45.981,299.019,0,242.5,0S140,45.981,140,102.5V175H70v310h345V175H345z M170,102.5
+		c0-39.977,32.523-72.5,72.5-72.5S315,62.523,315,102.5V175H170V102.5z M385,455H100V205h285V455z"
+              />
+              <path
+                d="M227.5,338.047v53.568h30v-53.569c11.814-5.628,20-17.682,20-31.616c0-19.299-15.701-35-35-35c-19.299,0-35,15.701-35,35
+		C207.5,320.365,215.686,332.42,227.5,338.047z"
+              />
+            </g>
+          </svg>
+        </div>
+        <div className="mb-6">
+          <h1 className="text-skin-muted font-medium">Reset Password</h1>
+        </div>
+        <FormResetPassword />
+        <div className="text-skin-muted mt-8 text-sm">
+          <span>Back to &nbsp;</span>
+          <Link className="text-skin-primary" href={page.login}>
+            login
+          </Link>
+        </div>
       </main>
-    </section>
+      <div className="mb-8">
+        <InstagramDownloadLinks />
+      </div>
+    </main>
   );
-};
-
-export default Page;
+}

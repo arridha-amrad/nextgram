@@ -6,6 +6,7 @@ import { TransactionManager } from "@/lib/drizzle/services/TransactionManager";
 import UserService from "@/lib/drizzle/services/UserService";
 import EmailService from "@/lib/emailTransporter";
 import { SafeActionError } from "@/lib/errors/SafeActionError";
+import { page } from "@/lib/pages";
 import { actionClient } from "@/lib/safeAction";
 import { createTokenForResetPassword } from "@/lib/tokenHandler";
 import { generateRandomOTP } from "@/lib/utils";
@@ -38,7 +39,7 @@ export const forgotPassword = actionClient
       return { token };
     });
 
-    const link = `${config.BASE_URL}/reset-password?token=${response.token}`;
+    const link = `${config.BASE_URL}/${page.resetPassword}?token=${response.token}`;
 
     await EmailService.sendEmail({
       to: email,

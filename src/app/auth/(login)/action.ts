@@ -3,6 +3,7 @@
 import { signIn } from "@/auth";
 import UserService from "@/lib/drizzle/services/UserService";
 import { SafeActionError } from "@/lib/errors/SafeActionError";
+import { page } from "@/lib/pages";
 import { verifyPasswordHash } from "@/lib/passwordHandler";
 import { actionClient } from "@/lib/safeAction";
 import { z } from "zod";
@@ -48,7 +49,7 @@ export const login = actionClient
         email: users[0].email,
         image: users[0].avatar,
         username: users[0].username,
-        redirectTo: cbUrl ?? "/",
+        redirectTo: cbUrl ?? page.home,
       });
     },
   );

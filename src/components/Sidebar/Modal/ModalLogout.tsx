@@ -7,6 +7,7 @@ import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/core/ModalWrapper";
 import { className } from "../styles";
+import { page } from "@/lib/pages";
 
 const ModalLogout = () => {
   const [open, setOpen] = useState(false);
@@ -29,7 +30,7 @@ const ModalLogout = () => {
   const logout = async () => {
     startTransition(async () => {
       await signOut({ redirect: false });
-      router.replace("/login", { scroll: false });
+      router.replace(page.login, { scroll: false });
     });
   };
   return (

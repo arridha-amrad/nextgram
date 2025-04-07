@@ -1,13 +1,12 @@
 "use client";
 
 import InputWithFloatingLabel from "@/components/InputWithFloatingLabel";
-import { Button } from "@headlessui/react";
 import { useAction } from "next-safe-action/hooks";
 import { useSearchParams } from "next/navigation";
 import { login } from "./action";
 
+import SubmitButtonWithSpinner from "@/components/SubmitButtonWithSpinner";
 import { ChangeEvent, useState } from "react";
-import Spinner from "@/components/Spinner";
 
 export default function FormLogin() {
   const [state, setState] = useState({
@@ -34,13 +33,13 @@ export default function FormLogin() {
   const message = params.get("message");
 
   return (
-    <fieldset disabled={isPending}>
+    <fieldset className="w-full" disabled={isPending}>
       <form action={execute} className="relative w-full space-y-2 px-6">
         {actionError && (
           <p className="text-center text-sm text-red-400">{actionError}</p>
         )}
         {message && (
-          <p className="text-center text-sm text-red-400">{message}</p>
+          <p className="text-center text-sm text-green-400">{message}</p>
         )}
         <InputWithFloatingLabel
           name="identity"
@@ -58,13 +57,7 @@ export default function FormLogin() {
           value={state.password}
           error={passwordError && passwordError[0]}
         />
-        <Button
-          type="submit"
-          className="disabled:bg-bg-secondary bg-skin-primary mt-2 flex w-full items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium"
-        >
-          Log In
-          {isPending && <Spinner className="size-4" />}
-        </Button>
+        <SubmitButtonWithSpinner isLoading={isPending} label="Log in" />
       </form>
     </fieldset>
   );

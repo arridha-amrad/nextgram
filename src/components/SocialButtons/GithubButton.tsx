@@ -2,19 +2,21 @@
 
 import { signIn } from "next-auth/react";
 import SvgGithub from "../svg/SvgGithub";
+import { Button } from "@headlessui/react";
+import { page } from "@/lib/pages";
 
 const GithubButton = () => {
   const githubLogin = async () => {
-    await signIn("github", { redirect: false, callbackUrl: "/" });
+    await signIn("github", { redirect: false, callbackUrl: page.home });
   };
   return (
-    <button
+    <Button
       onClick={githubLogin}
-      className="border-skin-border text-skin-muted inline-flex items-center gap-3 rounded-md border px-3 py-2"
+      className="border-foreground/20 flex w-full items-center justify-center gap-2 rounded-lg border py-2 text-sm font-semibold text-white"
     >
       <SvgGithub />
-      github
-    </button>
+      GitHub
+    </Button>
   );
 };
 

@@ -39,9 +39,11 @@ export default function InputWithFloatingLabel({
           onChange={onChange}
           type={inputType}
           className={cn(
-            "bg-background ring-skin-primary border-skin-elevated-separator h-12 w-full rounded-lg border px-3 outline-hidden focus:ring-2",
+            "bg-background ring-skin-primary border-skin-elevated-separator h-12 w-full rounded-lg border pl-3 outline-hidden focus:ring-2",
             !!value && "pt-3 text-sm font-medium",
-            type === "password" ? "pr-12 tracking-wider" : "tracking-normal",
+            type === "password"
+              ? "pr-12 tracking-wider"
+              : "pr-3 tracking-normal",
           )}
         />
         {type === "password" && !!value && (
@@ -51,14 +53,14 @@ export default function InputWithFloatingLabel({
               onClick={() => {
                 setInputType((val) => (val === "text" ? "password" : "text"));
               }}
-              className="px-2 py-1 text-sm"
+              className="px-2 py-1 text-sm outline-0"
             >
-              show
+              {inputType === "text" ? "hide" : "show"}
             </button>
           </div>
         )}
       </div>
-      {error && <p className="text-xs text-red-400">Invalid email</p>}
+      {error && <p className="text-xs text-red-400">{error}</p>}
     </Field>
   );
 }

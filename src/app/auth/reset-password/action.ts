@@ -4,6 +4,7 @@ import PasswordResetRequestService from "@/lib/drizzle/services/PasswordResetReq
 import { TransactionManager } from "@/lib/drizzle/services/TransactionManager";
 import UserService from "@/lib/drizzle/services/UserService";
 import { SafeActionError } from "@/lib/errors/SafeActionError";
+import { page } from "@/lib/pages";
 import { hashPassword } from "@/lib/passwordHandler";
 import { actionClient } from "@/lib/safeAction";
 import { verifyTokenForResetPassword } from "@/lib/tokenHandler";
@@ -65,6 +66,8 @@ export const resetPassword = actionClient
       });
 
       await passwordResetRequestService.removeByUserId(userId);
-      return redirect("/login?message=Your password is updated successfully");
+      return redirect(
+        `${page.login}?message=Your password is updated successfully`,
+      );
     },
   );

@@ -5,6 +5,7 @@ import Button from "@/components/core/Button";
 import { signOut } from "next-auth/react";
 import Modal from "@/components/core/ModalWrapper";
 import { useRouter } from "next/navigation";
+import { page } from "@/lib/pages";
 
 const Logout = () => {
   const [open, setOpen] = useState(false);
@@ -19,7 +20,7 @@ const Logout = () => {
     setLoading(true);
     try {
       await signOut({ redirect: false });
-      router.replace("/login", { scroll: false });
+      router.replace(`/${page.login}`, { scroll: false });
     } catch (err) {
       console.log(err);
     } finally {

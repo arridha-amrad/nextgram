@@ -5,6 +5,7 @@ import { TransactionManager } from "@/lib/drizzle/services/TransactionManager";
 import UserService from "@/lib/drizzle/services/UserService";
 import EmailService from "@/lib/emailTransporter";
 import { SafeActionError } from "@/lib/errors/SafeActionError";
+import { page } from "@/lib/pages";
 import { hashPassword } from "@/lib/passwordHandler";
 import { actionClient } from "@/lib/safeAction";
 import {
@@ -17,7 +18,7 @@ import { z } from "zod";
 import { zfd } from "zod-form-data";
 
 const schema = zfd.formData({
-  name: zfd.text(z.string()),
+  fullname: zfd.text(z.string()),
   username: zfd.text(z.string()),
   email: zfd.text(z.string().email()),
   password: z
@@ -33,7 +34,7 @@ const schema = zfd.formData({
 
 export const signUp = actionClient
   .schema(schema)
-  .action(async ({ parsedInput: { email, name, password, username } }) => {
+  .action(async ({ parsedInput: { email, fullname, password, username } }) => {
     const userService = new UserService();
     const userWithSameEmail = await userService.findUserByEmail(email);
     const cookie = await cookies();
@@ -55,7 +56,7 @@ export const signUp = actionClient
       const txUserService = new UserService(tx);
       const [newUser] = await txUserService.createUser({
         email,
-        name,
+        name: fullname,
         provider: "credentials",
         username,
         password: hashedPassword,
@@ -95,5 +96,5 @@ export const signUp = actionClient
           `,
     });
 
-    redirect("/verification-email");
+    redirect(page.emailVerification);
   });

@@ -1,61 +1,46 @@
-import FormRegister from "@/app/auth/signup/FormRegister";
-import FacebookButton from "@/components/SocialButtons/FacebookButton";
+import { Button } from "@headlessui/react";
+import Form from "./Form";
+import Link from "next/link";
+import { page } from "@/lib/pages";
+import InstagramLogo from "@/components/InstagramLogo";
+import InstagramDownloadLinks from "@/components/InstagramDownloadLinks";
 import GithubButton from "@/components/SocialButtons/GithubButton";
 import GoogleButton from "@/components/SocialButtons/GoogleButton";
-import SvgInstagram from "@/components/svg/SvgInstagram";
-import { Metadata } from "next";
-import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Instagram | Register",
-  description: "Create an instagram account",
-};
-
-const Page = () => {
+export default function Page() {
   return (
-    <section className="flex">
-      <div className="relative hidden w-full max-w-sm lg:block">
-        <div className="absolute inset-0 bg-black/20 dark:bg-black/50" />
-        <img
-          src="https://images.unsplash.com/photo-1620600574091-386cc6a3ed4d?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="bg"
-          className="h-full w-full object-cover object-center"
-        />
-      </div>
-      <main className="flex min-h-screen w-full flex-col items-center justify-center">
-        <button>
-          <SvgInstagram className="fill-skin-primary" />
-        </button>
-        <section className="py-4 text-center">
-          <h1 className="text-skin-muted text-2xl font-semibold">
-            Create new account
+    <main className="flex w-full max-w-[350px] flex-col items-center justify-center gap-4">
+      <main className="border-skin-elevated-separator flex w-full flex-col items-center justify-center rounded-lg border px-8 py-4">
+        <div className="mt-6">
+          <InstagramLogo />
+        </div>
+        <div className="my-3">
+          <h1 className="text-skin-muted text-center leading-tight font-bold">
+            Sign up to see photos and videos from your friends.
           </h1>
-        </section>
-        <section className="w-full max-w-sm">
-          <FormRegister />
-        </section>
-        <section className="w-full max-w-sm py-6">
-          <span className="relative flex justify-center">
-            <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-linear-to-r from-transparent via-slate-400 to-transparent opacity-75 dark:via-slate-500"></div>
-            <span className="bg-background text-skin-muted relative z-10 px-6">
-              Or
-            </span>
-          </span>
-        </section>
-        <section className="flex w-full max-w-sm items-center justify-center gap-2">
+        </div>
+        <div className="flex w-full items-center gap-2">
           <GoogleButton />
           <GithubButton />
-          <FacebookButton />
-        </section>
-        <section className="pt-8 text-sm">
-          <span>Already have an account ? </span>
-          <Link className="text-skin-inverted" href="/login">
-            login
-          </Link>
-        </section>
+        </div>
+        <div className="bg-skin-separator relative my-6 h-px w-full">
+          <span className="text-skin-muted absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black px-4 py-1 text-sm font-bold">
+            OR
+          </span>
+        </div>
+        <Form />
       </main>
-    </section>
+      <div className="border-skin-elevated-separator flex w-full items-center justify-center border py-6">
+        <p className="text-sm">
+          Have an account&nbsp;
+          <Link className="text-skin-primary font-semibold" href={page.login}>
+            Login
+          </Link>
+        </p>
+      </div>
+      <div className="mb-8">
+        <InstagramDownloadLinks />
+      </div>
+    </main>
   );
-};
-
-export default Page;
+}

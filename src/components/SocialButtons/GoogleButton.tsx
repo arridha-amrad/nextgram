@@ -2,18 +2,21 @@
 
 import { signIn } from "next-auth/react";
 import SvgGoogle from "../svg/SvgGoogle";
+import { Button } from "@headlessui/react";
+import { page } from "@/lib/pages";
 
 const GoogleButton = () => {
   const googleLogin = async () => {
-    await signIn("google", { redirect: false, callbackUrl: "/" });
+    await signIn("google", { redirect: false, callbackUrl: page.home });
   };
   return (
-    <button
+    <Button
       onClick={googleLogin}
-      className="border-skin-border text-skin-muted inline-flex items-center gap-3 rounded-md border px-3 py-2"
+      className="border-foreground/20 flex w-full items-center justify-center gap-2 rounded-lg border py-2 text-sm font-semibold text-white"
     >
-      <SvgGoogle /> google
-    </button>
+      <SvgGoogle />
+      Google
+    </Button>
   );
 };
 
