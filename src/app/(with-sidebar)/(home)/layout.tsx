@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
+import Footer from "./Footer";
 
 export const metadata: Metadata = {
   title: "Nextgram",
@@ -32,7 +33,7 @@ const Layout = async ({ children, suggestedUsers, stories }: Props) => {
         {stories}
         {children}
       </div>
-      <section className="sticky top-0 hidden min-h-screen shrink-0 basis-[300px] overflow-auto xl:block">
+      <section className="sticky top-0 hidden h-screen shrink-0 basis-[320px] overflow-auto xl:block">
         <div className="flex items-center py-2 pb-4">
           <div className="flex w-full items-center gap-2 px-4 py-3">
             <div className="flex flex-1 basis-0 items-start justify-start gap-3">
@@ -45,7 +46,7 @@ const Layout = async ({ children, suggestedUsers, stories }: Props) => {
               </div>
             </div>
             <Link
-              className="text-skin-inverted text-sm font-medium"
+              className="text-skin-primary text-sm font-medium"
               href={`/${username}`}
             >
               visit
@@ -53,6 +54,7 @@ const Layout = async ({ children, suggestedUsers, stories }: Props) => {
           </div>
         </div>
         {suggestedUsers}
+        <Footer />
       </section>
     </section>
   );

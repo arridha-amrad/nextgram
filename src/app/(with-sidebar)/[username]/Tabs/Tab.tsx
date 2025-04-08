@@ -20,15 +20,15 @@ export default function Tab({
   const isActive = target === pathname;
 
   return (
-    <div className="relative p-4" key={name}>
+    <div className="relative p-4 text-xs" key={name}>
       {isActive && (
-        <div className="bg-skin-muted absolute top-0 left-0 h-1 w-full rounded" />
+        <div className="bg-foreground absolute top-0 left-0 h-px w-full rounded" />
       )}
       <Link
         scroll={false}
         className={cn(
-          isActive ? "font-bold" : "text-skin-muted font-normal",
-          "flex gap-2",
+          isActive ? "font-medium" : "text-foreground/50 font-normal",
+          "flex items-center gap-2 uppercase",
         )}
         href={target}
       >

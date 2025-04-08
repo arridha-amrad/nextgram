@@ -11,6 +11,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ReactNode } from "react";
 import Tabs from "./Tabs";
+import Footer from "../../../components/Footer";
+import Highlights from "./Highlights";
 
 type Props = {
   params: Promise<{ username: string }>;
@@ -58,8 +60,11 @@ const Layout = async ({ children, modal, params }: Props) => {
   const isAuthUser = session?.user.username === username;
 
   return (
-    <main className="w-full py-4">
-      <section className="flex flex-col justify-center gap-10 sm:flex-row sm:items-start">
+    <main className="mx-auto w-full py-10 xl:max-w-[935px]">
+      <section
+        className="grid grid-cols-3"
+        // className="flex flex-col gap-10 border sm:flex-row"
+      >
         <div className="flex items-center justify-start sm:justify-center">
           {isAuthUser ? (
             <AvatarEditable avatar={profile.avatar} />
@@ -67,8 +72,8 @@ const Layout = async ({ children, modal, params }: Props) => {
             <Avatar className="w-24 sm:w-40" url={profile.avatar} />
           )}
         </div>
-        <div className="space-y-4">
-          <div className="flex items-center gap-6">
+        <div className="col-span-2">
+          <div className="flex items-center gap-4">
             <div>
               <h1 className="text-xl">{profile.username}</h1>
             </div>
@@ -76,7 +81,7 @@ const Layout = async ({ children, modal, params }: Props) => {
               <>
                 <Link
                   href="/settings"
-                  className="bg-skin-primary flex cursor-pointer items-center justify-center gap-2 rounded-md px-3 py-2 text-sm leading-5 font-medium text-white transition-all duration-200 ease-linear disabled:brightness-125"
+                  className="bg-bg-secondary flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm leading-5 font-medium transition-all duration-200 ease-linear disabled:brightness-125"
                 >
                   Edit Profile
                 </Link>
@@ -93,17 +98,17 @@ const Layout = async ({ children, modal, params }: Props) => {
           <div className="flex items-center gap-10 py-4">
             <div className="inline-flex">
               <h1 className="font-semibold">{profile.sumPosts}</h1>
-              <span className="pl-2">Posts</span>
+              <span className="text-foreground/70 pl-2">posts</span>
             </div>
 
             <Link scroll={false} href={`/${username}/followers`}>
               <span className="font-semibold">{profile.sumFollowers}</span>
-              <span className="pl-2">Followers</span>
+              <span className="text-foreground/70 pl-2">followers</span>
             </Link>
 
             <Link scroll={false} href={`/${username}/followings`}>
               <span className="font-semibold">{profile.sumFollowings}</span>
-              <span className="pl-2">Followings</span>
+              <span className="text-foreground/70 pl-2">followings</span>
             </Link>
           </div>
           <div className="spacey-2 text-sm">
@@ -132,9 +137,11 @@ const Layout = async ({ children, modal, params }: Props) => {
           </div>
         </div>
       </section>
+      <Highlights />
       <Tabs username={username} />
       {children}
       {modal}
+      <Footer />
     </main>
   );
 };

@@ -1,20 +1,22 @@
-import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import { createContext, ReactNode, useContext, useState } from "react";
+import { FeedPost, useFeedPosts } from "../store";
 
 const Context = createContext<{
-  post: TFeedPost | null;
+  post: FeedPost | null;
 }>({
   post: null,
 });
 
 export const FeedPostProvider = ({
   children,
-  feedPost,
+  postId,
 }: {
   children: ReactNode;
-  feedPost: TFeedPost;
+  postId: string;
 }) => {
-  const [post] = useState<TFeedPost>(feedPost);
+  const feedPosts = useFeedPosts((store) => store.posts);
+  const post = feedPosts.find((p) => p.id === postId);
+  if (!post) return null;
   return <Context value={{ post }}>{children}</Context>;
 };
 

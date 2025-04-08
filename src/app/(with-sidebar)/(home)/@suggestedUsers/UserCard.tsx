@@ -47,7 +47,7 @@ const UserCard = ({ user: { name, username, avatar, id } }: Props) => {
         onClick={follow}
         className={cn(
           "text-sm font-semibold",
-          isFollow ? "text-skin-muted" : "text-skin-inverted",
+          isFollow ? "text-skin-muted" : "text-skin-primary",
         )}
       >
         {isFollow ? "unFollow" : "follow"}

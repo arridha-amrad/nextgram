@@ -12,7 +12,7 @@ const Avatar = ({ url, isPriority = false, ...props }: Props) => {
   return (
     <div
       className={cn(
-        "aspect-square w-[40px] shrink-0 overflow-hidden rounded-full",
+        "size-[44px] shrink-0 overflow-hidden rounded-full",
         props.className,
       )}
     >

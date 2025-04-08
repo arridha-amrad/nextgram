@@ -22,7 +22,7 @@ function Users({ users }: Props) {
           Suggested for you
         </h1>
         <Link href="/" className="text-skin-base text-sm font-medium">
-          see all
+          See All
         </Link>
       </div>
       <div className="mt-2 space-y-4">

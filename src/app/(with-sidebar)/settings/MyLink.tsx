@@ -18,8 +18,8 @@ export default function MyLink({ href, children, label }: Props) {
       style={{ width: 320 - 70 }}
       href={href}
       className={cn(
-        "text-skin-muted hover:text-skin-base flex h-12 items-center gap-3 rounded-md px-4",
-        href === pathname && "bg-skin-primary/50 text-skin-base",
+        "flex h-12 items-center gap-3 rounded-xl px-4 text-sm",
+        href === pathname && "bg-bg-secondary text-skin-base",
       )}
     >
       {children}

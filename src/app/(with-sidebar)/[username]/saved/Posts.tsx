@@ -1,6 +1,5 @@
 "use client";
 
-import { useUserPosts } from "@/app/(auth)/[username]/store";
 import Spinner from "@/components/Spinner";
 import { loadMoreUserPosts } from "@/lib/actions/post";
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
@@ -12,6 +11,7 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import useMeasure from "react-use-measure";
 import Post from "../PostCard";
+import { useUserPosts } from "../store";
 
 const toMatrix = (data: TUserPost[]) => {
   const size = 3;

@@ -3,7 +3,6 @@
 import ModalBox from "@/components/ModalBox";
 import Spinner from "@/components/Spinner";
 import UserWithFollowButtonCard from "@/components/UserCardWithFollowButton";
-import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import {
   fetchPostLikes,
   TLikeUsers,
@@ -11,12 +10,11 @@ import {
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useSession } from "next-auth/react";
 import { useState, useTransition } from "react";
+import { useFeedPostContext } from "./Context";
 
-type Props = {
-  post: TFeedPost;
-};
+export default function ModalPostLovers() {
+  const { post } = useFeedPostContext();
 
-export default function ModalPostLovers({ post }: Props) {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [users, setUsers] = useState<TLikeUsers[]>([]);
@@ -24,6 +22,7 @@ export default function ModalPostLovers({ post }: Props) {
   const { data } = useSession();
 
   const fetchLovers = async () => {
+    if (!post) return;
     startTransition(async () => {
       const response = await fetchPostLikes({
         postId: post.id,
@@ -35,7 +34,7 @@ export default function ModalPostLovers({ post }: Props) {
     });
   };
 
-  if (post.sumLikes === 0) return null;
+  if (!post || post.sumLikes === 0) return null;
 
   return (
     <>
@@ -44,10 +43,10 @@ export default function ModalPostLovers({ post }: Props) {
           setOpen(true);
           await fetchLovers();
         }}
-        className="space-x-1"
+        className="space-x-1 text-sm font-semibold"
       >
-        <span className="font-semibold">{post.sumLikes}</span>
-        <span className="text-sm">{post.sumLikes > 1 ? "likes" : "like"}</span>
+        <span>{post.sumLikes}</span>
+        <span>{post.sumLikes > 1 ? "likes" : "like"}</span>
       </button>
       <Dialog
         open={open}

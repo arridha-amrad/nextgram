@@ -9,6 +9,7 @@
   --color-skin-link: var(--color-skin-link);
   --color-skin-separator: var(--color-skin-separator);
   --color-skin-elevated-separator: var(--color-skin-elevated-separator);
+  --font-title: var(--font-title);
 }
 
 @layer base {
@@ -22,7 +23,7 @@
 
   :root {
     --background: #ffffff;
-    --bg-secondary: rgb(255, 255, 255);
+    --bg-secondary: #efefef;
     --foreground: #171717;
     --color-skin-primary: rgb(0, 149, 246);
     --color-skin-muted: rgb(168, 168, 168);
@@ -46,7 +47,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-geist-sans);
+  font-family: var(--font-inter);
 }
 
 button {

@@ -16,14 +16,14 @@ type Props = {
 
 export default async function Layout({ children }: Props) {
   return (
-    <main className="flex min-h-screen">
-      <section className="border-skin-border w-full max-w-xs space-y-6 border-r py-4">
-        <div className="px-4">
-          <h1 className="text-xl font-semibold">Settings</h1>
+    <main className="flex min-h-screen w-full">
+      <section className="w-full max-w-xs">
+        <div className="flex h-[100px] items-center justify-start px-4">
+          <h1 className="text-xl font-bold">Settings</h1>
         </div>
         <AccountCenter />
-        <div className="">
-          <h1 className="text-skin-muted px-4 text-xs font-semibold">
+        <div className="py-4">
+          <h1 className="text-skin-muted px-4 text-xs font-medium">
             How you use nextgram
           </h1>
           <div className="h-2" />
@@ -38,24 +38,24 @@ export default async function Layout({ children }: Props) {
           </MyLink>
         </div>
       </section>
-      <section className="flex-1 basis-0 py-4">{children}</section>
+      <section className="flex-1 basis-0">{children}</section>
     </main>
   );
 }
 
 const AccountCenter = () => {
   return (
-    <div style={{ width: 320 - 70 }} className="relative">
+    <div style={{ width: 267 }} className="relative">
       <div className="bg-skin-fill absolute inset-0 -z-10 rounded-lg blur-sm" />
-      <div className="bg-background z-50 flex flex-col gap-2 rounded-lg p-4">
+      <div className="bg-bg-secondary z-50 flex flex-col gap-3 rounded-lg p-4">
         <div className="flex items-center justify-start gap-2">
           <SvgMeta className="h-6 w-6 fill-blue-500" />
           <h1 className="">Meta</h1>
         </div>
         <h1 className="block font-semibold">Account Center</h1>
-        <p className="text-skin-muted text-xs">
+        <p className="text-skin-muted text-[11px]">
           Manage your connected experiences and account settings across Meta
-          technologies like Facebook, Instagram and Meta Horizon.
+          technologies.
         </p>
         <div className="text-skin-muted flex items-center gap-2 text-xs">
           <UserIcon className="aspect-square w-5" />
@@ -69,8 +69,8 @@ const AccountCenter = () => {
           <DocumentTextIcon className="aspect-square w-5" />
           <p>Ads preferences</p>
         </div>
-        <div className="text-sm">
-          <Link href="/" className="font-semibold text-blue-500">
+        <div className="text-xs">
+          <Link href="/" className="text-skin-primary font-medium">
             See more on account ceter
           </Link>
         </div>

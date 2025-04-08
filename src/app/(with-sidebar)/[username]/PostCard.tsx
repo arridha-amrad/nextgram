@@ -20,7 +20,7 @@ const PostCard = memo(({ post }: Props) => {
   return (
     <div
       onClick={() => router.push(`/post/${post.id}`, { scroll: false })}
-      className="relative aspect-square cursor-pointer overflow-hidden"
+      className="relative aspect-[3/4] cursor-pointer overflow-hidden"
     >
       <Image
         src={post.urls[0].url}
@@ -36,15 +36,17 @@ const PostCard = memo(({ post }: Props) => {
           <DocumentDuplicateIcon className="aspect-square w-4 md:w-5" />
         </div>
       )}
-      <div className="bg-background/50 absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100">
+      <div className="bg-foreground/20 absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1 md:gap-2">
-            <HeartIcon className="aspect-square w-5 md:w-8" />
-            <p className="text-sm md:text-base">{post.sumLikes}</p>
+            <HeartIcon className="aspect-square w-5 text-white md:w-7" />
+            <p className="text-sm text-white md:text-base">{post.sumLikes}</p>
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
-            <ChatBubbleOvalLeftIcon className="aspect-square w-5 -scale-x-100 md:w-8" />
-            <p className="text-sm md:text-base">{post.sumComments}</p>
+            <ChatBubbleOvalLeftIcon className="aspect-square w-5 -scale-x-100 text-white md:w-7" />
+            <p className="text-sm text-white md:text-base">
+              {post.sumComments}
+            </p>
           </div>
         </div>
       </div>

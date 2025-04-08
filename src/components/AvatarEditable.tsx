@@ -63,7 +63,10 @@ const EditableAvatar = (
           type="file"
         />
       </div>
-      <Avatar url={avatar} className={cn("w-24 sm:w-40", props.className)} />
+      <Avatar
+        url={avatar}
+        className={cn("size-24 sm:size-40", props.className)}
+      />
       <button hidden type="submit" ref={btnRef}></button>
     </form>
   );

@@ -77,7 +77,7 @@ export default function Options() {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 10, opacity: 0 }}
                 className={cn(
-                  "bg-skin-elevated-separator w-56 space-y-2 overflow-hidden rounded-lg p-2 drop-shadow-sm",
+                  "bg-skin-elevated-separator w-max space-y-2 overflow-hidden rounded-lg p-2 drop-shadow-sm",
                 )}
               >
                 {openTheme ? (
@@ -87,7 +87,7 @@ export default function Options() {
                     exit={{ y: 10, opacity: 0 }}
                     className="w-full space-y-4"
                   >
-                    <div className="flex h-12 items-center justify-between pr-2">
+                    <div className="flex h-12 items-center justify-between gap-4 pr-2">
                       <ChevronIcon
                         onClick={() => setOpenTheme(false)}
                         className="size-4"

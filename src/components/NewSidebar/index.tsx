@@ -62,7 +62,7 @@ export default function Sidebar({ avatarUrl, username }: Props) {
     closeSecondarySidebar();
   });
 
-  const isAplliedSmallSidebar = isSmallSidebar || pathname === page.inbox;
+  const isAppliedSmallSidebar = isSmallSidebar || pathname === page.inbox;
 
   return (
     <div
@@ -78,7 +78,7 @@ export default function Sidebar({ avatarUrl, username }: Props) {
           floatingStyles={floatingStyles}
         />
         <div className="flex h-screen w-fit flex-col overflow-y-auto px-1">
-          <InstagramLogo isAppliedSmallSidebar={isAplliedSmallSidebar} />
+          <InstagramLogo isAppliedSmallSidebar={isAppliedSmallSidebar} />
           <div className="mb-2 flex-1">
             <div className="space-y-2">
               <ButtonLink
@@ -166,7 +166,7 @@ const InstagramLogo = ({
   return (
     <div
       className={cn(
-        "flex h-25 items-center",
+        "flex h-25 shrink-0 items-center",
         isAppliedSmallSidebar ? "aspect-square w-12 justify-center" : "px-3",
       )}
     >

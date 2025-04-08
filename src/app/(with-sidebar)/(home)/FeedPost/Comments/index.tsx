@@ -1,14 +1,12 @@
-import { TFeedComment } from "@/app/(auth)/(home)/store";
+import { useFeedPostContext } from "../Context";
 import Comment from "./Comment";
 
-type Props = {
-  comments: TFeedComment[];
-};
+const FeedPostComments = () => {
+  const { post } = useFeedPostContext();
 
-const FeedPostComments = ({ comments }: Props) => {
   return (
     <section id="post_comments" className="">
-      {comments.map((comment) => (
+      {post?.comments.map((comment) => (
         <Comment key={comment.id} comment={comment} />
       ))}
     </section>

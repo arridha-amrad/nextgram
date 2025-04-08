@@ -13,6 +13,7 @@ const query = async (username: string) => {
     .select({
       id: UsersTable.id,
       username: UsersTable.username,
+      name: UsersTable.name,
       avatar: UsersTable.avatar,
       bio: UserInfoTable.bio,
       gender: UserInfoTable.gender,

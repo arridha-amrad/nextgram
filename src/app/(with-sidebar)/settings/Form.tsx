@@ -4,12 +4,14 @@ import AvatarEditable from "@/components/AvatarEditable";
 import Button from "@/components/core/Button";
 import TextInput from "@/components/core/TextInput";
 import { TProfileDetail } from "@/lib/drizzle/queries/users/fetchUserProfileDetails";
-import { showToast } from "@/lib/utils";
+import { cn, showToast } from "@/lib/utils";
 import { useAction } from "next-safe-action/hooks";
 import { usePathname } from "next/navigation";
 import { ChangeEvent, useRef, useState } from "react";
 import { updateProfile } from "./action";
 import { useUpdateSession } from "@/hooks/useUpdateSession";
+import InputText from "./InputText";
+import { Field, Label, Select } from "@headlessui/react";
 
 type Props = {
   user: TProfileDetail;
@@ -24,7 +26,7 @@ const FormEditProfile = ({ user, fullName }: Props) => {
     website: user?.website ?? "",
     occupation: user?.occupation ?? "",
     bio: user?.bio ?? "",
-    gender: user?.bio ?? "",
+    gender: user?.gender ?? "",
   });
 
   const pathname = usePathname();
@@ -57,109 +59,136 @@ const FormEditProfile = ({ user, fullName }: Props) => {
   };
 
   return (
-    <div className="relative w-full max-w-md space-y-6">
-      <div className="flex items-center justify-center gap-6">
-        <div className="">
-          <AvatarEditable
-            ref={inputRef}
-            className="w-20 lg:w-20"
-            avatar={user?.avatar}
-          />
-        </div>
-        <button
-          onClick={() => inputRef.current?.click()}
-          className="text-skin-inverted font-semibold"
-        >
-          Change Avatar
-        </button>
-      </div>
-      <form action={execute}>
-        <fieldset className="flex flex-col gap-6" disabled={isPending}>
+    <div className="relative mt-8 w-full space-y-6">
+      <fieldset className="w-full" disabled={isPending}>
+        <form className="flex flex-col gap-6" action={execute}>
           {actionError && (
             <p className="text-sm text-red-500">{actionError[0]}</p>
           )}
-          <TextInput
-            errorMessage={nameError && nameError[0]}
+          <div className="flex w-full flex-col gap-2">
+            <label htmlFor="website" className="font-semibold">
+              Website
+            </label>
+            <input
+              id="website"
+              type="text"
+              placeholder="Website"
+              name="website"
+              onChange={handleChange}
+              value={state.website}
+              className="bg-bg-secondary w-full rounded-xl px-4 py-2 outline-0"
+            />
+            {websiteError && (
+              <p className="text-xs text-red-400">{websiteError[0]}</p>
+            )}
+          </div>
+
+          <InputText
+            label="Full Name"
             onChange={handleChange}
             value={state.name}
-            label="Fullname"
-            variant="normal"
             type="text"
-            id="fullName"
             name="name"
+            id="fullName"
+            error={nameError && nameError[0]}
           />
-          <TextInput
-            errorMessage={websiteError && websiteError[0]}
-            onChange={handleChange}
-            value={state.website}
-            label="Website"
-            variant="normal"
-            type="text"
-            id="website"
-            name="website"
-          />
-          <TextInput
-            errorMessage={occupationError && occupationError[0]}
+          <InputText
+            label="Occupation"
             onChange={handleChange}
             value={state.occupation}
-            label="Occupation"
-            variant="normal"
             type="text"
-            id="occupation"
             name="occupation"
+            id="occupation"
+            error={occupationError && occupationError[0]}
           />
-          <div className="space-y-1.5">
-            <label
-              htmlFor="bio"
-              className="text-skin-base block text-sm font-medium"
-            >
+
+          <div className="flex w-full flex-col gap-2">
+            <label htmlFor="bio" className="font-semibold">
               Bio
             </label>
-            <textarea
-              name="bio"
-              id="bio"
-              rows={2}
-              defaultValue={user?.bio ?? ""}
-              className="border-skin-border bg-skin-input focus:ring-skin-primary ring-skin-primary w-full resize-none rounded-md border p-2 outline-hidden focus:ring-2"
-            ></textarea>
-            {bioError && (
-              <div className="text-skin-error">
-                <small>{bioError[0]}</small>
+            <div className="border-foreground/20 relative w-full rounded-xl border py-2">
+              <textarea
+                name="bio"
+                id="bio"
+                value={state.bio}
+                maxLength={150}
+                onChange={(e) =>
+                  setState({
+                    ...state,
+                    bio: e.target.value,
+                  })
+                }
+                rows={2}
+                className="w-full resize-none pr-14 pl-4 outline-0"
+              ></textarea>
+
+              <div className="absolute right-6 bottom-2 flex items-center">
+                <p className="text-foreground/50 text-xs">
+                  {state.bio.length}/150
+                </p>
               </div>
-            )}
+            </div>
+            {bioError && <p className="text-xs text-red-400">{bioError[0]}</p>}
           </div>
-          <div className="space-y-1.5">
-            <label
-              htmlFor="gender"
-              className="text-skin-base block text-sm font-medium"
-            >
-              Gender
-            </label>
-            <select
-              name="gender"
-              id="gender"
-              defaultValue={user?.gender ?? ""}
-              className="border-skin-border bg-skin-input focus:ring-skin-primary w-full rounded-md border p-2 outline-hidden focus:ring-2"
-            >
-              <option value="">Please select</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-            {genderError && (
-              <div className="text-skin-error">
-                <small>{genderError[0]}</small>
+
+          <div className="w-full">
+            <Field className="flex w-full flex-col gap-2 rounded-xl">
+              <Label className="font-semibold">Gender</Label>
+              <div className="relative">
+                <Select
+                  name="gender"
+                  id="gender"
+                  defaultValue={state.gender}
+                  className={cn(
+                    "bg-background border-foreground/20 block w-full appearance-none rounded-xl border px-4 py-2 outline-0",
+                  )}
+                >
+                  <option value="">Please select</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </Select>
+                <div className="absolute top-1/2 right-2.5 -translate-y-1/2">
+                  <ChevronDown />
+                </div>
               </div>
-            )}
+              {genderError && (
+                <p className="text-xs text-red-400">{genderError[0]}</p>
+              )}
+            </Field>
           </div>
-          <div className="flex items-center gap-3 self-end">
-            <Button type="submit" className="w-24" isLoading={isPending}>
-              Save
-            </Button>
+
+          <div className="grid grid-cols-3">
+            {/* <Button type="submit" className="w-25" isLoading={isPending}>
+              Submit
+            </Button> */}
+            <div className="col-start-3">
+              <button
+                type="submit"
+                className="disabled:bg-skin-primary/30 bg-skin-primary disabled:text-foreground/20 w-full rounded-xl py-3 text-sm font-semibold"
+              >
+                Submit
+              </button>
+            </div>
           </div>
-        </fieldset>
-      </form>
+        </form>
+      </fieldset>
     </div>
   );
 };
 
 export default FormEditProfile;
+
+const ChevronDown = () => (
+  <svg
+    aria-label="Down chevron"
+    fill="currentColor"
+    height="12"
+    role="img"
+    viewBox="0 0 24 24"
+    width="12"
+    className="rotate-180"
+  >
+    <title>Down chevron</title>
+    <path d="M21 17.502a.997.997 0 0 1-.707-.293L12 8.913l-8.293 8.296a1 1 0 1 1-1.414-1.414l9-9.004a1.03 1.03 0 0 1 1.414 0l9 9.004A1 1 0 0 1 21 17.502Z"></path>
+  </svg>
+);

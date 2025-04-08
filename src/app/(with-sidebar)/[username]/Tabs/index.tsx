@@ -1,14 +1,46 @@
-import {
-  BookmarkIcon as Bookmark,
-  TagIcon as Tag,
-  Squares2X2Icon as Squares2X2,
-} from "@heroicons/react/24/solid";
+import GridFilledIcon from "@/icons/GridFilledIcon";
+import GridIcon from "@/icons/GridIcon";
+import TabSavedIcon from "@/icons/TabSavedIcon";
 import Tab from "./Tab";
-import {
-  BookmarkIcon,
-  TagIcon,
-  Squares2X2Icon,
-} from "@heroicons/react/24/outline";
+
+const TagIcon = () => (
+  <svg
+    aria-label=""
+    fill="currentColor"
+    height="12"
+    role="img"
+    viewBox="0 0 24 24"
+    width="12"
+  >
+    <title></title>
+    <path
+      d="M10.201 3.797 12 1.997l1.799 1.8a1.59 1.59 0 0 0 1.124.465h5.259A1.818 1.818 0 0 1 22 6.08v14.104a1.818 1.818 0 0 1-1.818 1.818H3.818A1.818 1.818 0 0 1 2 20.184V6.08a1.818 1.818 0 0 1 1.818-1.818h5.26a1.59 1.59 0 0 0 1.123-.465Z"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    ></path>
+    <path
+      d="M18.598 22.002V21.4a3.949 3.949 0 0 0-3.948-3.949H9.495A3.949 3.949 0 0 0 5.546 21.4v.603"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    ></path>
+    <circle
+      cx="12.072"
+      cy="11.075"
+      fill="none"
+      r="3.556"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    ></circle>
+  </svg>
+);
 
 type Props = {
   username: string;
@@ -18,20 +50,20 @@ const tabs = [
   {
     name: "Posts",
     href: "",
-    icon: <Squares2X2Icon className="w-4" />,
-    fillIcon: <Squares2X2 className="w-4" />,
+    icon: <GridIcon />,
+    fillIcon: <GridFilledIcon />,
   },
   {
     name: "Saved",
     href: "saved",
-    icon: <BookmarkIcon className="w-4" />,
-    fillIcon: <Bookmark className="w-4" />,
+    icon: <TabSavedIcon />,
+    fillIcon: <TabSavedIcon />,
   },
   {
     name: "Tagged",
     href: "tagged",
-    icon: <TagIcon className="w-4" />,
-    fillIcon: <Tag className="w-4" />,
+    icon: <TagIcon />,
+    fillIcon: <TagIcon />,
   },
 ];
 
@@ -39,10 +71,12 @@ export type TTab = (typeof tabs)[number];
 
 export default function Tabs({ username }: Props) {
   return (
-    <section className="border-skin-border mt-20 flex items-center justify-center gap-10 border-t">
-      {tabs.map((tab) => (
-        <Tab key={tab.name} username={username} tab={tab} />
-      ))}
+    <section className="border-foreground/20 grid grid-cols-3 border-t">
+      <div className="col-span-1 col-start-2 flex items-center justify-between">
+        {tabs.map((tab) => (
+          <Tab key={tab.name} username={username} tab={tab} />
+        ))}
+      </div>
     </section>
   );
 }
