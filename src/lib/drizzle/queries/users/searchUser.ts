@@ -16,7 +16,8 @@ const query = async (searchKey: string) => {
         ilike(UsersTable.username, `%${searchKey}%`),
         ilike(UsersTable.name, `%${searchKey}%`),
       ),
-    );
+    )
+    .limit(10);
 };
 
 export type TSearch = Awaited<ReturnType<typeof query>>[number];

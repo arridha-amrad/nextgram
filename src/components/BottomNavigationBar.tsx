@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import ButtonLink from "@/components/NewSidebar/ButtonLink";
+import ButtonLink from "@/app/(with-sidebar)/@sidebar/ButtonLink";
 import {
   DefaultAvatar,
   ExploreFilledIcon,
@@ -13,7 +13,7 @@ import {
   NewPostIcon,
   ReelsFilledIcon,
   ReelsOutlinedIcon,
-} from "@/components/NewSidebar/Icons";
+} from "@/app/(with-sidebar)/@sidebar/Icons";
 import { page } from "@/lib/pages";
 
 type Props = {

@@ -1,7 +1,8 @@
 "use client";
 
+import { TSearchUser } from "@/lib/drizzle/queries/users/fetchSearchHistories";
 import { page } from "@/lib/pages";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   createContext,
   Dispatch,
@@ -20,6 +21,8 @@ type TContext = {
   isSearchOpen: boolean;
   setSearchOpen: Dispatch<SetStateAction<boolean>>;
   closeSecondarySidebar: () => void;
+  histories: TSearchUser[];
+  searchResult: TSearchUser[];
 };
 
 const Context = createContext<TContext>({
@@ -30,14 +33,40 @@ const Context = createContext<TContext>({
   isSearchOpen: false,
   setSearchOpen: () => {},
   closeSecondarySidebar: () => {},
+  histories: [],
+  searchResult: [],
 });
 
-export const SidebarProvider = ({ children }: { children: ReactNode }) => {
+export const SidebarProvider = ({
+  children,
+  histories,
+  searchResult,
+}: {
+  children: ReactNode;
+  histories: TSearchUser[];
+  searchResult: TSearchUser[];
+}) => {
   const [isSmallSidebar, setSmallSidebar] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
 
   const pathname = usePathname();
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const removeSearchUserParam = () => {
+    const hasSearchUser = searchParams.has("searchUser");
+    if (hasSearchUser) {
+      // Create a new URL without the query param
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete("searchUser");
+
+      // Replace URL without reloading the page
+      const newUrl = `?${newParams.toString()}`;
+      router.replace(newUrl, { scroll: false });
+    }
+  };
 
   const closeSecondarySidebar = () => {
     setSearchOpen(false);
@@ -45,6 +74,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
     if (pathname !== page.inbox) {
       setSmallSidebar(false);
     }
+    removeSearchUserParam();
   };
 
   useEffect(() => {
@@ -74,6 +104,8 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
         isSearchOpen,
         setSearchOpen,
         closeSecondarySidebar,
+        histories,
+        searchResult,
       }}
     >
       {children}

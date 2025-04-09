@@ -16,10 +16,10 @@ import {
   Logo,
   NotificationsFilledIcon,
   NotificationsOutlinedIcon,
-} from "@/components/NewSidebar/Icons";
-import SearchInput from "@/components/NewSidebar/SecondarySidebar/SearchInput";
-import SearchResult from "@/components/NewSidebar/SecondarySidebar/SearchResult";
-import ButtonLink from "./NewSidebar/ButtonLink";
+} from "@/app/(with-sidebar)/@sidebar/Icons";
+import SearchInput from "@/app/(with-sidebar)/@sidebar/SecondarySidebar/SearchInput";
+import SearchResult from "@/app/(with-sidebar)/@sidebar/SecondarySidebar/Histories";
+import ButtonLink from "../app/(with-sidebar)/@sidebar/ButtonLink";
 
 function TopBar() {
   const [open, setOpen] = useState(false);

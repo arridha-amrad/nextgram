@@ -6,6 +6,10 @@ import { useEffect } from "react";
 import { useSidebarContext } from "../Context";
 import SearchInput from "./SearchInput";
 import SearchResult from "./SearchResult";
+import { usePathname, useSearchParams } from "next/navigation";
+import { removeAllSearchHistories } from "@/lib/actions/user";
+import { Button } from "@headlessui/react";
+import Histories from "./Histories";
 
 type Props = {
   setFloating: (node: HTMLElement | null) => void;
@@ -30,6 +34,14 @@ export default function SecondarySidebar({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [closeSecondarySidebar]);
+
+  const pathname = usePathname();
+  const removeAll = async () => {
+    await removeAllSearchHistories.bind(null, pathname)();
+  };
+
+  const searchParams = useSearchParams();
+  const isSearch = !!searchParams.get("searchUser");
 
   return (
     <AnimatePresence key="secondary-sidebar">
@@ -58,7 +70,18 @@ export default function SecondarySidebar({
                   <div className="relative">
                     <SearchInput />
                     <div className="mt-4" />
-                    <SearchResult />
+                    <div className="mb-4 flex justify-between">
+                      <h1 className="text-skin-muted text-sm font-bold">
+                        Recent
+                      </h1>
+                      <Button
+                        onClick={removeAll}
+                        className="text-skin-primary text-sm font-bold"
+                      >
+                        Clear all
+                      </Button>
+                    </div>
+                    {isSearch ? <SearchResult /> : <Histories />}
                   </div>
                 )}
                 {isNotificationsOpen && (

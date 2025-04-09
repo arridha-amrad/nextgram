@@ -1,16 +1,15 @@
 import BottomNavigationBar from "@/components/BottomNavigationBar";
-import { SidebarProvider } from "@/components/NewSidebar/Context";
-import Sidebar from "@/components/NewSidebar";
 import TopBar from "@/components/Topbar";
 import { getAuth } from "@/lib/next.auth";
 import { ReactNode } from "react";
 
 type Props = {
+  sidebar: ReactNode;
   children: ReactNode;
   modal: ReactNode;
 };
 
-const Layout = async ({ children, modal }: Props) => {
+export default async function Layout({ children, modal, sidebar }: Props) {
   const session = await getAuth();
 
   return (
@@ -18,12 +17,7 @@ const Layout = async ({ children, modal }: Props) => {
       {session?.user && (
         <>
           <TopBar />
-          <SidebarProvider>
-            <Sidebar
-              avatarUrl={session.user.image ?? "/default.jpg"}
-              username={session.user.username}
-            />
-          </SidebarProvider>
+          {sidebar}
           <BottomNavigationBar
             avatarUrl={session.user.image ?? "/default.jpg"}
             username={session.user.username}
@@ -34,6 +28,4 @@ const Layout = async ({ children, modal }: Props) => {
       {modal}
     </div>
   );
-};
-
-export default Layout;
+}
