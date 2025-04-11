@@ -13,6 +13,7 @@ import { ReactNode } from "react";
 import Tabs from "./Tabs";
 import Footer from "../../../components/Footer";
 import Highlights from "./Highlights";
+import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 
 type Props = {
   params: Promise<{ username: string }>;
@@ -69,7 +70,12 @@ const Layout = async ({ children, modal, params }: Props) => {
           {isAuthUser ? (
             <AvatarEditable avatar={profile.avatar} />
           ) : (
-            <Avatar className="w-24 sm:w-40" url={profile.avatar} />
+            <AvatarWithStoryIndicator
+              isStoryExists={false}
+              isStoryWatched={false}
+              size={150}
+              avatarUrl={profile.avatar}
+            />
           )}
         </div>
         <div className="col-span-2">

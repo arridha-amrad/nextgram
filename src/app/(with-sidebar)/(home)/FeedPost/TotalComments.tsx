@@ -6,7 +6,7 @@ function FeedPostTotalComments() {
   if (!post || post.sumComments === 0) return null;
   return (
     <Link
-      className="text-foreground/50 block text-sm"
+      className="text-foreground/70 block text-sm"
       scroll={false}
       href={`/post/${post.id}`}
     >

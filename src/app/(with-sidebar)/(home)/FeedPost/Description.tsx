@@ -6,7 +6,7 @@ function FeedPostDescription() {
   return (
     <p className="line-clamp-2 text-sm whitespace-break-spaces">
       <span className="font-bold">{post.username}&nbsp;</span>
-      {post.description}
+      {post.description.trim()}
     </p>
   );
 }

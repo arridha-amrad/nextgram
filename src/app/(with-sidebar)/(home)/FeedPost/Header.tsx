@@ -5,6 +5,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useState } from "react";
 import { useFeedPostContext } from "./Context";
 import { formatDistanceToNowStrict } from "date-fns";
+import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 
 function Header() {
   const [open, setOpen] = useState(false);
@@ -16,20 +17,12 @@ function Header() {
 
   return (
     <div className="flex items-center gap-4">
-      <div className="w-10 overflow-hidden rounded-full">
-        <Image
-          className="h-full w-full object-cover"
-          alt="Profile"
-          width={50}
-          height={50}
-          src={post?.avatar ?? "/default.jpg"}
-        />
-      </div>
+      <AvatarWithStoryIndicator size={32} avatarUrl={post.avatar} />
       <div className="flex-1">
         <div className="flex items-center gap-3">
           <h1 className="text-sm font-bold">{post.username}</h1>
           <span>·</span>
-          <h3 className="text-foreground/50 text-sm font-light">
+          <h3 className="text-foreground/70 text-sm">
             {formatDistanceToNowStrict(post.createdAt, { addSuffix: true })}
           </h3>
         </div>

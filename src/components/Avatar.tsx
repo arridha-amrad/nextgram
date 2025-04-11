@@ -1,28 +1,26 @@
+import { cn, rgbDataURL } from "@/lib/utils";
 import Image from "next/image";
-import DefaultAvatar from "@/images/default.jpg";
 import { HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
 
 type Props = {
-  url?: string | null;
+  url: string;
   isPriority?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
-const Avatar = ({ url, isPriority = false, ...props }: Props) => {
+const Avatar = ({ url, ...props }: Props) => {
   return (
     <div
-      className={cn(
-        "size-[44px] shrink-0 overflow-hidden rounded-full",
-        props.className,
-      )}
+      className={cn("shrink-0 overflow-hidden rounded-full")}
+      style={props.style}
     >
       <Image
         alt="avatar"
-        priority={isPriority}
+        placeholder="blur"
+        blurDataURL={rgbDataURL(60, 60, 60)}
         width={300}
         height={300}
         className="h-full w-full object-cover"
-        src={url && url !== "null" ? url : DefaultAvatar}
+        src={url}
       />
     </div>
   );

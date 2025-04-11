@@ -3,7 +3,9 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
-import { useCommentsStore } from "./Post/store";
+import { usePostStore } from "./Post/store";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 type Props = {
   children: ReactNode;
@@ -11,7 +13,7 @@ type Props = {
 
 const Modal = ({ children }: Props) => {
   const router = useRouter();
-  const setReplySetter = useCommentsStore((store) => store.setReplySetter);
+  const setReplySetter = usePostStore((store) => store.setReplySetter);
   const pathname = usePathname();
 
   const [open, setOpen] = useState(true);
@@ -30,9 +32,16 @@ const Modal = ({ children }: Props) => {
     router.back();
   };
 
+  const { theme } = useTheme();
+
   return (
     <Dialog open={open} onClose={closeModal} className="relative z-50">
-      <DialogBackdrop className="bg-background/50 fixed inset-0 backdrop-blur-sm" />
+      <DialogBackdrop
+        className={cn(
+          "fixed inset-0 backdrop-blur-sm",
+          theme === "dark" ? "bg-background/50" : "bg-foreground/50",
+        )}
+      />
       <div className="fixed inset-0 flex items-center justify-center">
         <DialogPanel className="w-max">{children}</DialogPanel>
       </div>

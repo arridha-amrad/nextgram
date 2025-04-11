@@ -42,11 +42,9 @@ const UserCard = ({
   return (
     <div
       onClick={navigate}
-      className="flex cursor-pointer gap-3 rounded-md px-2 py-2 hover:bg-skin-fill/20"
+      className="hover:bg-skin-fill/20 flex cursor-pointer gap-3 rounded-md px-2 py-2"
     >
-      <div className="flex-none">
-        <Avatar url={avatar} />
-      </div>
+      <div className="flex-none"></div>
       <div className="flex-1 text-sm">
         <h1>{username}</h1>
         <p className="text-skin-muted">{name}</p>

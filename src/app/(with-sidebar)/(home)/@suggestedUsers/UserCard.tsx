@@ -1,6 +1,7 @@
 "use client";
 
 import Avatar from "@/components/Avatar";
+import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import { follow as fl } from "@/lib/actions/follow";
 import { TSearchUser } from "@/lib/drizzle/queries/type";
 import { cn, showToast } from "@/lib/utils";
@@ -31,23 +32,28 @@ const UserCard = ({ user: { name, username, avatar, id } }: Props) => {
   };
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="flex items-start justify-start gap-3">
-        <Avatar url={avatar} />
+      <div className="flex items-center justify-start gap-3">
+        <AvatarWithStoryIndicator
+          isStoryExists={false}
+          isStoryWatched={false}
+          size={44}
+          avatarUrl={avatar}
+        />
         <div className="max-w-[150px] overflow-hidden text-sm">
           <Link
             href={`/${username}`}
-            className="overflow-hidden font-semibold text-ellipsis whitespace-pre-line"
+            className="overflow-hidden font-medium text-ellipsis whitespace-pre-line"
           >
             {username}
           </Link>
-          <p className="text-skin-muted line-clamp-1">{name}</p>
+          <p className="text-foreground/70 line-clamp-1 text-xs">{name}</p>
         </div>
       </div>
       <button
         onClick={follow}
         className={cn(
-          "text-sm font-semibold",
-          isFollow ? "text-skin-muted" : "text-skin-primary",
+          "text-sm font-medium",
+          isFollow ? "text-foreground/70" : "text-skin-primary",
         )}
       >
         {isFollow ? "unFollow" : "follow"}

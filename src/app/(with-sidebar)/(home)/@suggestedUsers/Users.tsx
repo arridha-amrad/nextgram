@@ -25,7 +25,7 @@ function Users({ users }: Props) {
           See All
         </Link>
       </div>
-      <div className="mt-2 space-y-4">
+      <div className="mt-2 space-y-2">
         {state.map((user) => (
           <UserCard user={user} key={user.id} />
         ))}

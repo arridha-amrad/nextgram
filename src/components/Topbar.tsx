@@ -1,5 +1,13 @@
 "use client";
 
+import ButtonLink from "@/app/sidebar/ButtonLink";
+import {
+  Logo,
+  NotificationsFilledIcon,
+  NotificationsOutlinedIcon,
+} from "@/app/sidebar/Icons";
+import SearchInput from "@/app/sidebar/SecondarySidebar/SearchInput";
+import SearchResult from "@/app/sidebar/SecondarySidebar/SearchResult";
 import {
   autoUpdate,
   FloatingPortal,
@@ -12,14 +20,6 @@ import {
 } from "@floating-ui/react";
 import { AnimatePresence } from "motion/react";
 import { useState } from "react";
-import {
-  Logo,
-  NotificationsFilledIcon,
-  NotificationsOutlinedIcon,
-} from "@/app/(with-sidebar)/@sidebar/Icons";
-import SearchInput from "@/app/(with-sidebar)/@sidebar/SecondarySidebar/SearchInput";
-import SearchResult from "@/app/(with-sidebar)/@sidebar/SecondarySidebar/Histories";
-import ButtonLink from "../app/(with-sidebar)/@sidebar/ButtonLink";
 
 function TopBar() {
   const [open, setOpen] = useState(false);

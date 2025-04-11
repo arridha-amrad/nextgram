@@ -6,6 +6,7 @@ import { page } from "@/lib/pages";
 import { redirect } from "next/navigation";
 import FormEditProfile from "./Form";
 import Footer from "@/components/Footer";
+import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 
 const Page = async () => {
   const session = await getAuth();
@@ -26,7 +27,12 @@ const Page = async () => {
         </div>
         <div className="bg-bg-secondary flex h-[88px] w-full items-center rounded-xl px-6">
           <div className="flex flex-1 items-center gap-4">
-            <Avatar className="size-[56px]" url={profile?.avatar} />
+            <AvatarWithStoryIndicator
+              isStoryExists
+              isStoryWatched={false}
+              size={56}
+              avatarUrl={profile?.avatar}
+            />
             <div className="text-sm">
               <h1 className="font-bold">{profile?.username}</h1>
               <p className="text-foreground/50">{profile?.name}</p>

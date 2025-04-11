@@ -13,11 +13,11 @@ import Emoji from "./Emoji";
 import { useFeedPostContext } from "./Context";
 
 export default function FeedPostCommentForm() {
+  const { post } = useFeedPostContext();
+
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const cursorPositionRef = useRef<number>(0);
-
-  const { post } = useFeedPostContext();
 
   // eslint-disable-next-line
   const handleEmojiSelect = (emoji: any) => {

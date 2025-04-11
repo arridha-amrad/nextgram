@@ -20,9 +20,9 @@ const links = [
 function Footer() {
   return (
     <footer className="text-skin-muted mt-6 mb-10 text-xs">
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         {links.map((link, i) => (
-          <Link className="block" href="/" key={i}>
+          <Link className="block h-max shrink-0" href="/" key={i}>
             {link}
           </Link>
         ))}

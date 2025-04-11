@@ -27,8 +27,8 @@ const PostCard = memo(({ post }: Props) => {
         alt="post_image"
         placeholder="blur"
         blurDataURL={rgbDataURL(46, 46, 46)}
-        width={300}
-        height={300}
+        width={1000}
+        height={1000}
         className="h-full w-full object-cover"
       />
       {post.urls.length > 1 && (
@@ -36,7 +36,7 @@ const PostCard = memo(({ post }: Props) => {
           <DocumentDuplicateIcon className="aspect-square w-4 md:w-5" />
         </div>
       )}
-      <div className="bg-foreground/20 absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100">
+      <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 hover:opacity-100">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1 md:gap-2">
             <HeartIcon className="aspect-square w-5 text-white md:w-7" />

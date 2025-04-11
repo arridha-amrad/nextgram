@@ -31,7 +31,7 @@ const Comment = ({ comment }: Props) => {
         >
           {comment.username}
         </Link>
-        <p className="text-skin-muted inline text-sm">{comment.body}</p>
+        <p className="text-foreground/70 inline text-sm">{comment.body}</p>
       </div>
       <div className="pt-1">
         <ButtonLike callback={like} isLike={comment.isLiked} size="small" />

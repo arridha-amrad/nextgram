@@ -30,7 +30,7 @@ function Carousel() {
   }, [emblaApi, onInit, onSelect]);
 
   return (
-    <div className="border-skin-separator/10 relative w-full border">
+    <div className="relative w-full">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="-ml-4 flex touch-pan-y touch-pinch-zoom">
           {post?.urls.map((url, i) => (

@@ -10,6 +10,7 @@ import mergeRefs from "merge-refs";
 import { useAction } from "next-safe-action/hooks";
 import { usePathname } from "next/navigation";
 import { ChangeEvent, HTMLAttributes, Ref, forwardRef, useRef } from "react";
+import AvatarWithStoryIndicator from "./AvatarWithStoryIndicator";
 
 type Props = {
   avatar?: string | null;
@@ -23,7 +24,7 @@ const EditableAvatar = (
   const inputRef = useRef<HTMLInputElement | null>(null);
   const pathname = usePathname();
 
-  const { execute, isExecuting, hasSucceeded, result } = useAction(
+  const { execute, isPending, hasSucceeded, result } = useAction(
     updateAvatar.bind(null, pathname),
     {
       onError: () => {
@@ -42,8 +43,11 @@ const EditableAvatar = (
   };
 
   return (
-    <form action={execute} className="group relative cursor-pointer">
-      {isExecuting && (
+    <form
+      action={execute}
+      className="group relative size-[166px] cursor-pointer"
+    >
+      {isPending && (
         <div className="absolute inset-0 flex items-center justify-center rounded-full bg-gray-500/50">
           <MySpinner />
         </div>
@@ -54,7 +58,7 @@ const EditableAvatar = (
       >
         <PhotoIcon className="aspect-square w-7" />
         <input
-          disabled={isExecuting}
+          disabled={isPending}
           accept="image/*"
           name="image"
           onChange={onChangeFileInput}
@@ -63,9 +67,11 @@ const EditableAvatar = (
           type="file"
         />
       </div>
-      <Avatar
-        url={avatar}
-        className={cn("size-24 sm:size-40", props.className)}
+      <AvatarWithStoryIndicator
+        isStoryExists={true}
+        isStoryWatched={false}
+        size={150}
+        avatarUrl={avatar}
       />
       <button hidden type="submit" ref={btnRef}></button>
     </form>

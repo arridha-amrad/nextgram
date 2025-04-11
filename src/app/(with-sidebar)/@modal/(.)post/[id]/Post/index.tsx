@@ -1,10 +1,10 @@
 "use client";
 
 import { TPost } from "@/lib/drizzle/queries/posts/fetchPost";
-import Left from "./Left";
+import Carousel from "./Carousel";
 import Right from "./Right";
 import { TComment } from "@/lib/drizzle/queries/comments/fetchComments";
-import { useCommentsStore } from "./store";
+import { usePostStore } from "./store";
 import { useEffect } from "react";
 
 type Props = {
@@ -13,8 +13,8 @@ type Props = {
 };
 
 function Post({ post, comments }: Props) {
-  const setComments = useCommentsStore((state) => state.setComments);
-  const setTotal = useCommentsStore((state) => state.setTotal);
+  const setComments = usePostStore((state) => state.setComments);
+  const setTotal = usePostStore((state) => state.setTotal);
 
   useEffect(() => {
     setComments(comments);
@@ -22,9 +22,9 @@ function Post({ post, comments }: Props) {
   }, []);
 
   return (
-    <div className="border-skin-border bg-background relative flex h-[90vh] overflow-hidden rounded-lg border">
-      <Left className="max-w-[700px]" urls={post.urls.map((u) => u.url)} />
-      <Right post={post} />
+    <div className="flex overflow-hidden rounded-lg">
+      <Carousel />
+      <Right />
     </div>
   );
 }

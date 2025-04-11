@@ -33,6 +33,7 @@ export const savePost = authActionClient
     revalidateTag(POST.savedPosts);
     revalidateTag(POST.homePosts);
     revalidateTag(POST.detail);
+
     return message;
   });
 

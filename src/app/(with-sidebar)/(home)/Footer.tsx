@@ -16,7 +16,7 @@ const links = [
 
 function Footer() {
   return (
-    <footer className="text-skin-muted mt-10 w-full text-xs">
+    <footer className="text-foreground/70 mt-10 w-full text-xs">
       <div className="flex w-full max-w-lg flex-wrap items-center gap-x-2 gap-y-1 pl-4">
         {links.map((link, i) => (
           <Fragment key={i}>

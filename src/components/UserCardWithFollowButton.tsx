@@ -7,6 +7,7 @@ import { cn, showToast } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import AvatarWithStoryIndicator from "./AvatarWithStoryIndicator";
 
 type Props = {
   user: TFollow;
@@ -33,9 +34,15 @@ const UserCardWithFollowButton = ({
     }
   };
   return (
-    <div className="flex w-full items-center justify-between px-4 py-3">
-      <div className="flex items-start justify-start gap-3">
-        <Avatar url={avatar} />
+    <div className="flex w-full items-center justify-between px-4 py-1">
+      <div className="flex items-center justify-start gap-3">
+        <AvatarWithStoryIndicator
+          isStoryExists={false}
+          isStoryWatched
+          size={44}
+          avatarUrl={avatar}
+          className="bg-bg-secondary"
+        />
         <div className="max-w-[150px] overflow-hidden text-sm">
           <Link
             href={`/${username}`}
@@ -50,11 +57,11 @@ const UserCardWithFollowButton = ({
         <button
           onClick={follow}
           className={cn(
-            "border-skin-border w-28 rounded-md py-1 text-sm font-semibold",
-            isFollow ? "text-skin-muted border" : "bg-skin-primary text-white",
+            "w-28 rounded-lg py-1.5 text-sm text-white",
+            isFollow ? "bg-foreground/20" : "bg-skin-primary",
           )}
         >
-          {isFollow ? "following" : "follow"}
+          {isFollow ? "Following" : "Follow"}
         </button>
       )}
     </div>

@@ -4,7 +4,7 @@ import { getAuth } from "@/lib/next.auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { FeedPost } from "@/app/(auth)/(home)/store";
+import { FeedPost } from "@/app/(with-sidebar)/(home)/store";
 
 export const POST = async (request: Request) => {
   const session = await getAuth();

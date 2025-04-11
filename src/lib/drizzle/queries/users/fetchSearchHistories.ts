@@ -1,8 +1,8 @@
+import { USERS } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
 import { eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { SearchUsersTable, UsersTable } from "../../schema";
-import { USERS } from "@/lib/cacheKeys";
 
 const query = async (userId: string) => {
   return db
@@ -33,5 +33,6 @@ export const fetchSearchHistories = unstable_cache(
   [USERS.searchHistories],
   {
     tags: [USERS.searchHistories],
+    revalidate: 5 * 60,
   },
 );

@@ -1,20 +1,21 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import ButtonLink from "@/app/(with-sidebar)/@sidebar/ButtonLink";
+
+import { page } from "@/lib/pages";
+import ButtonLink from "@/app/sidebar/ButtonLink";
 import {
-  DefaultAvatar,
-  ExploreFilledIcon,
-  ExploreOutlinedIcon,
   HomeFill,
   HomeOutlinedIcon,
-  MessengerFilledIcon,
-  MessengerOutlinedIcon,
-  NewPostIcon,
+  ExploreFilledIcon,
+  ExploreOutlinedIcon,
   ReelsFilledIcon,
   ReelsOutlinedIcon,
-} from "@/app/(with-sidebar)/@sidebar/Icons";
-import { page } from "@/lib/pages";
+  NewPostIcon,
+  MessengerFilledIcon,
+  MessengerOutlinedIcon,
+  DefaultAvatar,
+} from "@/app/sidebar/Icons";
 
 type Props = {
   avatarUrl: string;
