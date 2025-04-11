@@ -1,6 +1,5 @@
-import Avatar from "@/components/Avatar";
-
-import ButtonLike from "@/components/ButtonLike";
+import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
+import { HeartEmptyCommentIcon, HeartRedCommentIcon } from "@/icons/HeartIcon";
 import { likeReply as lr } from "@/lib/actions/reply";
 import { TReply } from "@/lib/drizzle/queries/replies/fetchReplies";
 import { cn, showToast } from "@/lib/utils";
@@ -32,7 +31,12 @@ const Reply = ({ reply }: Props) => {
 
   return (
     <div className="flex w-full items-start gap-4 py-2 text-sm">
-      <Avatar url={avatar} />
+      <AvatarWithStoryIndicator
+        isStoryExists
+        isStoryWatched
+        size={32}
+        avatarUrl={avatar}
+      />
       <div className="flex-1 basis-0">
         <div className="pt-0.5 text-wrap">
           <Link href={`/${username}`} className="inline pr-1 font-semibold">
@@ -64,8 +68,10 @@ const Reply = ({ reply }: Props) => {
           <ButtonReply commentId={commentId} username={username} />
         </div>
       </div>
-      <div className="pt-1">
-        <ButtonLike callback={like} isLike={reply.isLiked} size="small" />
+      <div className="shrink-0 px-2 pt-1">
+        <button onClick={like}>
+          {reply.isLiked ? <HeartRedCommentIcon /> : <HeartEmptyCommentIcon />}
+        </button>
       </div>
     </div>
   );

@@ -43,7 +43,7 @@ function Emoji({ onEmojiSelect }: Props) {
     onOpenChange: setOpen,
     strategy: "fixed",
     whileElementsMounted: autoUpdate,
-    placement: "top-start",
+    placement: "bottom-start",
     middleware: [offset(5), shift()],
   });
 
@@ -64,7 +64,7 @@ function Emoji({ onEmojiSelect }: Props) {
         className="outline-0"
         onClick={() => setOpen((val) => !val)}
       >
-        <EmojiIconBig />
+        <EmojiIconBig className="text-foreground/50 size-5" />
       </button>
       {open && (
         <FloatingPortal>

@@ -21,6 +21,9 @@ import {
   SearchOutlinedIcon,
 } from "./Icons";
 import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
+import NewPostModal from "./ModalCreatePost";
+import FormCreatePost from "./ModalCreatePost/FormCreatePost";
+import { CreatePostProvider } from "./ModalCreatePost/CreatePostContext";
 
 type Props = {
   username: string;
@@ -87,12 +90,11 @@ function Links({ avatar, username }: Props) {
         }}
         label="Notifications"
       />
-      <ButtonLink
-        activeIcon={<NewPostIcon />}
-        icon={<NewPostIcon />}
-        callback={() => setSmallSidebar((val) => !val)}
-        label="New Post"
-      />
+      <CreatePostProvider>
+        <NewPostModal>
+          <FormCreatePost username={username} />
+        </NewPostModal>
+      </CreatePostProvider>
       <ButtonLink
         icon={
           <AvatarWithStoryIndicator

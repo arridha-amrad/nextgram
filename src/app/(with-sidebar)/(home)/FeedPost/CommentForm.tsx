@@ -4,7 +4,7 @@ import Spinner from "@/components/Spinner";
 import { cn } from "@/lib/utils";
 import { useAction } from "next-safe-action/hooks";
 import { useTheme } from "next-themes";
-import { useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { create } from "@/lib/actions/comment";
 import { useFeedPosts } from "../store";
@@ -18,6 +18,7 @@ export default function FeedPostCommentForm() {
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const cursorPositionRef = useRef<number>(0);
+  const emojiLengthRef = useRef(0);
 
   // eslint-disable-next-line
   const handleEmojiSelect = (emoji: any) => {
@@ -27,16 +28,22 @@ export default function FeedPostCommentForm() {
       currentText.slice(0, cursorPos) +
       emoji.native +
       currentText.slice(cursorPos);
+
+    emojiLengthRef.current = emoji.native.length;
     setMessage(newText);
-    // Move cursor after the inserted emoji
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.selectionStart = inputRef.current.selectionEnd =
-          cursorPos + emoji.native.length;
-        inputRef.current.focus();
-      }
-    }, 10);
   };
+
+  useLayoutEffect(() => {
+    if (emojiLengthRef.current > 0 && inputRef.current) {
+      const newCursorPos = cursorPositionRef.current + emojiLengthRef.current;
+
+      inputRef.current.selectionStart = newCursorPos;
+      inputRef.current.selectionEnd = newCursorPos;
+      inputRef.current.focus();
+
+      emojiLengthRef.current = 0;
+    }
+  }, [message]);
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const { theme } = useTheme();
@@ -78,7 +85,10 @@ export default function FeedPostCommentForm() {
       >
         <input
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(e) => {
+            setMessage(e.target.value);
+            cursorPositionRef.current = e.target.selectionStart ?? 0;
+          }}
           name="message"
           type="text"
           className="h-full w-full py-2 pr-16 text-sm outline-0"
