@@ -120,7 +120,6 @@ const FormCreatePost = ({ username }: Props) => {
       disabled={isSubmitting}
       className={cn(
         "custom-scrollbar flex h-full w-full max-w-sm flex-col overflow-y-scroll pb-8",
-        step < 1 && "hidden",
       )}
     >
       <div className="flex h-[60px] w-full shrink-0 items-center gap-3 px-2 py-2">

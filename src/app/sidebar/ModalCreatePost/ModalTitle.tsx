@@ -1,10 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useCreatePost } from "./CreatePostContext";
+import { Steps, useCreatePost } from "./CreatePostContext";
 
 const ModalTitle = () => {
   const { step, setStep, preview, newPostFormRef } = useCreatePost();
+  const s = ["pick", "makeCaption", "isSubmitting", "isSubmitted"];
+  const currS = s.findIndex((st) => st === step);
   return (
     <div
       className={cn(
@@ -13,10 +15,10 @@ const ModalTitle = () => {
       )}
     >
       <button
-        onClick={() => setStep((val) => (val -= 1))}
+        onClick={() => setStep(s[currS - 1] as Steps)}
         className={cn(
           "text-skin-inverted invisible font-semibold",
-          step > 0 && "visible",
+          step === "makeCaption" && "visible",
         )}
       >
         <svg
@@ -49,31 +51,36 @@ const ModalTitle = () => {
           ></polyline>
         </svg>
       </button>
+
       <h1 className="text-sm font-semibold">Create new post</h1>
 
-      {step === 0 ? (
-        <button
-          onClick={() => setStep((val) => (val += 1))}
-          className={cn(
-            "text-skin-inverted font-semibold",
-            preview.length === 0 && "invisible",
-          )}
-        >
-          Next
-        </button>
-      ) : (
-        <button
-          onClick={() => {
-            newPostFormRef?.current?.requestSubmit();
-          }}
-          className={cn(
-            "text-skin-primary text-sm font-medium",
-            preview.length === 0 && "invisible",
-          )}
-        >
-          Share
-        </button>
-      )}
+      <div className="w-max">
+        {step === "pick" && (
+          <button
+            onClick={() => setStep(s[currS + 1] as Steps)}
+            className={cn(
+              "text-skin-inverted font-semibold",
+              preview.length === 0 && "invisible",
+            )}
+          >
+            Next
+          </button>
+        )}
+
+        {step === "makeCaption" && (
+          <button
+            onClick={() => {
+              newPostFormRef?.current?.requestSubmit();
+            }}
+            className={cn(
+              "text-skin-primary text-sm font-medium",
+              preview.length === 0 && "invisible",
+            )}
+          >
+            Share
+          </button>
+        )}
+      </div>
     </div>
   );
 };

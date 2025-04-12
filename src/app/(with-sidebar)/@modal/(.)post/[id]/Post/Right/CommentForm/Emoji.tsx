@@ -1,9 +1,9 @@
 "use client";
 import { EmojiIconBig } from "@/icons/EmojiIcon";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import { useEffect, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useState } from "react";
 
+import MyEmoji from "@/components/MyEmoji";
+import useClickOutside from "@/hooks/useClickOutside";
 import {
   autoUpdate,
   FloatingPortal,
@@ -14,29 +14,18 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
+import useEscapePressed from "@/hooks/useEscapePressed";
 
 type Props = {
-  // eslint-disable-next-line
-  onEmojiSelect: (e: any) => void;
+  setText: Dispatch<SetStateAction<string>>;
+  inputRef: RefObject<HTMLInputElement | HTMLTextAreaElement | null>;
+  cursorPosition: RefObject<number>;
 };
 
-function Emoji({ onEmojiSelect }: Props) {
+function Emoji({ cursorPosition, inputRef, setText }: Props) {
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    document.addEventListener("keyup", (e) => {
-      if (open && e.key === "Escape") {
-        setOpen(false);
-      }
-    });
-    return () => {
-      document.removeEventListener("keyup", (e) => {
-        if (open && e.key === "Escape") {
-          setOpen(false);
-        }
-      });
-    };
-  }, [open]);
+  const ref = useClickOutside(() => setOpen(false));
+  useEscapePressed(() => setOpen(false), false);
 
   const { refs, floatingStyles, context } = useFloating({
     open,
@@ -56,7 +45,7 @@ function Emoji({ onEmojiSelect }: Props) {
   ]);
 
   return (
-    <div>
+    <div className="flex items-center justify-center" ref={ref}>
       <button
         ref={refs.setReference}
         {...getReferenceProps()}
@@ -74,12 +63,11 @@ function Emoji({ onEmojiSelect }: Props) {
             className="z-[50]"
             {...getFloatingProps()}
           >
-            <Picker
-              previewPosition="none"
-              searchPosition="none"
-              onClickOutside={() => setOpen(false)}
-              data={data}
-              onEmojiSelect={onEmojiSelect}
+            <MyEmoji
+              open={open}
+              inputRef={inputRef}
+              setText={setText}
+              cursorPosition={cursorPosition}
             />
           </div>
         </FloatingPortal>

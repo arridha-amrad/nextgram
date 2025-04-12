@@ -48,7 +48,8 @@ function Carousel() {
                 src={url.url}
                 alt="post image"
                 width={500}
-                height={1000}
+                height={500}
+                placeholder="blur"
                 blurDataURL={rgbDataURL(60, 60, 60)}
                 className="h-full w-full object-cover"
               />

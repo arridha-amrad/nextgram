@@ -13,13 +13,15 @@ import {
   useState,
 } from "react";
 
+export type Steps = "pick" | "makeCaption" | "isSubmitting" | "isSubmitted";
+
 type State = {
   preview: string[];
   setPreview: Dispatch<SetStateAction<string[]>>;
   files: File[];
   setFiles: Dispatch<SetStateAction<File[]>>;
-  step: number;
-  setStep: Dispatch<SetStateAction<number>>;
+  step: Steps;
+  setStep: Dispatch<SetStateAction<Steps>>;
   isSubmitting: boolean;
   setIsSubmitting: Dispatch<SetStateAction<boolean>>;
   isSubmitSuccessful: boolean;
@@ -31,7 +33,7 @@ type State = {
 const Context = createContext<State>({
   files: [],
   preview: [],
-  step: 0,
+  step: "pick",
   setFiles: () => {},
   setPreview: () => {},
   setStep: () => {},
@@ -46,13 +48,13 @@ const Context = createContext<State>({
 export const CreatePostProvider = ({ children }: { children: ReactNode }) => {
   const [preview, setPreview] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [step, setStep] = useState(0);
-  const [isSubmitSuccessful, setSubmitSuccessful] = useState(false);
+  const [step, setStep] = useState<Steps>("pick");
+  const [isSubmitSuccessful, setSubmitSuccessful] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const reset = () => {
     setPreview([]);
     setFiles([]);
-    setStep(0);
+    setStep("pick");
     setSubmitSuccessful(false);
   };
   const pathname = usePathname();

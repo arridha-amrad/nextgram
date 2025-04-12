@@ -29,8 +29,6 @@ const CommentForm = () => {
   const addComment = usePostStore((store) => store.addComment);
   const addReply = usePostStore((store) => store.addReply);
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
   useEffect(() => {
     if (replyTarget?.commentId) {
       setMessage(`@${replyTarget?.username} `);
@@ -50,25 +48,14 @@ const CommentForm = () => {
     }
   }, [message]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const cursorPositionRef = useRef<number>(0);
-
-  // eslint-disable-next-line
-  const handleEmojiSelect = (emoji: any) => {
-    const cursorPos = cursorPositionRef.current;
-    const currentText = message;
-    const newText =
-      currentText.slice(0, cursorPos) +
-      emoji.native +
-      currentText.slice(cursorPos);
-    setMessage(newText);
-    // Move cursor after the inserted emoji
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.selectionStart = inputRef.current.selectionEnd =
-          cursorPos + emoji.native.length;
-        inputRef.current.focus();
-      }
-    }, 10);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+  };
+  const handleCursorPosition = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    const position = e.currentTarget.selectionStart;
+    cursorPositionRef.current = position ?? 0;
   };
 
   const { execute: executeCreateComment, isPending: isPendingCreateComment } =
@@ -137,24 +124,23 @@ const CommentForm = () => {
         action={replyTarget ? executeCreateReply : executeCreateComment}
         className="relative flex h-full items-center overflow-hidden px-4"
       >
-        <Emoji onEmojiSelect={handleEmojiSelect} />
-
+        <Emoji
+          cursorPosition={cursorPositionRef}
+          inputRef={inputRef}
+          setText={setMessage}
+        />
         <input
           autoFocus
           ref={inputRef}
           value={message}
           onBlur={toggleFocusToCommentForm}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={handleChange}
           name="message"
           type="text"
           placeholder="Add comment..."
           className="bg-background h-12 w-full flex-1 px-4 pr-10 text-sm outline-0"
-          onClick={(e) => {
-            cursorPositionRef.current = e.currentTarget.selectionStart ?? 0;
-          }}
-          onKeyUp={(e) => {
-            cursorPositionRef.current = e.currentTarget.selectionStart ?? 0;
-          }}
+          onClick={handleCursorPosition}
+          onKeyUp={handleCursorPosition}
         />
         <div className="absolute top-1 right-1 bottom-1">
           <button

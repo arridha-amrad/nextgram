@@ -13,10 +13,12 @@ type Props = {
 };
 
 function Post({ post, comments }: Props) {
-  const setComments = usePostStore((state) => state.setComments);
-  const setTotal = usePostStore((state) => state.setTotal);
+  const setComments = usePostStore((store) => store.setComments);
+  const setTotal = usePostStore((store) => store.setTotal);
+  const setPost = usePostStore((store) => store.setPost);
 
   useEffect(() => {
+    setPost(post);
     setComments(comments);
     setTotal(post.sumComments);
   }, []);

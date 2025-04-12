@@ -42,14 +42,11 @@ const NewPostModal = ({ children }: Props) => {
             <div
               ref={ref}
               className={cn(
-                "aspect-square h-[500px] min-h-[70vh]",
-                step >= 1 &&
-                  !isSubmitting &&
-                  !isSubmitSuccessful &&
-                  "aspect-auto",
+                "h-[500px] min-h-[70vh]",
+                step === "makeCaption" ? "aspect-auto" : "aspect-square",
               )}
             >
-              {isSubmitting && (
+              {step === "isSubmitting" && (
                 <div className="flex h-full w-full items-center justify-center">
                   <div className="size-[100px]">
                     <Image
@@ -62,26 +59,34 @@ const NewPostModal = ({ children }: Props) => {
                   </div>
                 </div>
               )}
-              {isSubmitSuccessful && (
-                <div className="flex h-full w-full items-center justify-center">
+
+              {step === "isSubmitted" && (
+                <div className="flex h-full w-full items-center justify-center gap-3">
                   <div className="size-[100px]">
                     <Image
                       src="/post-submitted.gif"
                       width={100}
                       height={100}
-                      alt="submitting"
+                      alt="submitted"
                       className="h-full w-full object-cover"
                     />
                   </div>
+                  <h2 className="text-3xl font-light">
+                    You post has been shared
+                  </h2>
                 </div>
               )}
 
-              {!isSubmitting && !isSubmitSuccessful && preview.length === 0 ? (
+              {step === "pick" && preview.length === 0 ? (
                 <Picker />
               ) : (
+                <Preview height={height} width={height} />
+              )}
+
+              {step === "makeCaption" && (
                 <section
                   className="flex h-full gap-2 transition-all duration-300 ease-linear"
-                  style={{ width: step >= 1 ? height + 384 : height }}
+                  style={{ width: height + 384 }}
                 >
                   <Preview height={height} width={height} />
                   {children}

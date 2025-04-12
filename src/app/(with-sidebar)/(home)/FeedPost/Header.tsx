@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
+import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
+import { formatDistanceToNowStrict } from "date-fns";
 import { useState } from "react";
 import { useFeedPostContext } from "./Context";
-import { formatDistanceToNowStrict } from "date-fns";
-import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 
 function Header() {
   const [open, setOpen] = useState(false);
@@ -17,7 +16,12 @@ function Header() {
 
   return (
     <div className="flex items-center gap-4">
-      <AvatarWithStoryIndicator size={32} avatarUrl={post.avatar} />
+      <AvatarWithStoryIndicator
+        isStoryExists
+        isStoryWatched
+        size={32}
+        avatarUrl={post.avatar}
+      />
       <div className="flex-1">
         <div className="flex items-center gap-3">
           <h1 className="text-sm font-bold">{post.username}</h1>

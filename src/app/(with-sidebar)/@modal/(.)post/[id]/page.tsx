@@ -5,7 +5,6 @@ import { getAuth } from "@/lib/next.auth";
 import { Metadata } from "next";
 import Modal from "./Modal";
 import Post from "./Post";
-import PostProvider from "./Post/Provider";
 
 type Props = {
   params: Promise<{
@@ -46,11 +45,9 @@ const Page = async ({ params }: Props) => {
   }
 
   return (
-    <PostProvider post={post}>
-      <Modal>
-        <Post comments={comments} post={post} />
-      </Modal>
-    </PostProvider>
+    <Modal>
+      <Post comments={comments} post={post} />
+    </Modal>
   );
 };
 

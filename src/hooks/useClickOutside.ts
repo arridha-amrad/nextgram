@@ -1,6 +1,9 @@
-import { useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 
-function useClickOutside<T extends HTMLDivElement>(callback: () => void) {
+function useClickOutside<T extends HTMLDivElement>(
+  callback: () => void,
+  excludeRef?: RefObject<HTMLInputElement | HTMLTextAreaElement | null>,
+) {
   const ref = useRef<T | null>(null);
 
   useEffect(() => {
@@ -13,7 +16,9 @@ function useClickOutside<T extends HTMLDivElement>(callback: () => void) {
         ref.current &&
         !ref.current.contains(event.target as Node) &&
         (!floatingUIPortalNode ||
-          !floatingUIPortalNode.contains(event.target as Node))
+          !floatingUIPortalNode.contains(event.target as Node)) &&
+        excludeRef &&
+        !excludeRef.current?.contains(event.target as Node)
       ) {
         callback();
       }
