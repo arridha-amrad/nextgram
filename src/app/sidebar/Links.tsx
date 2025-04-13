@@ -1,18 +1,17 @@
 "use client";
 
+import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import { page } from "@/lib/pages";
 import { useRouter } from "nextjs-toploader/app";
 import ButtonLink from "./ButtonLink";
 import { useSidebarContext } from "./Context";
 import {
-  DefaultAvatar,
   ExploreFilledIcon,
   ExploreOutlinedIcon,
   HomeFill,
   HomeOutlinedIcon,
   MessengerFilledIcon,
   MessengerOutlinedIcon,
-  NewPostIcon,
   NotificationsFilledIcon,
   NotificationsOutlinedIcon,
   ReelsFilledIcon,
@@ -20,10 +19,9 @@ import {
   SearchFilledIcon,
   SearchOutlinedIcon,
 } from "./Icons";
-import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import NewPostModal from "./ModalCreatePost";
+import { CreatePostProvider } from "./ModalCreatePost/Context";
 import FormCreatePost from "./ModalCreatePost/FormCreatePost";
-import { CreatePostProvider } from "./ModalCreatePost/CreatePostContext";
 
 type Props = {
   username: string;
@@ -37,7 +35,6 @@ function Links({ avatar, username }: Props) {
     setSearchOpen,
     isSearchOpen,
     setNotificationsOpen,
-    setSmallSidebar,
   } = useSidebarContext();
 
   return (
@@ -90,11 +87,13 @@ function Links({ avatar, username }: Props) {
         }}
         label="Notifications"
       />
+
       <CreatePostProvider>
         <NewPostModal>
           <FormCreatePost username={username} />
         </NewPostModal>
       </CreatePostProvider>
+
       <ButtonLink
         icon={
           <AvatarWithStoryIndicator

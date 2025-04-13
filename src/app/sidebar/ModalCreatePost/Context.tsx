@@ -51,12 +51,13 @@ export const CreatePostProvider = ({ children }: { children: ReactNode }) => {
   const [step, setStep] = useState<Steps>("pick");
   const [isSubmitSuccessful, setSubmitSuccessful] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const reset = () => {
     setPreview([]);
     setFiles([]);
     setStep("pick");
-    setSubmitSuccessful(false);
   };
+
   const pathname = usePathname();
 
   const newPostFormRef = useRef<HTMLFormElement | null>(null);

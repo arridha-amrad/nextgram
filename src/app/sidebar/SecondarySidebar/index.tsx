@@ -2,7 +2,6 @@
 
 import { FloatingPortal } from "@floating-ui/react";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect } from "react";
 import { useSidebarContext } from "../Context";
 import Search from "./Search";
 
@@ -17,18 +16,6 @@ export default function SecondarySidebar({
 }: Props) {
   const { isSearchOpen, isNotificationsOpen, closeSecondarySidebar } =
     useSidebarContext();
-
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        closeSecondarySidebar();
-      }
-    }
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [closeSecondarySidebar]);
 
   return (
     <AnimatePresence key="secondary-sidebar">

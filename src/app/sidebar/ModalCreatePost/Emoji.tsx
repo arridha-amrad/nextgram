@@ -1,42 +1,24 @@
 "use client";
 import { EmojiIconBig } from "@/icons/EmojiIcon";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
+import MyEmoji, { TEmojiProps } from "@/components/MyEmoji";
+import useClickOutside from "@/hooks/useClickOutside";
 import {
   autoUpdate,
   FloatingPortal,
   offset,
   shift,
-  useDismiss,
   useFloating,
   useInteractions,
   useRole,
 } from "@floating-ui/react";
 
-type Props = {
-  // eslint-disable-next-line
-  onEmojiSelect: (e: any) => void;
-};
+type Props = TEmojiProps;
 
-function Emoji({ onEmojiSelect }: Props) {
+function Emoji({ cursorPosition, inputRef, setText }: Props) {
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    document.addEventListener("keyup", (e) => {
-      if (open && e.key === "Escape") {
-        setOpen(false);
-      }
-    });
-    return () => {
-      document.removeEventListener("keyup", (e) => {
-        if (open && e.key === "Escape") {
-          setOpen(false);
-        }
-      });
-    };
-  }, [open]);
+  const clickOutsideRef = useClickOutside(() => setOpen(false), inputRef);
 
   const { refs, floatingStyles, context } = useFloating({
     open,
@@ -47,16 +29,12 @@ function Emoji({ onEmojiSelect }: Props) {
     middleware: [offset(5), shift()],
   });
 
-  const dismiss = useDismiss(context);
   const role = useRole(context);
 
-  const { getFloatingProps, getReferenceProps } = useInteractions([
-    dismiss,
-    role,
-  ]);
+  const { getFloatingProps, getReferenceProps } = useInteractions([role]);
 
   return (
-    <div>
+    <div ref={clickOutsideRef}>
       <button
         ref={refs.setReference}
         {...getReferenceProps()}
@@ -74,12 +52,11 @@ function Emoji({ onEmojiSelect }: Props) {
             className="z-[50]"
             {...getFloatingProps()}
           >
-            <Picker
-              previewPosition="none"
-              searchPosition="none"
-              onClickOutside={() => setOpen(false)}
-              data={data}
-              onEmojiSelect={onEmojiSelect}
+            <MyEmoji
+              cursorPosition={cursorPosition}
+              inputRef={inputRef}
+              setText={setText}
+              open={open}
             />
           </div>
         </FloatingPortal>

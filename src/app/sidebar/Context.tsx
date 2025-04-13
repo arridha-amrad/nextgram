@@ -2,7 +2,7 @@
 
 import { TSearchUser } from "@/lib/drizzle/queries/users/fetchSearchHistories";
 import { page } from "@/lib/pages";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   createContext,
   Dispatch,
@@ -52,29 +52,12 @@ export const SidebarProvider = ({
 
   const pathname = usePathname();
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const removeSearchUserParam = () => {
-    const hasSearchUser = searchParams.has("searchUser");
-    if (hasSearchUser) {
-      // Create a new URL without the query param
-      const newParams = new URLSearchParams(searchParams);
-      newParams.delete("searchUser");
-
-      // Replace URL without reloading the page
-      const newUrl = `?${newParams.toString()}`;
-      router.replace(newUrl, { scroll: false });
-    }
-  };
-
   const closeSecondarySidebar = () => {
     setSearchOpen(false);
     setNotificationsOpen(false);
     if (pathname !== page.inbox) {
       setSmallSidebar(false);
     }
-    removeSearchUserParam();
   };
 
   useEffect(() => {

@@ -1,11 +1,10 @@
 "use client";
 
-import PhotoIcon from "@heroicons/react/20/solid/PhotoIcon";
-import { ChangeEvent, useCallback, useRef } from "react";
-import { useCreatePost } from "./CreatePostContext";
 import Button from "@/components/core/Button";
 import { cn } from "@/lib/utils";
+import { ChangeEvent, useCallback, useRef } from "react";
 import { useDropzone } from "react-dropzone";
+import { useCreatePost } from "./Context";
 
 const Picker = () => {
   const { setFiles, setPreview } = useCreatePost();

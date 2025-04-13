@@ -17,8 +17,7 @@ function useClickOutside<T extends HTMLDivElement>(
         !ref.current.contains(event.target as Node) &&
         (!floatingUIPortalNode ||
           !floatingUIPortalNode.contains(event.target as Node)) &&
-        excludeRef &&
-        !excludeRef.current?.contains(event.target as Node)
+        (!excludeRef || !excludeRef.current?.contains(event.target as Node))
       ) {
         callback();
       }

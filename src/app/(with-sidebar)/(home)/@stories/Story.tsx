@@ -1,10 +1,10 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, rgbDataURL } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 
-export default function Story() {
+export default function Story({ name }: { name: number }) {
   const [isClicked, setIsClicked] = useState(false);
   return (
     <div className="w-[70px]">
@@ -25,13 +25,17 @@ export default function Story() {
           <Image
             src="/default.jpg"
             alt="Story"
+            blurDataURL={rgbDataURL(60, 60, 60)}
+            placeholder="blur"
             width={100}
             height={100}
             className="size-[56px] rounded-full object-cover"
           />
         </div>
       </div>
-      <p className="line-clamp-1 px-1 py-1 text-xs select-none">arridhaamrad</p>
+      <p className="line-clamp-1 px-1 py-1 text-center text-xs select-none">
+        {name}
+      </p>
     </div>
   );
 }

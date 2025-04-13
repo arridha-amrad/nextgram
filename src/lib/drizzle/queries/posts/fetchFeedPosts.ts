@@ -112,13 +112,17 @@ export const fetchFeedPosts = unstable_cache(
         .where(
           and(
             lt(PostsTable.createdAt, date),
-            inArray(PostsTable.userId, users),
+            inArray(PostsTable.userId, [...users, userId]),
           ),
         );
       total = result.sum;
     }
 
-    const posts = await runQuery({ date, userId, followings: users });
+    const posts = await runQuery({
+      date,
+      userId,
+      followings: [...users, userId],
+    });
 
     return {
       data: posts,

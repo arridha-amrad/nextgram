@@ -5,6 +5,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { formatDistanceToNowStrict } from "date-fns";
 import { useState } from "react";
 import { useFeedPostContext } from "./Context";
+import PostHeaderOptions from "@/components/PostHeaderOptions";
 
 function Header() {
   const [open, setOpen] = useState(false);
@@ -56,42 +57,7 @@ function Header() {
         <DialogBackdrop className="bg-background/70 fixed inset-0" />
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
           <DialogPanel className="bg-bg-secondary relative flex w-full max-w-sm flex-col rounded-xl">
-            <button className="h-12 w-max self-center text-sm font-medium text-red-400">
-              Report
-            </button>
-            <div className="bg-foreground/10 h-px w-full"></div>
-            <button className="h-12 w-max self-center text-sm font-medium text-red-400">
-              Unfollow
-            </button>
-            <div className="bg-foreground/10 h-px w-full"></div>
-            <button className="h-12 w-max self-center text-sm">
-              Mark as favorite
-            </button>
-            <div className="bg-foreground/10 h-px w-full"></div>
-            <button className="h-12 w-max self-center text-sm">
-              Go to post
-            </button>
-            <div className="bg-foreground/10 h-px w-full"></div>
-            <button className="h-12 w-max self-center text-sm">
-              Share to...
-            </button>
-            <div className="bg-foreground/10 h-px w-full"></div>
-            <button className="h-12 w-max self-center text-sm">
-              Copy link
-            </button>
-            <div className="bg-foreground/10 h-px w-full"></div>
-            <button className="h-12 w-max self-center text-sm">Embed</button>
-            <div className="bg-foreground/10 h-px w-full"></div>
-            <button className="h-12 w-max self-center text-sm">
-              About this account
-            </button>
-            <div className="bg-foreground/10 h-px w-full"></div>
-            <button
-              onClick={() => setOpen(false)}
-              className="h-12 w-max self-center text-sm"
-            >
-              Cancel
-            </button>
+            <PostHeaderOptions close={() => setOpen(false)} />
           </DialogPanel>
         </div>
       </Dialog>

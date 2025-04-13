@@ -17,7 +17,7 @@ type Props = {
 };
 
 const FeedPost = memo(
-  ({ post }: Props) => {
+  function FeedPost({ post }: Props) {
     return (
       <FeedPostProvider postId={post.id}>
         <article className="w-full space-y-2 pb-14">

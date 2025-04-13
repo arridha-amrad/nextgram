@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import Accessibility from "./Accessibility";
 import { createPostActionRevalidate } from "./action";
 import AdvanceSettings from "./AdvanceSettings";
-import { useCreatePost } from "./CreatePostContext";
+import { useCreatePost } from "./Context";
 import Emoji from "./Emoji";
 import ShareTo from "./ShareTo";
 
@@ -19,32 +19,22 @@ type Props = {
 };
 
 const FormCreatePost = ({ username }: Props) => {
-  const {
-    step,
-    files,
-    setSubmitSuccessful,
-    newPostFormRef,
-    isSubmitSuccessful,
-    isSubmitting,
-    setIsSubmitting,
-  } = useCreatePost();
+  const { step, setStep, files, newPostFormRef } = useCreatePost();
   const { addPost } = useFeedPosts();
   const { addPost: addUserPost } = useUserPosts();
 
   const params = useParams();
 
-  const [state, setState] = useState({
-    location: "",
-    description: "",
-  });
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setStep("isSubmitting");
     try {
       const formData = new FormData();
-      formData.append("description", state.description);
-      formData.append("location", state.location);
+      formData.append("description", description);
+      formData.append("location", location);
       files.forEach((file) => formData.append("images", file));
       const response = await fetch("/api/post", {
         method: "POST",
@@ -69,57 +59,34 @@ const FormCreatePost = ({ username }: Props) => {
             urls: newPost.urls,
           });
         }
-        setSubmitSuccessful(true);
+        setStep("isSubmitted");
       }
     } catch (err) {
       toast.error("Failed to create post");
-    } finally {
-      setIsSubmitting(false);
+      setStep("makeCaption");
     }
   };
 
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (step === "isSubmitted") {
       createPostActionRevalidate();
     }
-  }, [isSubmitSuccessful]);
+  }, [step]);
 
-  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const cursorPositionRef = useRef<number>(0);
-  const emojiLengthRef = useRef(0);
 
-  const handleEmojiSelect = (emoji: any) => {
-    const cursorPos = cursorPositionRef.current;
-    const currentText = state.description;
-    const newText =
-      currentText.slice(0, cursorPos) +
-      emoji.native +
-      currentText.slice(cursorPos);
-    setState({
-      ...state,
-      description: newText,
-    });
+  const handleCursorPosition = (
+    e: React.SyntheticEvent<HTMLTextAreaElement>,
+  ) => {
+    const position = e.currentTarget.selectionStart;
+    cursorPositionRef.current = position ?? 0;
   };
-
-  // 👇 This effect runs *after* description changes
-  useEffect(() => {
-    if (emojiLengthRef.current > 0 && inputRef.current) {
-      const newCursorPos = cursorPositionRef.current + emojiLengthRef.current;
-
-      inputRef.current.selectionStart = newCursorPos;
-      inputRef.current.selectionEnd = newCursorPos;
-      inputRef.current.focus();
-
-      // Reset emoji length so we don't run this on every render
-      emojiLengthRef.current = 0;
-    }
-  }, [state.description]);
 
   return (
     <fieldset
-      disabled={isSubmitting}
       className={cn(
-        "custom-scrollbar flex h-full w-full max-w-sm flex-col overflow-y-scroll pb-8",
+        "custom-scrollbar flex h-full w-full flex-col overflow-y-scroll pb-8",
       )}
     >
       <div className="flex h-[60px] w-full shrink-0 items-center gap-3 px-2 py-2">
@@ -132,40 +99,31 @@ const FormCreatePost = ({ username }: Props) => {
         className="flex-1 shrink-0 space-y-4 px-2"
       >
         <textarea
-          ref={inputRef}
-          value={state.description}
+          ref={textAreaRef}
+          value={description}
           onChange={(e) => {
-            setState({
-              ...state,
-              description: e.target.value,
-            });
-            cursorPositionRef.current = e.target.selectionStart;
+            setDescription(e.target.value);
           }}
-          onClick={(e) => {
-            cursorPositionRef.current = e.currentTarget.selectionStart ?? 0;
-          }}
-          onKeyUp={(e) => {
-            cursorPositionRef.current = e.currentTarget.selectionStart ?? 0;
-          }}
+          onClick={handleCursorPosition}
+          onKeyUp={handleCursorPosition}
           name="description"
           className="bg-bg-secondary w-full resize-none rounded-lg outline-0"
           rows={7}
         ></textarea>
 
         <div className="flex justify-between pr-2">
-          <Emoji onEmojiSelect={handleEmojiSelect} />
+          <Emoji
+            cursorPosition={cursorPositionRef}
+            inputRef={textAreaRef}
+            setText={setDescription}
+          />
           <h2 className="text-foreground/20 text-sm">0/2200</h2>
         </div>
 
         <div className="relative flex w-full items-center py-1 pr-2">
           <input
-            value={state.location}
-            onChange={(e) =>
-              setState({
-                ...state,
-                location: e.target.value,
-              })
-            }
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
             name="location"
             placeholder="Add location"
             className="w-full font-light outline-0"

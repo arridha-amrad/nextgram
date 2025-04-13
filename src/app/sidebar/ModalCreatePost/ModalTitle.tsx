@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Steps, useCreatePost } from "./CreatePostContext";
+import { Steps, useCreatePost } from "./Context";
 
 const ModalTitle = () => {
   const { step, setStep, preview, newPostFormRef } = useCreatePost();
@@ -59,7 +59,7 @@ const ModalTitle = () => {
           <button
             onClick={() => setStep(s[currS + 1] as Steps)}
             className={cn(
-              "text-skin-inverted font-semibold",
+              "text-skin-primary text-sm font-medium",
               preview.length === 0 && "invisible",
             )}
           >
@@ -71,6 +71,7 @@ const ModalTitle = () => {
           <button
             onClick={() => {
               newPostFormRef?.current?.requestSubmit();
+              setStep(s[currS + 1] as Steps);
             }}
             className={cn(
               "text-skin-primary text-sm font-medium",

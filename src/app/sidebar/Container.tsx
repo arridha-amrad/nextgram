@@ -8,6 +8,7 @@ import SecondarySidebar from "./SecondarySidebar";
 import { page } from "@/lib/pages";
 import { autoUpdate, offset, shift, useFloating } from "@floating-ui/react";
 import { ReactNode } from "react";
+import useEscapePressed from "@/hooks/useEscapePressed";
 
 type Props = {
   children: ReactNode;
@@ -16,7 +17,12 @@ type Props = {
 function Container({ children }: Props) {
   const pathname = usePathname();
 
-  const { closeSecondarySidebar, isSmallSidebar } = useSidebarContext();
+  const {
+    closeSecondarySidebar,
+    isSmallSidebar,
+    isNotificationsOpen,
+    isSearchOpen,
+  } = useSidebarContext();
 
   const { refs, floatingStyles } = useFloating({
     placement: "right-end",
@@ -28,6 +34,10 @@ function Container({ children }: Props) {
   const clickOutsideRef = useClickOutside(() => {
     closeSecondarySidebar();
   });
+  useEscapePressed(
+    () => closeSecondarySidebar(),
+    isNotificationsOpen || isSearchOpen,
+  );
   return (
     <div
       ref={clickOutsideRef}
@@ -36,7 +46,10 @@ function Container({ children }: Props) {
         pathname === page.inbox ? "w-fit" : "w-fit lg:w-72",
       )}
     >
-      <aside ref={refs.setReference} className={cn("min-h-screen w-fit")}>
+      <aside
+        ref={refs.setReference}
+        className={cn("min-h-screen w-fit overflow-hidden")}
+      >
         <SecondarySidebar
           setFloating={refs.setFloating}
           floatingStyles={floatingStyles}

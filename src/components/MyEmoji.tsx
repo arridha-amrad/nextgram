@@ -6,12 +6,15 @@ import { Dispatch, RefObject, SetStateAction } from "react";
 import dynamic from "next/dynamic";
 const EmojiPicker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
-type Props = {
+export type TEmojiProps = {
   setText: Dispatch<SetStateAction<string>>;
   inputRef: RefObject<HTMLInputElement | HTMLTextAreaElement | null>;
   cursorPosition: RefObject<number>;
-  open: boolean;
 };
+
+type Props = {
+  open: boolean;
+} & TEmojiProps;
 
 export default function MyEmoji({
   inputRef,

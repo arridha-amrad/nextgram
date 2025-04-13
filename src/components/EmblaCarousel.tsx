@@ -6,15 +6,17 @@ import ChevronRightIcon from "@heroicons/react/20/solid/ChevronRightIcon";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import { usePostStore } from "../store";
 import { EmblaCarouselType } from "embla-carousel";
 
-const Carousel = () => {
+type Props = {
+  urls: string[];
+  contentPerSlide: number;
+};
+
+const EmblaCarousel = ({ urls, contentPerSlide }: Props) => {
   const [emblaRef, emblaApi] = useEmblaCarousel();
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const post = usePostStore((store) => store.post);
 
   const onInit = useCallback((emblaApi: EmblaCarouselType) => {
     setScrollSnaps(emblaApi.scrollSnapList());
@@ -41,27 +43,30 @@ const Carousel = () => {
     emblaApi.scrollNext();
   }, [emblaApi]);
 
+  const flexBasis = `${100 / contentPerSlide}%`;
+
   return (
-    <div className="bg-background relative w-max max-w-[700px]">
+    <div className="bg-bg-secondary relative flex h-full w-full items-center">
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex touch-pan-y touch-pinch-zoom">
-          {post?.urls.map((url, i) => (
+        <div className="flex h-full w-full touch-pan-y touch-pinch-zoom items-center">
+          {urls.map((url, i) => (
             <div
-              className="h-[90vh] w-full overflow-hidden"
+              className="aspect-auto"
               style={{
                 transform: "translate3d(0, 0, 0)",
-                flex: "0 0 100%",
+                flex: `0 0 ${flexBasis}`,
                 minWidth: 0,
               }}
               key={i}
             >
               <Image
-                src={url.url}
+                src={url}
                 alt="post image"
-                width={1000}
-                height={1000}
+                width={500}
+                height={500}
+                placeholder="blur"
                 blurDataURL={rgbDataURL(60, 60, 60)}
-                className="h-full w-full object-contain"
+                className="h-full w-full object-cover"
               />
             </div>
           ))}
@@ -102,4 +107,4 @@ const Carousel = () => {
   );
 };
 
-export default Carousel;
+export default EmblaCarousel;

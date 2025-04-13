@@ -1,12 +1,10 @@
-import Avatar from "@/components/Avatar";
 import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-  Switch,
 } from "@headlessui/react";
-import { useCreatePost } from "./CreatePostContext";
 import Image from "next/image";
+import { useCreatePost } from "./Context";
 
 export default function Accessibility() {
   const { preview } = useCreatePost();
