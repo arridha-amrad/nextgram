@@ -15,7 +15,7 @@ type Props = {
   post: TUserPost;
 };
 
-const PostCard = memo(({ post }: Props) => {
+const PostCard = memo(function PostCard({ post }: Props) {
   const router = useRouter();
   return (
     <div

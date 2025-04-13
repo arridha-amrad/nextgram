@@ -1,6 +1,5 @@
 "use client";
 
-import Avatar from "@/components/Avatar";
 import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import { follow as fl } from "@/lib/actions/follow";
 import { TSearchUser } from "@/lib/drizzle/queries/type";

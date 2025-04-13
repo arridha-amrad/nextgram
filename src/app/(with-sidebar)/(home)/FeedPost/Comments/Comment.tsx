@@ -22,7 +22,7 @@ const Comment = ({ comment }: Props) => {
       )({
         commentId: comment.id,
       });
-    } catch (err) {
+    } catch {
       likeComment(comment);
       toast.error("Failed to like the comment");
     }

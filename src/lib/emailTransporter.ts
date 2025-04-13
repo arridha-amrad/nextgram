@@ -14,8 +14,8 @@ oauth2Client.setCredentials({
 
 const token = await oauth2Client.getAccessToken();
 
-let transporter = nodemailer.createTransport({
-  // @ts-ignore
+const transporter = nodemailer.createTransport({
+  // @ts-expect-error: it's ok
   service: "gmail",
   auth: {
     type: "OAuth2",

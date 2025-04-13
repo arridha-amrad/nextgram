@@ -1,11 +1,10 @@
-import { Button } from "@headlessui/react";
-import Form from "./Form";
-import Link from "next/link";
-import { page } from "@/lib/pages";
-import InstagramLogo from "@/components/InstagramLogo";
 import InstagramDownloadLinks from "@/components/InstagramDownloadLinks";
+import InstagramLogo from "@/components/InstagramLogo";
 import GithubButton from "@/components/SocialButtons/GithubButton";
 import GoogleButton from "@/components/SocialButtons/GoogleButton";
+import { page } from "@/lib/pages";
+import Link from "next/link";
+import Form from "./Form";
 
 export default function Page() {
   return (

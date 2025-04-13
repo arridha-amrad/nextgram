@@ -5,12 +5,11 @@ import { ReactNode } from "react";
 import Sidebar from "../sidebar";
 
 type Props = {
-  sidebar: ReactNode;
   children: ReactNode;
   modal: ReactNode;
 };
 
-export default async function Layout({ children, modal, sidebar }: Props) {
+export default async function Layout({ children, modal }: Props) {
   const session = await getAuth();
   return (
     <div className="container mx-auto flex min-h-screen">

@@ -30,6 +30,7 @@ function useClickOutside<T extends HTMLDivElement>(
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
+    // eslint-disable-next-line
   }, [callback]);
 
   return ref;

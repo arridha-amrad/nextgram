@@ -61,7 +61,7 @@ const FormCreatePost = ({ username }: Props) => {
         }
         setStep("isSubmitted");
       }
-    } catch (err) {
+    } catch {
       toast.error("Failed to create post");
       setStep("makeCaption");
     }

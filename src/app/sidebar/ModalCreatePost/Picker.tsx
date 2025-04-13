@@ -12,10 +12,11 @@ const Picker = () => {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
     setPreview(acceptedFiles.map((file) => URL.createObjectURL(file)));
+    // eslint-disable-next-line
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: onDrop as any,
+    onDrop: onDrop,
   });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);

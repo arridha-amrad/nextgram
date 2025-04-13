@@ -24,10 +24,13 @@ export const searchUser = actionClient
     return users;
   });
 
+const MAX_FILE_SIZE = 1024 * 1024;
 export const updateAvatar = authActionClient
   .schema(
     zfd.formData({
-      image: zfd.file(),
+      image: zfd.file().refine(async (file) => file.size <= MAX_FILE_SIZE, {
+        message: "File size must be less than or equal to 1MB",
+      }),
     }),
   )
   .bindArgsSchemas<[pathname: z.ZodString]>([z.string()])

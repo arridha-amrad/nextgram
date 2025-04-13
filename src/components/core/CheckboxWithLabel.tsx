@@ -1,8 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { Field, Label, Checkbox } from "@headlessui/react";
-import { InputHTMLAttributes } from "react";
+import { Checkbox, Field, Label } from "@headlessui/react";
 
 type Props = {
   label: string;

@@ -29,6 +29,7 @@ export const useLastElement = <T>(props: Props<T>) => {
         observer.current.observe(element);
       }
     },
+    // eslint-disable-next-line
     [props.data, props.loading],
   );
 

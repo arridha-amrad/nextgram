@@ -22,12 +22,13 @@ function Post({ post, comments }: Props) {
   useEffect(() => {
     setComments(comments);
     setTotal(post.sumComments);
+    // eslint-disable-next-line
   }, []);
 
   return (
     <div className="border-skin-border bg-background overflow-hidden rounded-lg border">
       <div className="group relative">
-        <Left urls={post.urls.map((u) => u.url)} />
+        <Left />
         {isOpen ? (
           <>
             <div
@@ -35,7 +36,7 @@ function Post({ post, comments }: Props) {
               className="bg-background/70 absolute inset-0"
             />
             <div className="absolute top-0 right-0 bottom-0 flex">
-              <Right post={post} />
+              <Right />
             </div>
           </>
         ) : (

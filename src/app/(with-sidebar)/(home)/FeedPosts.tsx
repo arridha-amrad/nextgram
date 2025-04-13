@@ -41,6 +41,7 @@ export default function FeedPosts({ posts: initPosts }: Props) {
     if (initPosts.total > 0) {
       setPosts(initPosts);
     }
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function FeedPosts({ posts: initPosts }: Props) {
         if (result?.data) {
           addPosts(result.data);
         }
-      } catch (err) {
+      } catch {
         toast.error("Something went wrong", { theme });
       } finally {
         setLoading(false);
@@ -70,6 +71,7 @@ export default function FeedPosts({ posts: initPosts }: Props) {
     } else {
       loadPosts();
     }
+    // eslint-disable-next-line
   }, [currPage]);
 
   const windowRowVirtualizer = useWindowVirtualizer({

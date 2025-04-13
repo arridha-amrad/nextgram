@@ -1,6 +1,8 @@
+import { POST } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
-import { and, desc, eq, lt, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
+import { unstable_cache } from "next/cache";
 import {
   CommentsTable,
   PostLikesTable,
@@ -8,8 +10,6 @@ import {
   RepliesTable,
   SavedPostsTable,
 } from "../../schema";
-import { unstable_cache } from "next/cache";
-import { POST } from "@/lib/cacheKeys";
 
 type Args = {
   username: string;
@@ -29,7 +29,7 @@ const queryTotal = async (userId: string) => {
   return result.total;
 };
 
-const query = async (userId: string, date: Date) => {
+const query = async (userId: string) => {
   return db
     .select({
       id: PostsTable.id,
@@ -78,7 +78,7 @@ export const fetchUserSavedPosts = unstable_cache(
     if (total === 0) {
       total = await queryTotal(user.id);
     }
-    const data = await query(user.id, date);
+    const data = await query(user.id);
     return {
       page: 1,
       data,

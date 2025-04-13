@@ -1,13 +1,10 @@
 "use client";
 
-import { removeAllSearchHistories } from "@/lib/actions/user";
-import { Button } from "@headlessui/react";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useDebounce } from "use-debounce";
 import Histories from "../Histories";
 import SearchInput from "../SearchInput";
 import SearchResult from "../SearchResult";
-import { useDebounce } from "use-debounce";
 
 export type SearchUser = {
   id: string;

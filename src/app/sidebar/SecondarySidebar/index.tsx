@@ -14,8 +14,7 @@ export default function SecondarySidebar({
   setFloating,
   floatingStyles,
 }: Props) {
-  const { isSearchOpen, isNotificationsOpen, closeSecondarySidebar } =
-    useSidebarContext();
+  const { isSearchOpen, isNotificationsOpen } = useSidebarContext();
 
   return (
     <AnimatePresence key="secondary-sidebar">

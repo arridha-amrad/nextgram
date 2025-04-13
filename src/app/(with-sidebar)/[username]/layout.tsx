@@ -1,5 +1,5 @@
-import Avatar from "@/components/Avatar";
 import AvatarEditable from "@/components/AvatarEditable";
+import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import ButtonFollow from "@/components/ButtonFollow";
 import Settings from "@/components/Settings";
 import SvgFemale from "@/components/svg/SvgFemale";
@@ -10,10 +10,9 @@ import { getAuth } from "@/lib/next.auth";
 import { Metadata } from "next";
 import Link from "next/link";
 import { ReactNode } from "react";
-import Tabs from "./Tabs";
 import Footer from "../../../components/Footer";
 import Highlights from "./Highlights";
-import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
+import Tabs from "./Tabs";
 
 type Props = {
   params: Promise<{ username: string }>;
@@ -48,7 +47,7 @@ const Layout = async ({ children, modal, params }: Props) => {
     return (
       <div className="flex min-h-screen w-full flex-col items-center justify-center gap-6">
         <h1 className="text-2xl font-semibold">
-          Sorry, this page isn't available.
+          Sorry, this page isn&apos;t available.
         </h1>
         <p>
           The link you followed may be broken, or the page may have been

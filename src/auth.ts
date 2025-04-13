@@ -18,6 +18,7 @@ const providers = [
     },
   }),
   Credentials({
+    // eslint-disable-next-line
     authorize: async (credentials: any) => {
       const user: User = {
         id: credentials.id,
@@ -96,7 +97,6 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
       }
       if (account?.type === "credentials") {
         // it will be the same as the return of provider->Credentials->authorize. see above
-        // @ts-ignore
         token = {
           ...token,
           ...user,

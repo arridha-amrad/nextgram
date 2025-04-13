@@ -3,6 +3,7 @@ import FormResetPassword from "./Form";
 import InstagramLogo from "@/components/InstagramLogo";
 import { page } from "@/lib/pages";
 import InstagramDownloadLinks from "@/components/InstagramDownloadLinks";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
@@ -38,7 +39,9 @@ export default function Page() {
         <div className="mb-6">
           <h1 className="text-skin-muted font-medium">Reset Password</h1>
         </div>
-        <FormResetPassword />
+        <Suspense>
+          <FormResetPassword />
+        </Suspense>
         <div className="text-skin-muted mt-8 text-sm">
           <span>Back to &nbsp;</span>
           <Link className="text-skin-primary" href={page.login}>

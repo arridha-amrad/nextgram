@@ -15,5 +15,6 @@ export const useUpdateSession = (
         router.refresh();
       });
     }
+    // eslint-disable-next-line
   }, [trigger]);
 };

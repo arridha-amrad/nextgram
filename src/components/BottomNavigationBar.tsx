@@ -25,7 +25,7 @@ type Props = {
 function BottomNavigationBar({ avatarUrl, username }: Props) {
   const router = useRouter();
   return (
-    <div className="fixed inset-x-0 bottom-0 block md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-[999] block md:hidden">
       <div className="bg-background border-foreground/20 relative flex h-13 items-center justify-evenly border-t">
         <ButtonLink
           activeIcon={<HomeFill />}

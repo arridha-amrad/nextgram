@@ -19,7 +19,7 @@ export default function UserCard({ user, isRemovable }: Props) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [_, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const navigateToUserProfile = () => {
     startTransition(() => {

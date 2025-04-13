@@ -28,7 +28,7 @@ function ModalDiscardPost({ closeAll, open, setOpen }: Props) {
             <div className="w-full space-y-2 py-5 text-center">
               <h1 className="text-xl font-light">Discard post?</h1>
               <p className="text-foreground/70 text-sm">
-                If you leave, your edits won't be saved.
+                If you leave, your edits won&apos;t be saved.
               </p>
             </div>
           </DialogTitle>

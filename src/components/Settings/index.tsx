@@ -1,11 +1,9 @@
 "use client";
 
-import Modal from "@/components/core/ModalWrapper";
-import { CogIcon } from "@heroicons/react/24/outline";
+import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import Link from "next/link";
 import { useState } from "react";
 import Logout from "./Logout";
-import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 
 const Settings = () => {
   const [open, setOpen] = useState(false);

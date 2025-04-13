@@ -34,6 +34,7 @@ const CommentForm = () => {
       setMessage(`@${replyTarget?.username} `);
       inputRef.current?.focus();
     }
+    // eslint-disable-next-line
   }, [replyTarget?.commentId]);
 
   useEffect(() => {
@@ -46,6 +47,7 @@ const CommentForm = () => {
     if (message === "") {
       setReplySetter(null);
     }
+    // eslint-disable-next-line
   }, [message]);
 
   const inputRef = useRef<HTMLInputElement>(null);

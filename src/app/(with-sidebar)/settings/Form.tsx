@@ -1,17 +1,15 @@
 "use client";
 
-import AvatarEditable from "@/components/AvatarEditable";
-import Button from "@/components/core/Button";
-import TextInput from "@/components/core/TextInput";
+import { useUpdateSession } from "@/hooks/useUpdateSession";
 import { TProfileDetail } from "@/lib/drizzle/queries/users/fetchUserProfileDetails";
 import { cn, showToast } from "@/lib/utils";
+import { Field, Label, Select } from "@headlessui/react";
 import { useAction } from "next-safe-action/hooks";
 import { usePathname } from "next/navigation";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { updateProfile } from "./action";
-import { useUpdateSession } from "@/hooks/useUpdateSession";
 import InputText from "./InputText";
-import { Field, Label, Select } from "@headlessui/react";
+import Spinner from "@/components/Spinner";
 
 type Props = {
   user: TProfileDetail;
@@ -19,8 +17,6 @@ type Props = {
 };
 
 const FormEditProfile = ({ user, fullName }: Props) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
   const [state, setState] = useState({
     name: fullName,
     website: user?.website ?? "",
@@ -158,15 +154,12 @@ const FormEditProfile = ({ user, fullName }: Props) => {
           </div>
 
           <div className="grid grid-cols-3">
-            {/* <Button type="submit" className="w-25" isLoading={isPending}>
-              Submit
-            </Button> */}
             <div className="col-start-3">
               <button
                 type="submit"
-                className="disabled:bg-skin-primary/30 bg-skin-primary disabled:text-foreground/20 w-full rounded-xl py-3 text-sm font-semibold"
+                className="disabled:bg-skin-primary/30 bg-skin-primary disabled:text-foreground/20 flex h-12 w-full items-center justify-center rounded-xl text-sm font-semibold"
               >
-                Submit
+                {isPending ? <Spinner /> : "Submit"}
               </button>
             </div>
           </div>

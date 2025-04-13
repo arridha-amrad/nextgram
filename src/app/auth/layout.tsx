@@ -28,7 +28,7 @@ export default function Layout({ children }: Props) {
       <footer className="mt-2 w-full">
         <div className="flex w-full flex-wrap items-center justify-center gap-4">
           {links.map((link, i) => (
-            <a key={i} className="text-skin-muted block text-xs" href="/auth">
+            <a key={i} className="text-skin-muted block text-xs" href="">
               {link}
             </a>
           ))}

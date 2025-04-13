@@ -6,6 +6,8 @@ import {
   NotificationsFilledIcon,
   NotificationsOutlinedIcon,
 } from "@/app/sidebar/Icons";
+import Histories from "@/app/sidebar/SecondarySidebar/Histories";
+import { SearchUser } from "@/app/sidebar/SecondarySidebar/Search";
 import SearchInput from "@/app/sidebar/SecondarySidebar/SearchInput";
 import SearchResult from "@/app/sidebar/SecondarySidebar/SearchResult";
 import {
@@ -20,6 +22,7 @@ import {
 } from "@floating-ui/react";
 import { AnimatePresence } from "motion/react";
 import { useState } from "react";
+import { useDebounce } from "use-debounce";
 
 function TopBar() {
   const [open, setOpen] = useState(false);
@@ -39,6 +42,12 @@ function TopBar() {
     dismiss,
     role,
   ]);
+
+  const [searchKey, setSearchKey] = useState("");
+  const [searchResult, setSearchResult] = useState<SearchUser[]>([]);
+  const [value, { isPending }] = useDebounce(searchKey, 1000);
+  const [loading, setLoading] = useState(false);
+
   return (
     <div className="fixed inset-x-0 top-0 z-[999] block md:hidden">
       <div className="border-foreground/20 bg-background relative flex h-14 items-center gap-2 border-b px-4 py-2">
@@ -46,7 +55,16 @@ function TopBar() {
           <Logo />
         </div>
         <div ref={refs.setReference} {...getReferenceProps()}>
-          <SearchInput onFocus={() => setOpen(true)} />
+          <SearchInput
+            setSearchResult={setSearchResult}
+            searchKey={searchKey}
+            setSearchKey={setSearchKey}
+            loading={loading || isPending()}
+            setLoading={setLoading}
+            valueKey={value}
+            onFocus={() => setOpen(true)}
+            onBlur={() => setOpen(false)}
+          />
           <AnimatePresence>
             {open && (
               <FloatingPortal>
@@ -55,8 +73,12 @@ function TopBar() {
                   style={floatingStyles}
                   {...getFloatingProps()}
                 >
-                  <div className="bg-bg-secondary block h-[500px] w-[400px] overflow-y-auto rounded-2xl p-4 md:hidden">
-                    <SearchResult />
+                  <div className="bg-bg-secondary custom-scrollbar block max-h-[500px] w-[400px] overflow-y-auto rounded-2xl md:hidden">
+                    {!!searchKey ? (
+                      <SearchResult users={searchResult} />
+                    ) : (
+                      <Histories />
+                    )}
                   </div>
                 </div>
               </FloatingPortal>

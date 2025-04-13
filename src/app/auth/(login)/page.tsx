@@ -5,6 +5,7 @@ import InstagramLogo from "@/components/InstagramLogo";
 import { page } from "@/lib/pages";
 import InstagramDownloadLinks from "@/components/InstagramDownloadLinks";
 import FormLogin from "./FormLogin";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
@@ -17,7 +18,9 @@ export default function Page() {
           <div className="mt-10 mb-12">
             <InstagramLogo />
           </div>
-          <FormLogin />
+          <Suspense>
+            <FormLogin />
+          </Suspense>
           <div className="my-6">
             <Link
               className="text-skin-link text-sm font-semibold"

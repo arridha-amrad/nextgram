@@ -28,6 +28,7 @@ export default function DialogContentWrapper({
     } else {
       setOpen(false);
     }
+    // eslint-disable-next-line
   }, [pathname]);
 
   const handleClose = () => {

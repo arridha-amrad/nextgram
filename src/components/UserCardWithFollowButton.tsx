@@ -1,8 +1,7 @@
 "use client";
 
-import Avatar from "@/components/Avatar";
-import { TFollow } from "@/lib/drizzle/queries/users/fetchUserFollowers";
 import { follow as fl } from "@/lib/actions/follow";
+import { TFollow } from "@/lib/drizzle/queries/users/fetchUserFollowers";
 import { cn, showToast } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

@@ -37,6 +37,7 @@ export default function UserPosts({ initialPosts }: Props) {
 
   useEffect(() => {
     setPosts(initialPosts);
+    // eslint-disable-next-line
   }, []);
 
   const params = useParams();
@@ -78,6 +79,7 @@ export default function UserPosts({ initialPosts }: Props) {
           }
         });
     }
+    // eslint-disable-next-line
   }, [hasMore, inView]);
 
   const rowVirtualizer = useWindowVirtualizer({

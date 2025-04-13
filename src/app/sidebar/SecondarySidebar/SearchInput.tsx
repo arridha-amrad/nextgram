@@ -3,7 +3,14 @@
 import Spinner from "@/components/Spinner";
 import { TSearchUser } from "@/lib/drizzle/queries/users/fetchSearchHistories";
 import { Button, Input } from "@headlessui/react";
-import { Dispatch, FormEvent, SetStateAction, useEffect, useRef } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  HTMLAttributes,
+  SetStateAction,
+  useEffect,
+  useRef,
+} from "react";
 import { toast } from "react-toastify";
 import { CloseIcon } from "../Icons";
 
@@ -28,7 +35,7 @@ type Props = {
   setSearchKey: Dispatch<SetStateAction<string>>;
   searchKey: string;
   valueKey: string;
-};
+} & HTMLAttributes<HTMLInputElement>;
 
 function SearchInput({
   setSearchResult,
@@ -37,6 +44,7 @@ function SearchInput({
   loading,
   valueKey,
   setLoading,
+  ...props
 }: Props) {
   const formRef = useRef<HTMLFormElement | null>(null);
 
@@ -46,11 +54,8 @@ function SearchInput({
     try {
       const users = (await searchUser(valueKey)) as TSearchUser[];
       setSearchResult(users);
-    } catch (err: any) {
-      const message = err.response.data.message;
-      if (message) {
-        toast.error(message);
-      }
+    } catch {
+      toast.error("Failed to perform search");
     } finally {
       setLoading(false);
     }
@@ -70,6 +75,7 @@ function SearchInput({
         onChange={(e) => setSearchKey(e.target.value)}
         placeholder="Search"
         className="bg-foreground/10 h-10 w-full rounded-lg pr-10 pl-4 outline-hidden"
+        {...props}
       />
       <div className="absolute top-1/2 right-7 -translate-y-1/2">
         {loading ? (

@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import Avatar from "@/components/Avatar";
 import { page } from "@/lib/pages";
 import { Metadata } from "next";
 import Link from "next/link";

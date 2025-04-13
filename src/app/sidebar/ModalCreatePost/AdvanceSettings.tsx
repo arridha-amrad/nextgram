@@ -43,7 +43,7 @@ export default function AdvanceSettings() {
           <p className="text-foreground/50 pt-2 text-xs">
             Only you will see the total number of likes and views on this post.
             You can change this later by going to the ··· menu at the top of the
-            post. To hide like counts on other people's posts, go to your
+            post. To hide like counts on other people&apos;s posts, go to your
             account settings.
           </p>
         </div>

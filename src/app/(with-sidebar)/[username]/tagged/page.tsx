@@ -51,7 +51,7 @@ export default function Page() {
       <Icon />
       <h1 className="text-4xl font-bold">Photos of you</h1>
       <p className="text-sm">
-        When people tag you in photos, they'll appear here.
+        When people tag you in photos, they&apos;ll appear here.
       </p>
     </div>
   );

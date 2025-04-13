@@ -6,8 +6,6 @@ type Props = {
 };
 
 function SearchResult({ users }: Props) {
-  console.log({ users });
-
   return (
     <div className="w-full">
       {users.map((user) => (

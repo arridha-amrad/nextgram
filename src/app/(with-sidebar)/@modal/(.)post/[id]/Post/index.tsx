@@ -21,6 +21,7 @@ function Post({ post, comments }: Props) {
     setPost(post);
     setComments(comments);
     setTotal(post.sumComments);
+    // eslint-disable-next-line
   }, []);
 
   return (
