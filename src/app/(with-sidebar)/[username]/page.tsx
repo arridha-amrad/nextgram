@@ -24,5 +24,7 @@ export default async function Page({ params }: Params) {
     );
   }
 
+  console.log(data);
+
   return <Posts initialPosts={data} />;
 }

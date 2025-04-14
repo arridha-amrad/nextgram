@@ -36,7 +36,7 @@ const FormCreatePost = ({ username }: Props) => {
       formData.append("description", description);
       formData.append("location", location);
       files.forEach((file) => formData.append("images", file));
-      const response = await fetch("/api/post", {
+      const response = await fetch("/api/posts", {
         method: "POST",
         body: formData,
       });

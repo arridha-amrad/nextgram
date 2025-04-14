@@ -86,6 +86,42 @@ type Args = {
   total?: number;
 };
 
+const getFollowingsUser = async (userId: string) => {
+  const followings = await db
+    .select({
+      userId: FollowingsTable.followId,
+    })
+    .from(FollowingsTable)
+    .where(eq(FollowingsTable.userId, userId));
+  const users = followings.map((f) => f.userId);
+  return users;
+};
+
+export const fetchFeedPostsForRouteHandler = async ({
+  userId,
+  date,
+  total,
+  page,
+}: {
+  userId: string;
+  date: Date;
+  total: number;
+  page: number;
+}): Promise<TInfiniteResult<TFeedPost>> => {
+  const followingUsers = await getFollowingsUser(userId);
+  const posts = await runQuery({
+    date,
+    userId,
+    followings: [...followingUsers, userId],
+  });
+  return {
+    data: posts,
+    date,
+    total,
+    page,
+  };
+};
+
 export const fetchFeedPosts = unstable_cache(
   async ({
     page,
@@ -93,13 +129,7 @@ export const fetchFeedPosts = unstable_cache(
     date = new Date(),
     total = 0,
   }: Args): Promise<TInfiniteResult<TFeedPost>> => {
-    const followings = await db
-      .select({
-        userId: FollowingsTable.followId,
-      })
-      .from(FollowingsTable)
-      .where(eq(FollowingsTable.userId, userId));
-    const users = followings.map((f) => f.userId);
+    const followingUsers = await getFollowingsUser(userId);
 
     if (total === 0) {
       const [result] = await db
@@ -110,7 +140,7 @@ export const fetchFeedPosts = unstable_cache(
         .where(
           and(
             lt(PostsTable.createdAt, date),
-            inArray(PostsTable.userId, [...users, userId]),
+            inArray(PostsTable.userId, [...followingUsers, userId]),
           ),
         );
       total = result.sum;
@@ -119,7 +149,7 @@ export const fetchFeedPosts = unstable_cache(
     const posts = await runQuery({
       date,
       userId,
-      followings: [...users, userId],
+      followings: [...followingUsers, userId],
     });
 
     return {

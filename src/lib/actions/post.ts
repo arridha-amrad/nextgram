@@ -1,13 +1,11 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
-import { fetchFeedPosts } from "../drizzle/queries/posts/fetchFeedPosts";
-import { fetchPostLikes } from "../drizzle/queries/posts/fetchPostLikes";
+import { POST } from "../cacheKeys";
 import { fetchUserPosts } from "../drizzle/queries/posts/fetchUserPosts";
 import PostService from "../drizzle/services/PostService";
 import { authActionClient } from "../safeAction";
-import { revalidateTag } from "next/cache";
-import { POST } from "../cacheKeys";
 
 export const savePost = authActionClient
   .schema(
@@ -65,42 +63,6 @@ export const likePost = authActionClient
       console.log(err);
       throw err;
     }
-  });
-
-export const loadMoreFeedPosts = authActionClient
-  .schema(
-    z.object({
-      page: z.number(),
-      date: z.date(),
-      total: z.number(),
-    }),
-  )
-  .bindArgsSchemas<[pathname: z.ZodString]>([z.string()])
-  .action(async ({ ctx: { session }, parsedInput: { date, page, total } }) => {
-    const result = await fetchFeedPosts({
-      page,
-      userId: session.user.id,
-      date,
-      total,
-    });
-    return result;
-  });
-
-export const loadMoreLovers = authActionClient
-  .schema(
-    z.object({
-      postId: z.string(),
-      page: z.number().optional(),
-    }),
-  )
-  .bindArgsSchemas<[pathname: z.ZodString]>([z.string()])
-  .action(async ({ ctx: { session }, parsedInput: { postId, page } }) => {
-    const result = await fetchPostLikes({
-      postId,
-      authUserId: session.user.id,
-      page,
-    });
-    return result;
   });
 
 export const loadMoreUserPosts = authActionClient

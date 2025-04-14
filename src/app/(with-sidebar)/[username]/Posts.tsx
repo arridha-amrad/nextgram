@@ -2,7 +2,7 @@
 
 import { useUserPosts } from "./store";
 import Spinner from "@/components/Spinner";
-import { loadMoreUserPosts } from "@/lib/actions/post";
+// import { loadMoreUserPosts } from "@/lib/actions/post";
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
 import { showToast } from "@/lib/utils";
@@ -12,6 +12,7 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import useMeasure from "react-use-measure";
 import Post from "./PostCard";
+import { loadMoreUserPosts } from "@/lib/api/posts";
 
 const toMatrix = (data: TUserPost[]) => {
   const size = 3;
@@ -41,13 +42,9 @@ export default function UserPosts({ initialPosts }: Props) {
   }, []);
 
   const params = useParams();
-  const pathname = usePathname();
   const [rowRef, { width }] = useMeasure();
-
   const { ref: refObserver, inView } = useInView({ threshold: 1 });
-
   const posts = toMatrix(userPosts);
-
   const parentRef = useRef<HTMLDivElement | null>(null);
   const parentOffsetRef = useRef(0);
 
@@ -56,28 +53,28 @@ export default function UserPosts({ initialPosts }: Props) {
   }, []);
 
   useEffect(() => {
-    if (hasMore && inView) {
-      loadMoreUserPosts
-        .bind(
-          null,
-          pathname,
-        )({
+    const fetchPosts = async () => {
+      try {
+        const result = await loadMoreUserPosts({
           date: lastDate,
           total,
           username: params.username as string,
-        })
-        .then((result) => {
-          if (result?.data) {
-            if (result.data.data.length === 0) {
-              setHasMore(false);
-            } else {
-              addPosts(result.data);
-            }
-          }
-          if (result?.serverError) {
-            showToast(result.serverError, "error");
-          }
         });
+        console.log(result);
+        if (result.data.length === 0) {
+          setHasMore(false);
+        } else {
+          addPosts(result);
+        }
+      } catch {
+        showToast("Something went wrong", "error");
+      }
+    };
+    if (initialPosts.data.length < 6) {
+      return;
+    }
+    if (hasMore && inView) {
+      fetchPosts();
     }
     // eslint-disable-next-line
   }, [hasMore, inView]);

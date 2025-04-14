@@ -54,6 +54,37 @@ const query = async (userId: string, date: Date) => {
 
 export type TUserPost = Awaited<ReturnType<typeof query>>[number];
 
+export const loadMoreUserPosts = async ({
+  date,
+  username,
+  total,
+}: {
+  username: string;
+  date: Date;
+  total: number;
+}): Promise<TInfiniteResult<TUserPost>> => {
+  const user = await db.query.UsersTable.findFirst({
+    where(fields, operators) {
+      return operators.eq(fields.username, username);
+    },
+  });
+  if (!user) {
+    return {
+      data: [],
+      total: 0,
+      date,
+      page: 1,
+    };
+  }
+  const data = await query(user.id, date);
+  return {
+    page: 1,
+    data,
+    total,
+    date,
+  };
+};
+
 export const fetchUserPosts = unstable_cache(
   async ({
     username,

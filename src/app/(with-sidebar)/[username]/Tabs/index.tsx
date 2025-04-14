@@ -71,8 +71,8 @@ export type TTab = (typeof tabs)[number];
 
 export default function Tabs({ username }: Props) {
   return (
-    <section className="border-foreground/20 grid grid-cols-3 border-t">
-      <div className="col-span-1 col-start-2 flex items-center justify-between">
+    <section className="border-foreground/20 w-full border-t">
+      <div className="flex items-center justify-center gap-4">
         {tabs.map((tab) => (
           <Tab key={tab.name} username={username} tab={tab} />
         ))}

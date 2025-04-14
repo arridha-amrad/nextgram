@@ -2,16 +2,15 @@
 
 import Spinner from "@/components/Spinner";
 import { useLastElement } from "@/hooks/useLastElement";
-import { loadMoreFeedPosts } from "@/lib/actions/post";
 import { useFeedPosts } from "./store";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useTheme } from "next-themes";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import FeedPost from "./FeedPost";
 import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
+import { loadMoreFeedPosts } from "@/lib/api/posts";
 
 type Props = {
   posts: TInfiniteResult<TFeedPost>;
@@ -28,7 +27,6 @@ export default function FeedPosts({ posts: initPosts }: Props) {
   const [currPage, setCurrPage] = useState(page);
   const [loading, setLoading] = useState(false);
   const { theme } = useTheme();
-  const pathname = usePathname();
 
   const lastElementRef = useLastElement({
     callback: () => setCurrPage((val) => val + 1),
@@ -48,16 +46,13 @@ export default function FeedPosts({ posts: initPosts }: Props) {
     const loadPosts = async () => {
       setLoading(true);
       try {
-        const result = await loadMoreFeedPosts.bind(
-          null,
-          pathname,
-        )({
-          page: currPage,
+        const result = await loadMoreFeedPosts({
           date: new Date(date),
-          total: total,
+          page: currPage,
+          total,
         });
-        if (result?.data) {
-          addPosts(result.data);
+        if (result.data) {
+          addPosts(result);
         }
       } catch {
         toast.error("Something went wrong", { theme });
