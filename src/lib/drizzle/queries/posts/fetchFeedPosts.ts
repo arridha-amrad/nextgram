@@ -93,8 +93,6 @@ export const fetchFeedPosts = unstable_cache(
     date = new Date(),
     total = 0,
   }: Args): Promise<TInfiniteResult<TFeedPost>> => {
-    console.log("fetch feed posts");
-
     const followings = await db
       .select({
         userId: FollowingsTable.followId,

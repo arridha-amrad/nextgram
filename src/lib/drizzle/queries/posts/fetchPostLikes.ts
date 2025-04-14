@@ -1,11 +1,9 @@
 "use server";
 
 import { db } from "@/lib/drizzle/db";
-import { TInfiniteResult } from "../type";
-import { FollowingsTable, PostLikesTable, UsersTable } from "../../schema";
 import { eq, sql } from "drizzle-orm";
-import { unstable_cache } from "next/cache";
-import { POST } from "@/lib/cacheKeys";
+import { FollowingsTable, PostLikesTable, UsersTable } from "../../schema";
+import { TInfiniteResult } from "../type";
 
 const LIMIT = 10;
 
@@ -53,26 +51,18 @@ const queryUsers = async (postId: string, authUserId?: string) => {
 
 export type TLikeUsers = Awaited<ReturnType<typeof queryUsers>>[number];
 
-export const fetchPostLikes = unstable_cache(
-  async ({
-    postId,
-    authUserId,
-    page = 1,
-    date = new Date(),
-  }: Args): Promise<TInfiniteResult<TLikeUsers>> => {
-    //
-    const total = await querySumLikes(postId);
-    const users = await queryUsers(postId, authUserId);
-
-    return {
-      date,
-      data: users,
-      page,
-      total,
-    };
-  },
-  [POST.likes],
-  {
-    tags: [POST.likes],
-  },
-);
+export const fetchPostLikes = async ({
+  postId,
+  authUserId,
+  page = 1,
+  date = new Date(),
+}: Args): Promise<TInfiniteResult<TLikeUsers>> => {
+  const total = await querySumLikes(postId);
+  const users = await queryUsers(postId, authUserId);
+  return {
+    date,
+    data: users,
+    page,
+    total,
+  };
+};
