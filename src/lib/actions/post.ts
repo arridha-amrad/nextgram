@@ -64,21 +64,3 @@ export const likePost = authActionClient
       throw err;
     }
   });
-
-export const loadMoreUserPosts = authActionClient
-  .schema(
-    z.object({
-      username: z.string(),
-      date: z.date(),
-      total: z.number(),
-    }),
-  )
-  .bindArgsSchemas<[pathname: z.ZodString]>([z.string()])
-  .action(async ({ parsedInput: { date, total, username } }) => {
-    const result = await fetchUserPosts({
-      username,
-      date,
-      total,
-    });
-    return result;
-  });

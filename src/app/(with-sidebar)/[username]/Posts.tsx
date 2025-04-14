@@ -2,13 +2,12 @@
 
 import { useUserPosts } from "./store";
 import Spinner from "@/components/Spinner";
-// import { loadMoreUserPosts } from "@/lib/actions/post";
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
 import { showToast } from "@/lib/utils";
 import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useParams, usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useParams } from "next/navigation";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import useMeasure from "react-use-measure";
 import Post from "./PostCard";
@@ -31,13 +30,18 @@ export default function UserPosts({ initialPosts }: Props) {
   const addPosts = useUserPosts((store) => store.addPosts);
   const userPosts = useUserPosts((store) => store.posts);
   const hasMore = useUserPosts((store) => store.hasMore);
-  const lastDate = useUserPosts((store) => store.lastDate);
   const setHasMore = useUserPosts((store) => store.setHasMore);
   const total = useUserPosts((store) => store.total);
   const setPosts = useUserPosts((store) => store.setPosts);
+  const [page, setPage] = useState(0);
+
+  const [lDate, setLDate] = useState(new Date());
 
   useEffect(() => {
     setPosts(initialPosts);
+    setPage(1);
+    const d = initialPosts.data[initialPosts.data.length - 1].createdAt;
+    setLDate(d);
     // eslint-disable-next-line
   }, []);
 
@@ -53,14 +57,20 @@ export default function UserPosts({ initialPosts }: Props) {
   }, []);
 
   useEffect(() => {
+    if (inView) {
+      setPage((val) => (val += 1));
+    }
+  }, [inView]);
+
+  useEffect(() => {
     const fetchPosts = async () => {
       try {
         const result = await loadMoreUserPosts({
-          date: lastDate,
+          date: lDate,
           total,
           username: params.username as string,
+          page,
         });
-        console.log(result);
         if (result.data.length === 0) {
           setHasMore(false);
         } else {
@@ -70,14 +80,12 @@ export default function UserPosts({ initialPosts }: Props) {
         showToast("Something went wrong", "error");
       }
     };
-    if (initialPosts.data.length < 6) {
-      return;
-    }
-    if (hasMore && inView) {
+
+    if (hasMore && page > 1) {
       fetchPosts();
     }
     // eslint-disable-next-line
-  }, [hasMore, inView]);
+  }, [page]);
 
   const rowVirtualizer = useWindowVirtualizer({
     count: hasMore ? posts.length + 1 : posts.length,

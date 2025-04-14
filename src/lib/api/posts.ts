@@ -33,14 +33,18 @@ export const loadMoreUserPosts = async ({
   username,
   date,
   total,
+  page,
 }: {
   username: string;
   date: Date;
   total: number;
+  page: number;
 }): Promise<TInfiniteResult<TUserPost>> => {
   try {
+    console.log("last date at api/posts : ", date);
+
     const res = await fetch(
-      `${NEXT_PUBLIC_BASE_URL}/api/user/${username}/posts?date=${date}&total=${total}`,
+      `${NEXT_PUBLIC_BASE_URL}/api/user/${username}/posts?date=${date}&total=${total}&page=${page}`,
     );
     if (!res.ok) {
       throw new Error("Something wen wrong");

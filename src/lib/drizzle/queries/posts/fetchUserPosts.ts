@@ -58,11 +58,15 @@ export const loadMoreUserPosts = async ({
   date,
   username,
   total,
+  page,
 }: {
   username: string;
   date: Date;
   total: number;
+  page: number;
 }): Promise<TInfiniteResult<TUserPost>> => {
+  console.log({ username, date, total, page });
+
   const user = await db.query.UsersTable.findFirst({
     where(fields, operators) {
       return operators.eq(fields.username, username);
@@ -78,7 +82,7 @@ export const loadMoreUserPosts = async ({
   }
   const data = await query(user.id, date);
   return {
-    page: 1,
+    page,
     data,
     total,
     date,
