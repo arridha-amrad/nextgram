@@ -1,11 +1,11 @@
 "use client";
 
 import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
-import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
+import ModalActionOptions from "@/components/ModalActionOptions";
+import PostHeaderOptions from "@/components/PostHeaderOptions";
 import { formatDistanceToNowStrict } from "date-fns";
 import { useState } from "react";
 import { useFeedPostContext } from "./Context";
-import PostHeaderOptions from "@/components/PostHeaderOptions";
 
 function Header() {
   const [open, setOpen] = useState(false);
@@ -48,19 +48,9 @@ function Header() {
           <circle cx="18" cy="12" r="1.5"></circle>
         </svg>
       </button>
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        className="fixed inset-0 flex w-screen items-center justify-center p-4 transition duration-300 ease-out data-[closed]:opacity-0"
-        transition
-      >
-        <DialogBackdrop className="bg-background/70 fixed inset-0" />
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="bg-bg-secondary relative flex w-full max-w-sm flex-col rounded-xl">
-            <PostHeaderOptions close={() => setOpen(false)} />
-          </DialogPanel>
-        </div>
-      </Dialog>
+      <ModalActionOptions open={open} setOpen={setOpen}>
+        <PostHeaderOptions close={() => setOpen(false)} />
+      </ModalActionOptions>
     </div>
   );
 }

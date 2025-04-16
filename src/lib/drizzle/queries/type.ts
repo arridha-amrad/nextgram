@@ -22,6 +22,12 @@ export type TInfiniteResult<T> = {
   data: T[];
 };
 
+export type InfiniteResult<T> = {
+  data: T[];
+  date: Date;
+  total: number;
+};
+
 export type TUser = Pick<TUserSchema, "avatar" | "username" | "id">;
 
 export type TComment = TCommentSchema & { owner: TUser } & {

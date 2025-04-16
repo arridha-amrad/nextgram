@@ -1,62 +1,75 @@
 "use client";
 
-import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
-import Link from "next/link";
-import { useState } from "react";
-import Logout from "./Logout";
+import { page } from "@/lib/pages";
+import { signOut } from "next-auth/react";
+import { useRouter as useR } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
+import { useState, useTransition } from "react";
+import LogoutDialog from "../LogoutDialog";
+import ModalActionOptions from "../ModalActionOptions";
 
 const Settings = () => {
   const [open, setOpen] = useState(false);
-  const closeModal = () => {
-    setOpen(false);
-  };
+
   const openModal = () => {
     setOpen(true);
   };
+  const router = useRouter();
+  const r = useR();
+
+  const [isPending, startTransition] = useTransition();
+
+  const logout = async () => {
+    await signOut({ redirect: false });
+    startTransition(async () => {
+      await new Promise((res) => setTimeout(res, 1000));
+      r.replace(page.login, { scroll: false });
+    });
+  };
+
   return (
     <>
       <button onClick={openModal}>
         <SettingsIcon />
       </button>
-      <Dialog open={open} onClose={() => setOpen(false)} className="relative">
-        <DialogBackdrop className="bg-background/50 fixed inset-0 backdrop-blur-sm" />
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="border-skin-border bg-background w-full max-w-sm">
-            <div className="border-skin-border bg-background relative flex w-full flex-col rounded-md border">
-              <Link href="/settings" className="py-3 text-center text-sm">
-                Settings
-              </Link>
-              <div className="bg-skin-border h-px w-full" />
-              <hr className="bg-skin-border h-px border-0" />
-              <Link
-                href="/settings/change-username"
-                className="py-3 text-center text-sm"
-              >
-                Change Username
-              </Link>
-              <hr className="bg-skin-border h-px border-0" />
+      <ModalActionOptions open={open} setOpen={setOpen}>
+        <>
+          <button
+            onClick={() => router.push(page.settings)}
+            className="h-12 w-max self-center text-sm"
+          >
+            Settings
+          </button>
+          <hr className="border-foreground/10" />
 
-              <Link
-                href="/settings/change-password"
-                className="py-3 text-center text-sm"
-              >
-                Change Password
-              </Link>
-              <hr className="bg-skin-border h-px border-0" />
+          <button
+            onClick={() => router.push(page.changeUsername)}
+            className="h-12 w-max self-center text-sm"
+          >
+            Change Username
+          </button>
+          <hr className="border-foreground/10" />
 
-              <Logout />
-              <hr className="bg-skin-border h-px border-0" />
-
-              <button
-                onClick={closeModal}
-                className="cursor-pointer py-3 text-sm"
-              >
-                Cancel
-              </button>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
+          <button
+            onClick={() => router.push(page.changePassword)}
+            className="h-12 w-max self-center text-sm"
+          >
+            Change Password
+          </button>
+          <hr className="border-foreground/10" />
+          <button onClick={logout} className="h-12 w-max self-center text-sm">
+            Logout
+          </button>
+          <hr className="border-foreground/10" />
+          <button
+            onClick={() => setOpen(false)}
+            className="h-12 w-max self-center text-sm"
+          >
+            Cancel
+          </button>
+        </>
+      </ModalActionOptions>
+      <LogoutDialog isPending={isPending} />
     </>
   );
 };

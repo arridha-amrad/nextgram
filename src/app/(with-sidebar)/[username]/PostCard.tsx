@@ -27,8 +27,8 @@ const PostCard = memo(function PostCard({ post }: Props) {
         alt="post_image"
         placeholder="blur"
         blurDataURL={rgbDataURL(46, 46, 46)}
-        width={1000}
-        height={1000}
+        width={500}
+        height={500}
         className="h-full w-full object-cover"
       />
       {post.urls.length > 1 && (

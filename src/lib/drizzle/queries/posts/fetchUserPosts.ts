@@ -1,32 +1,17 @@
+import { POST } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
-import { TInfiniteResult } from "@/lib/drizzle/queries/type";
+import { InfiniteResult } from "@/lib/drizzle/queries/type";
 import { and, desc, eq, lt, sql } from "drizzle-orm";
+import { unstable_cache } from "next/cache";
 import {
   CommentsTable,
   PostLikesTable,
   PostsTable,
   RepliesTable,
+  UsersTable,
 } from "../../schema";
-import { unstable_cache } from "next/cache";
-import { POST } from "@/lib/cacheKeys";
-
-type Args = {
-  username: string;
-  date?: Date;
-  total?: number;
-};
 
 export const LIMIT = 6;
-
-const queryTotal = async (userId: string) => {
-  const [result] = await db
-    .select({
-      total: sql<number>`cast(count(${PostsTable.id}) as int)`,
-    })
-    .from(PostsTable)
-    .where(eq(PostsTable.userId, userId));
-  return result.total;
-};
 
 const query = async (userId: string, date: Date) => {
   return db
@@ -54,69 +39,61 @@ const query = async (userId: string, date: Date) => {
 
 export type TUserPost = Awaited<ReturnType<typeof query>>[number];
 
+export const p1 = db
+  .select({ userId: UsersTable.id })
+  .from(UsersTable)
+  .where(eq(UsersTable.username, sql.placeholder("username")))
+  .prepare("p1");
+
+const fn = async (username: string, date: Date) => {
+  try {
+    const [{ userId }] = await p1.execute({ username });
+    if (!userId) {
+      return {
+        data: [],
+        date,
+        total: 0,
+      };
+    }
+    const data = await query(userId, date);
+    return {
+      data,
+      date,
+    };
+  } catch (err) {
+    throw err;
+  }
+};
+
+export type Result = Omit<InfiniteResult<TUserPost>, "total">;
 export const loadMoreUserPosts = async ({
   date,
   username,
-  total,
-  page,
 }: {
   username: string;
   date: Date;
-  total: number;
-  page: number;
-}): Promise<TInfiniteResult<TUserPost>> => {
-  console.log({ username, date, total, page });
-
-  const user = await db.query.UsersTable.findFirst({
-    where(fields, operators) {
-      return operators.eq(fields.username, username);
-    },
-  });
-  if (!user) {
-    return {
-      data: [],
-      total: 0,
-      date,
-      page: 1,
-    };
+}): Promise<Result> => {
+  try {
+    const data = await fn(username, date);
+    return data;
+  } catch (err) {
+    throw err;
   }
-  const data = await query(user.id, date);
-  return {
-    page,
-    data,
-    total,
-    date,
-  };
 };
 
 export const fetchUserPosts = unstable_cache(
-  async ({
-    username,
-    date = new Date(),
-    total = 0,
-  }: Args): Promise<TInfiniteResult<TUserPost>> => {
-    const user = await db.query.UsersTable.findFirst({
-      where(fields, operators) {
-        return operators.eq(fields.username, username);
-      },
-    });
-    if (!user) {
-      return {
-        data: [],
-        total: 0,
-        date,
-        page: 1,
-      };
-    }
-    if (total === 0) {
-      total = await queryTotal(user.id);
-    }
-    const data = await query(user.id, date);
+  async (username: string): Promise<InfiniteResult<TUserPost>> => {
+    const data = await fn(username, new Date());
+    const [{ userId }] = await p1.execute({ username });
+    const [result] = await db
+      .select({
+        total: sql<number>`cast(count(${PostsTable.id}) as int)`,
+      })
+      .from(PostsTable)
+      .where(eq(PostsTable.userId, userId));
     return {
-      page: 1,
-      data,
-      total,
-      date,
+      ...data,
+      total: result.total,
     };
   },
   [POST.userPosts],

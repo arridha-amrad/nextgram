@@ -34,9 +34,6 @@ export const useUserPosts = create<StateAction>()(
       },
       setPosts({ data, total }) {
         set((state) => {
-          data.map((p) => {
-            console.log("created at : ", p.createdAt);
-          });
           state.posts = data.length > 0 ? data : [];
           state.hasMore =
             data.length > 0 ? data.length === MAX_POST_PER_QUERY : false;

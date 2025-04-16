@@ -6,10 +6,10 @@ import {
   NotificationsFilledIcon,
   NotificationsOutlinedIcon,
 } from "@/app/sidebar/Icons";
-import Histories from "@/app/sidebar/SecondarySidebar/Histories";
 import { SearchUser } from "@/app/sidebar/SecondarySidebar/Search";
 import SearchInput from "@/app/sidebar/SecondarySidebar/SearchInput";
 import SearchResult from "@/app/sidebar/SecondarySidebar/SearchResult";
+import { TSearchUser } from "@/lib/drizzle/queries/users/fetchSearchHistories";
 import {
   autoUpdate,
   FloatingPortal,
@@ -23,8 +23,13 @@ import {
 import { AnimatePresence } from "motion/react";
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
+import Histories from "./Histories";
 
-function TopBar() {
+type Props = {
+  searchHistories: TSearchUser[];
+};
+
+function TopBar({ searchHistories }: Props) {
   const [open, setOpen] = useState(false);
   const { refs, floatingStyles, context } = useFloating({
     open,
@@ -77,7 +82,7 @@ function TopBar() {
                     {!!searchKey ? (
                       <SearchResult users={searchResult} />
                     ) : (
-                      <Histories />
+                      <Histories users={searchHistories} />
                     )}
                   </div>
                 </div>

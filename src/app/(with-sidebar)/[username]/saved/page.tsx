@@ -1,6 +1,6 @@
 import { fetchUserSavedPosts } from "@/lib/drizzle/queries/posts/fetchSavedPosts";
 import React from "react";
-import SavedPosts from "./Posts";
+import SavedPosts from "./SavedPosts";
 
 type Props = {
   params: Promise<{ username: string }>;
@@ -9,7 +9,7 @@ type Props = {
 export default async function Page({ params }: Props) {
   const username = (await params).username;
 
-  const posts = await fetchUserSavedPosts({ username });
+  const posts = await fetchUserSavedPosts(username);
 
   if (posts.data.length === 0) {
     return (

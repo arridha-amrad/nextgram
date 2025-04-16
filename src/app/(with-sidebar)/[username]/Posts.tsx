@@ -1,94 +1,83 @@
 "use client";
 
-import { useUserPosts } from "./store";
 import Spinner from "@/components/Spinner";
+import { loadMoreUserPosts } from "@/lib/api/posts";
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
-import { TInfiniteResult } from "@/lib/drizzle/queries/type";
-import { showToast } from "@/lib/utils";
+import { InfiniteResult } from "@/lib/drizzle/queries/type";
+import { showToast, toMatrixPost } from "@/lib/utils";
+import { useProfileStore } from "@/providers/profile-store-provider";
 import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useParams } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import useMeasure from "react-use-measure";
 import Post from "./PostCard";
-import { loadMoreUserPosts } from "@/lib/api/posts";
-
-const toMatrix = (data: TUserPost[]) => {
-  const size = 3;
-  const result: TUserPost[][] = [];
-  for (let i = 0; i < data.length; i += size) {
-    result.push(data.slice(i, i + size));
-  }
-  return result;
-};
 
 type Props = {
-  initialPosts: TInfiniteResult<TUserPost>;
+  initialPosts: InfiniteResult<TUserPost>;
 };
 
 export default function UserPosts({ initialPosts }: Props) {
-  const addPosts = useUserPosts((store) => store.addPosts);
-  const userPosts = useUserPosts((store) => store.posts);
-  const hasMore = useUserPosts((store) => store.hasMore);
-  const setHasMore = useUserPosts((store) => store.setHasMore);
-  const total = useUserPosts((store) => store.total);
-  const setPosts = useUserPosts((store) => store.setPosts);
-  const [page, setPage] = useState(0);
-
-  const [lDate, setLDate] = useState(new Date());
-
-  useEffect(() => {
-    setPosts(initialPosts);
-    setPage(1);
-    const d = initialPosts.data[initialPosts.data.length - 1].createdAt;
-    setLDate(d);
-    // eslint-disable-next-line
-  }, []);
-
+  const addPosts = useProfileStore((state) => state.addPosts);
+  const setPosts = useProfileStore((state) => state.setPosts);
+  const profilePosts = useProfileStore((state) => state.posts);
+  const hasMore = useProfileStore((state) => state.hasMorePosts);
   const params = useParams();
   const [rowRef, { width }] = useMeasure();
   const { ref: refObserver, inView } = useInView({ threshold: 1 });
-  const posts = toMatrix(userPosts);
+  const posts = toMatrixPost(profilePosts);
   const parentRef = useRef<HTMLDivElement | null>(null);
   const parentOffsetRef = useRef(0);
+  const [latestDate, setLatestDate] = useState(new Date());
+  const [hasInitialized, setHasInitialized] = useState(false);
+  const [stop, setStop] = useState(false);
+
+  useEffect(() => {
+    if (initialPosts.data.length > 0) {
+      setPosts(initialPosts.data, "default", initialPosts.total);
+      const d = initialPosts.data[initialPosts.data.length - 1].createdAt;
+      setLatestDate(d);
+      const id = setTimeout(() => {
+        setHasInitialized(true);
+      }, 1000);
+      return () => {
+        clearTimeout(id);
+      };
+    }
+    // eslint-disable-next-line
+  }, []);
 
   useLayoutEffect(() => {
     parentOffsetRef.current = parentRef.current?.offsetTop ?? 0;
   }, []);
 
   useEffect(() => {
-    if (inView) {
-      setPage((val) => (val += 1));
-    }
-  }, [inView]);
-
-  useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const result = await loadMoreUserPosts({
-          date: lDate,
-          total,
+        const { data } = await loadMoreUserPosts({
+          date: new Date(latestDate),
           username: params.username as string,
-          page,
         });
-        if (result.data.length === 0) {
-          setHasMore(false);
+        if (data.length > 0) {
+          addPosts(data, "default");
+          const date = data[data.length - 1].createdAt;
+          setLatestDate(date);
         } else {
-          addPosts(result);
+          setStop(true);
         }
       } catch {
         showToast("Something went wrong", "error");
+        setStop(true);
       }
     };
-
-    if (hasMore && page > 1) {
+    if (inView && hasInitialized) {
       fetchPosts();
     }
     // eslint-disable-next-line
-  }, [page]);
+  }, [inView]);
 
   const rowVirtualizer = useWindowVirtualizer({
-    count: hasMore ? posts.length + 1 : posts.length,
+    count: hasMore && !stop ? posts.length + 1 : posts.length,
     estimateSize: () => 100,
     overscan: 5,
   });
@@ -127,7 +116,7 @@ export default function UserPosts({ initialPosts }: Props) {
               }}
               className="relative w-full"
             >
-              {isLoaderRow ? (
+              {isLoaderRow && hasMore && !stop ? (
                 <div
                   className="flex w-full items-center justify-center py-4"
                   ref={refObserver}

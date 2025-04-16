@@ -2,7 +2,7 @@ import { NEXT_PUBLIC_BASE_URL } from "@/config.env-client";
 import { POST } from "../cacheKeys";
 import { TFeedPost } from "../drizzle/queries/posts/fetchFeedPosts";
 import { TLikeUsers } from "../drizzle/queries/posts/fetchPostLikes";
-import { TInfiniteResult } from "@/lib/drizzle/queries/type";
+import { InfiniteResult, TInfiniteResult } from "@/lib/drizzle/queries/type";
 import { TUserPost } from "../drizzle/queries/posts/fetchUserPosts";
 
 export const getLikes = async ({
@@ -29,28 +29,35 @@ export const getLikes = async ({
   }
 };
 
+type ProfilePostParams = {
+  username: string;
+  date: Date;
+};
 export const loadMoreUserPosts = async ({
   username,
   date,
-  total,
-  page,
-}: {
-  username: string;
-  date: Date;
-  total: number;
-  page: number;
-}): Promise<TInfiniteResult<TUserPost>> => {
+}: ProfilePostParams): Promise<InfiniteResult<TUserPost>> => {
   try {
-    console.log("last date at api/posts : ", date);
-
     const res = await fetch(
-      `${NEXT_PUBLIC_BASE_URL}/api/user/${username}/posts?date=${date}&total=${total}&page=${page}`,
+      `${NEXT_PUBLIC_BASE_URL}/api/user/${username}/posts?date=${date.toISOString()}`,
     );
-    if (!res.ok) {
-      throw new Error("Something wen wrong");
-    }
     const data = await res.json();
-    return data as TInfiniteResult<TUserPost>;
+    return data as InfiniteResult<TUserPost>;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const loadMoreUserSavedPosts = async ({
+  date,
+  username,
+}: ProfilePostParams): Promise<InfiniteResult<TUserPost>> => {
+  try {
+    const res = await fetch(
+      `${NEXT_PUBLIC_BASE_URL}/api/user/${username}/posts?date=${date.toISOString()}`,
+    );
+    const data = await res.json();
+    return data as InfiniteResult<TUserPost>;
   } catch (err) {
     throw err;
   }

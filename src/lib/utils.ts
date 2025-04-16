@@ -3,6 +3,16 @@ import { type ClassValue, clsx } from "clsx";
 import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
+import { TUserPost } from "./drizzle/queries/posts/fetchUserPosts";
+
+export const toMatrixPost = (data: TUserPost[]) => {
+  const size = 3;
+  const result: TUserPost[][] = [];
+  for (let i = 0; i < data.length; i += size) {
+    result.push(data.slice(i, i + size));
+  }
+  return result;
+};
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

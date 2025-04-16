@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import ChevronIcon from "@/icons/Chevron";
+import { cn } from "@/lib/utils";
 import {
   autoUpdate,
   FloatingPortal,
@@ -14,8 +14,9 @@ import {
 } from "@floating-ui/react";
 import { Button, Switch } from "@headlessui/react";
 import { AnimatePresence, motion } from "motion/react";
+import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
-import { HTMLAttributes, ReactNode, useState } from "react";
+import { HTMLAttributes, ReactNode, useState, useTransition } from "react";
 import ButtonLink from "./ButtonLink";
 import {
   ActivityIcon,
@@ -27,6 +28,10 @@ import {
   SettingsIcon,
   SunIcon,
 } from "./Icons";
+
+import LogoutDialog from "@/components/LogoutDialog";
+import { page } from "@/lib/pages";
+import { useRouter } from "next/navigation";
 
 export default function Options() {
   const [open, setOpen] = useState(false);
@@ -49,6 +54,16 @@ export default function Options() {
 
   const [openTheme, setOpenTheme] = useState(false);
   const { theme } = useTheme();
+
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const logout = async () => {
+    await signOut({ redirect: false });
+    startTransition(async () => {
+      await new Promise((res) => setTimeout(res, 1000));
+      router.replace(page.login, { scroll: false });
+    });
+  };
 
   return (
     <>
@@ -121,7 +136,7 @@ export default function Options() {
                     />
                     <hr className="bg-skin-muted/20 my-2 h-px w-full border-0" />
                     <OptionsButton label="Switch Account" />
-                    <OptionsButton label="Logout" />
+                    <OptionsButton onClick={logout} label="Logout" />
                   </>
                 )}
               </motion.div>
@@ -129,6 +144,7 @@ export default function Options() {
           </FloatingPortal>
         )}
       </AnimatePresence>
+      <LogoutDialog isPending={isPending} />
     </>
   );
 }

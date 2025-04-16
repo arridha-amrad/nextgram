@@ -1,89 +1,80 @@
 "use client";
 
 import Spinner from "@/components/Spinner";
-import { loadMoreUserPosts } from "@/lib/actions/post";
+import { loadMoreUserSavedPosts } from "@/lib/api/posts";
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
-import { TInfiniteResult } from "@/lib/drizzle/queries/type";
-import { showToast } from "@/lib/utils";
+import { InfiniteResult } from "@/lib/drizzle/queries/type";
+import { showToast, toMatrixPost } from "@/lib/utils";
+import { useProfileStore } from "@/providers/profile-store-provider";
 import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useParams, usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useParams } from "next/navigation";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import useMeasure from "react-use-measure";
 import Post from "../PostCard";
-import { useUserPosts } from "../store";
-
-const toMatrix = (data: TUserPost[]) => {
-  const size = 3;
-  const result: TUserPost[][] = [];
-  for (let i = 0; i < data.length; i += size) {
-    result.push(data.slice(i, i + size));
-  }
-  return result;
-};
 
 type Props = {
-  initialPosts: TInfiniteResult<TUserPost>;
+  initialPosts: InfiniteResult<TUserPost>;
 };
 
-export default function SavedPosts({ initialPosts }: Props) {
-  const addPosts = useUserPosts((store) => store.addPosts);
-  const userPosts = useUserPosts((store) => store.posts);
-  const hasMore = useUserPosts((store) => store.hasMore);
-  const lastDate = useUserPosts((store) => store.lastDate);
-  const setHasMore = useUserPosts((store) => store.setHasMore);
-  const total = useUserPosts((store) => store.total);
-  const setPosts = useUserPosts((store) => store.setPosts);
+export default function UserPosts({ initialPosts }: Props) {
+  const addPosts = useProfileStore((state) => state.addPosts);
+  const profilePosts = useProfileStore((state) => state.savedPosts);
+  const hasMore = useProfileStore((state) => state.hasMoreSavedPosts);
+
+  const params = useParams();
+  const [rowRef, { width }] = useMeasure();
+  const { ref: refObserver, inView } = useInView({ threshold: 1 });
+  const posts = toMatrixPost(profilePosts);
+  const parentRef = useRef<HTMLDivElement | null>(null);
+  const parentOffsetRef = useRef(0);
+  const [latestDate, setLatestDate] = useState(new Date());
+  const [hasInitialized, setHasInitialized] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    setPosts(initialPosts);
+    if (initialPosts.data.length > 0) {
+      addPosts(initialPosts.data, "saved");
+      const d = initialPosts.data[initialPosts.data.length - 1].createdAt;
+      setLatestDate(d);
+      const id = setTimeout(() => {
+        setHasInitialized(true);
+      }, 1000);
+      return () => {
+        clearTimeout(id);
+      };
+    }
     // eslint-disable-next-line
   }, []);
 
-  const params = useParams();
-  const pathname = usePathname();
-  const [rowRef, { width }] = useMeasure();
-
-  const { ref: refObserver, inView } = useInView({ threshold: 1 });
-
-  const posts = toMatrix(userPosts);
-
-  const parentRef = useRef<HTMLDivElement | null>(null);
-  const parentOffsetRef = useRef(0);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const { data } = await loadMoreUserSavedPosts({
+          date: new Date(latestDate),
+          username: params.username as string,
+        });
+        addPosts(data, "saved");
+        const date = data[data.length - 1].createdAt;
+        setLatestDate(date);
+      } catch {
+        showToast("Something went wrong", "error");
+        setHasError(true);
+      }
+    };
+    if (inView && hasInitialized) {
+      fetchPosts();
+    }
+    // eslint-disable-next-line
+  }, [inView]);
 
   useLayoutEffect(() => {
+    console.log(parentRef.current?.offsetTop ?? 0);
     parentOffsetRef.current = parentRef.current?.offsetTop ?? 0;
   }, []);
 
-  useEffect(() => {
-    if (hasMore && inView) {
-      loadMoreUserPosts
-        .bind(
-          null,
-          pathname,
-        )({
-          date: lastDate,
-          total,
-          username: params.username as string,
-        })
-        .then((result) => {
-          if (result?.data) {
-            if (result.data.data.length === 0) {
-              setHasMore(false);
-            } else {
-              addPosts(result.data);
-            }
-          }
-          if (result?.serverError) {
-            showToast(result.serverError, "error");
-          }
-        });
-    }
-    // eslint-disable-next-line
-  }, [hasMore, inView]);
-
   const rowVirtualizer = useWindowVirtualizer({
-    count: hasMore ? posts.length + 1 : posts.length,
+    count: hasMore && !hasError ? posts.length + 1 : posts.length,
     estimateSize: () => 100,
     overscan: 5,
   });

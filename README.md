@@ -15,7 +15,10 @@ Features:
 2. Post (2 pages: "/", and "/post/:id")
 
 - Create
-- Like
+  - upload multiple image
+  - using third-party storage (pinata, cloudinary)
+  - interactive like instagram web
+- Like - Dislike
 - Save/Bookmark
 - Comment
   - Like Comment
@@ -38,3 +41,8 @@ Features:
 4. Others
 
 - Switch Theme
+- Virtual List on feed posts based on window's scroll
+- Virtual List on user posts based on window's scroll with grid view
+- Animating with motion (sidebar)
+- Responsive view
+- Interactive carousel with embla

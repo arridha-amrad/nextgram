@@ -5,7 +5,7 @@ import { useUserPosts } from "@/app/(with-sidebar)/[username]/store";
 import Avatar from "@/components/Avatar";
 import { cn, showToast } from "@/lib/utils";
 import { useParams } from "next/navigation";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Accessibility from "./Accessibility";
 import { createPostActionRevalidate } from "./action";
@@ -19,7 +19,7 @@ type Props = {
 };
 
 const FormCreatePost = ({ username }: Props) => {
-  const { step, setStep, files, newPostFormRef } = useCreatePost();
+  const { setStep, files, newPostFormRef } = useCreatePost();
   const { addPost } = useFeedPosts();
   const { addPost: addUserPost } = useUserPosts();
 
@@ -60,18 +60,13 @@ const FormCreatePost = ({ username }: Props) => {
           });
         }
         setStep("isSubmitted");
+        createPostActionRevalidate();
       }
     } catch {
       toast.error("Failed to create post");
       setStep("makeCaption");
     }
   };
-
-  useEffect(() => {
-    if (step === "isSubmitted") {
-      createPostActionRevalidate();
-    }
-  }, [step]);
 
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const cursorPositionRef = useRef<number>(0);

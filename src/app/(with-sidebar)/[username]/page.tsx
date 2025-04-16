@@ -10,7 +10,7 @@ type Params = {
 
 export default async function Page({ params }: Params) {
   const username = (await params).username;
-  const data = await fetchUserPosts({ username });
+  const data = await fetchUserPosts(username);
 
   const session = await getAuth();
 
@@ -23,8 +23,6 @@ export default async function Page({ params }: Params) {
       </div>
     );
   }
-
-  console.log(data);
 
   return <Posts initialPosts={data} />;
 }
