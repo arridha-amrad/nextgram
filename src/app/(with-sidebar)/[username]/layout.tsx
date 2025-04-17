@@ -12,6 +12,7 @@ import Footer from "../../../components/Footer";
 import Highlights from "./Highlights";
 import Profile from "./Profile";
 import Tabs from "./Tabs";
+import PrivateAccountInfo from "./PrivateAccountInfo";
 
 type Props = {
   params: Promise<{ username: string }>;
@@ -58,11 +59,13 @@ const Layout = async ({ children, modal, params }: Props) => {
 
   const isAuthUser = session?.user.username === username;
 
+  const canYouSee = profile.isProtected ? profile.isFollowed : true;
+
   return (
     <ProfileStoreProvider>
       <main
         className={cn(
-          "mx-auto w-full xl:max-w-[935px]",
+          "mx-auto flex w-full flex-col xl:max-w-[935px]",
           session ? "py-10" : "",
         )}
       >
@@ -71,13 +74,13 @@ const Layout = async ({ children, modal, params }: Props) => {
             <InstagramLogo className="text-3xl" />
             <div className="flex items-center gap-2">
               <Link
-                className="bg-skin-primary flex h-8 items-center justify-center rounded-lg px-4 text-sm font-medium"
+                className="bg-skin-primary roundedLg flex h-8 items-center justify-center px-4 text-sm font-medium"
                 href={page.login}
               >
                 Login
               </Link>
               <Link
-                className="text-skin-primary flex h-8 items-center justify-center rounded-lg px-4 text-sm font-medium"
+                className="text-skin-primary roundedLg flex h-8 items-center justify-center px-4 text-sm font-medium"
                 href={page.signup}
               >
                 Signup
@@ -87,9 +90,18 @@ const Layout = async ({ children, modal, params }: Props) => {
         )}
         <Profile isAuthUser={isAuthUser} profile={profile} />
         {isAuthUser && <Highlights />}
-        <Tabs username={username} />
-        {children}
-        {modal}
+        {canYouSee ? (
+          <>
+            <Tabs username={username} />
+            {children}
+            {modal}
+          </>
+        ) : (
+          <PrivateAccountInfo
+            profileIsFollowed={profile.isFollowed}
+            profileUserId={profile.id}
+          />
+        )}
         <Footer />
       </main>
     </ProfileStoreProvider>

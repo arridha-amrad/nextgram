@@ -11,6 +11,7 @@ import {
   uniqueIndex,
   uuid,
   varchar,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 export const providerEnum = pgEnum("provider_enum", [
@@ -139,6 +140,7 @@ export const UsersTable = pgTable(
     verifiedAt: timestamp("verified_at"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    isProtected: boolean("is_protected").default(false).notNull(),
   },
   (table) => [
     uniqueIndex("usernameIndex").on(table.username),

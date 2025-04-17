@@ -48,6 +48,7 @@ const query = async (userId: string, authUserId?: string) => {
           ELSE false
         END
       `,
+      isProtected: UsersTable.isProtected,
     })
     .from(UsersTable)
     .where(eq(UsersTable.id, userId))
