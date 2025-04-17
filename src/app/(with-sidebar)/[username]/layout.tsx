@@ -1,17 +1,17 @@
+import InstagramLogo from "@/components/InstagramLogo";
 import fetchUserMetadata from "@/lib/drizzle/queries/users/fetchUserMetadata";
 import { fetchUserProfile } from "@/lib/drizzle/queries/users/fetchUserProfile";
 import { getAuth } from "@/lib/next.auth";
+import { page } from "@/lib/pages";
+import { cn } from "@/lib/utils";
 import { ProfileStoreProvider } from "@/providers/profile-store-provider";
 import { Metadata } from "next";
 import Link from "next/link";
 import { ReactNode } from "react";
 import Footer from "../../../components/Footer";
 import Highlights from "./Highlights";
-import Tabs from "./Tabs";
 import Profile from "./Profile";
-import InstagramLogo from "@/components/InstagramLogo";
-import { cn } from "@/lib/utils";
-import { page } from "@/lib/pages";
+import Tabs from "./Tabs";
 
 type Props = {
   params: Promise<{ username: string }>;

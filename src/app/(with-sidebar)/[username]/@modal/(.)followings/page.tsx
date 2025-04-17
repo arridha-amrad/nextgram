@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { fetchUserFollowings } from "@/lib/drizzle/queries/users/fetchUserFollowings";
-import Modal from "../Modal";
 import Followings from "./Followings";
 
 type Props = {
@@ -17,11 +16,7 @@ const Page = async ({ params }: Props) => {
     username,
   });
 
-  return (
-    <Modal href="followings">
-      <Followings users={users} />
-    </Modal>
-  );
+  return <Followings userId={session?.user.id ?? ""} users={users} />;
 };
 
 export default Page;

@@ -87,7 +87,9 @@ export default function DialogContentWrapper({
               className="bg-foreground/10 w-full rounded-lg px-4 py-2 text-sm outline-0 placeholder:font-light"
             />
           </div>
-          <div className="max-h-[500px] overflow-y-auto">{children}</div>
+          <div className="custom-scrollbar max-h-[300px] overflow-y-auto">
+            {children}
+          </div>
         </DialogPanel>
       </div>
     </Dialog>

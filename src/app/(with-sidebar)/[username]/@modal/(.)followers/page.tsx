@@ -1,6 +1,5 @@
 import { fetchUserFollowers } from "@/lib/drizzle/queries/users/fetchUserFollowers";
 import { getAuth } from "@/lib/next.auth";
-import Modal from "../Modal";
 import Followers from "./Followers";
 
 type Props = {
@@ -17,11 +16,7 @@ const Page = async ({ params }: Props) => {
     username,
   });
 
-  return (
-    <Modal href="followers">
-      <Followers users={users} />
-    </Modal>
-  );
+  return <Followers userId={session?.user.id ?? ""} users={users} />;
 };
 
 export default Page;

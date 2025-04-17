@@ -46,11 +46,9 @@ function Carousel() {
         {[...Array(30)].map((_, i) => (
           <div
             key={i}
+            className="w-[14.5%] min-w-0 flex-none pl-4 sm:w-[12.5%]"
             style={{
               transform: "translate3d(0,0,0)",
-              flex: `0 0 ${100 / 8}%`,
-              minWidth: 0,
-              paddingLeft: "1rem",
             }}
           >
             <Story name={i + 1} />

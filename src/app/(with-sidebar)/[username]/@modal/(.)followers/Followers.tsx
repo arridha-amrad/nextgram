@@ -1,34 +1,47 @@
 "use client";
 
-import UserCardWithFollowButton from "@/components/UserCardWithFollowButton";
-import { TFollow } from "@/lib/drizzle/queries/users/fetchUserFollowers";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
+import ModalUsers from "@/components/ModalUsers";
+import { TFollowing } from "@/lib/drizzle/queries/users/fetchUserFollowings";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type Props = {
-  users: TFollow[];
+  users: TFollowing[];
+  userId: string;
 };
 
-const Followers = ({ users }: Props) => {
-  const session = useSession();
-  const [followers] = useState(users);
+const Followings = ({ users, userId }: Props) => {
+  const [open, setOpen] = useState(false);
+  const { username } = useParams();
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const path = `/${username}/followers`;
+
+  useEffect(() => {
+    if (pathname === path) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+    // eslint-disable-next-line
+  }, [pathname]);
+
+  const handleClose = () => {
+    setOpen(false);
+    router.back();
+  };
+
   return (
-    <div className="w-sm">
-      {followers.length > 0 ? (
-        followers.map((user) => (
-          <UserCardWithFollowButton
-            sessionUserId={session?.data?.user.id ?? ""}
-            key={user.id}
-            user={user}
-          />
-        ))
-      ) : (
-        <div className="flex items-center justify-center py-4">
-          <p className="text-skin-muted">You have no followers</p>
-        </div>
-      )}
-    </div>
+    <ModalUsers
+      isLoading={false}
+      open={open}
+      title="Followers"
+      userId={userId}
+      users={users}
+      handleClose={handleClose}
+    />
   );
 };
 
-export default Followers;
+export default Followings;

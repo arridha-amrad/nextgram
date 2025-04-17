@@ -1,6 +1,6 @@
 import { fetchUserPosts } from "@/lib/drizzle/queries/posts/fetchUserPosts";
-import Posts from "./Posts";
 import { getAuth } from "@/lib/next.auth";
+import Posts from "./Posts";
 
 type Params = {
   params: Promise<{

@@ -1,4 +1,3 @@
-import { relations } from "drizzle-orm";
 import {
   index,
   json,
@@ -78,7 +77,6 @@ export const PasswordResetRequestTable = pgTable(
   (table) => [index().on(table.userId)],
 );
 
-//===========================================================================
 export const SearchUsersTable = pgTable(
   "search_users",
   {
@@ -95,20 +93,7 @@ export const SearchUsersTable = pgTable(
     index("relations_search_users_search_idx").on(table.searchId),
   ],
 );
-export const SearchUsersRelation = relations(SearchUsersTable, ({ one }) => ({
-  user: one(UsersTable, {
-    fields: [SearchUsersTable.userId],
-    references: [UsersTable.id],
-    relationName: "searchedBy",
-  }),
-  searchUser: one(UsersTable, {
-    fields: [SearchUsersTable.searchId],
-    references: [UsersTable.id],
-    relationName: "searchFor",
-  }),
-}));
 
-//===========================================================================
 export const UserInfoTable = pgTable(
   "user_info",
   {
@@ -121,18 +106,9 @@ export const UserInfoTable = pgTable(
     bio: text("bio"),
     gender: genderEnum("gender"),
   },
-  (table) => ({
-    uniqueUser: uniqueIndex("userIndex").on(table.userId),
-  }),
+  (table) => [uniqueIndex("userIndex").on(table.userId)],
 );
-export const UserInfoRelation = relations(UserInfoTable, ({ one }) => ({
-  user: one(UsersTable, {
-    fields: [UserInfoTable.userId],
-    references: [UsersTable.id],
-  }),
-}));
 
-//===========================================================================
 export const FollowingsTable = pgTable(
   "followings_table",
   {
@@ -143,28 +119,13 @@ export const FollowingsTable = pgTable(
       .notNull()
       .references(() => UsersTable.id, { onDelete: "cascade" }),
   },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.userId, table.followId] }),
-      user: index("relations_user_idx").on(table.userId),
-      follow: index("relations_follow_idx").on(table.followId),
-    };
-  },
+  (table) => [
+    primaryKey({ columns: [table.userId, table.followId] }),
+    index("relations_user_idx").on(table.userId),
+    index("relations_follow_idx").on(table.followId),
+  ],
 );
-export const FollowingsRelation = relations(FollowingsTable, ({ one }) => ({
-  user: one(UsersTable, {
-    fields: [FollowingsTable.userId],
-    references: [UsersTable.id],
-    relationName: "followings",
-  }),
-  follow: one(UsersTable, {
-    fields: [FollowingsTable.followId],
-    references: [UsersTable.id],
-    relationName: "followers",
-  }),
-}));
 
-//===========================================================================
 export const UsersTable = pgTable(
   "users",
   {
@@ -179,28 +140,13 @@ export const UsersTable = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
-  (table) => {
-    return {
-      uniqueUsername: uniqueIndex("usernameIndex").on(table.username),
-      uniqueEmail: uniqueIndex("emailIndex").on(table.email),
-      uniqueEmailAndProvider: unique("emailAndProvider").on(
-        table.email,
-        table.provider,
-      ),
-    };
-  },
+  (table) => [
+    uniqueIndex("usernameIndex").on(table.username),
+    uniqueIndex("emailIndex").on(table.email),
+    unique("emailAndProvider").on(table.email, table.provider),
+  ],
 );
-export const usersRelations = relations(UsersTable, ({ many, one }) => ({
-  userInfo: one(UserInfoTable),
-  posts: many(PostsTable),
-  likes: many(PostLikesTable),
-  comments: many(CommentsTable),
-  followers: many(FollowingsTable, { relationName: "followers" }),
-  followings: many(FollowingsTable, { relationName: "followings" }),
-  searchUsers: many(SearchUsersTable, { relationName: "searchFor" }),
-}));
 
-//===========================================================================
 export const PostsTable = pgTable("posts", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id")
@@ -212,16 +158,7 @@ export const PostsTable = pgTable("posts", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
-export const postsRelations = relations(PostsTable, ({ one, many }) => ({
-  owner: one(UsersTable, {
-    fields: [PostsTable.userId],
-    references: [UsersTable.id],
-  }),
-  likes: many(PostLikesTable),
-  comments: many(CommentsTable),
-}));
 
-//===========================================================================
 export const PostLikesTable = pgTable(
   "likes",
   {
@@ -232,24 +169,9 @@ export const PostLikesTable = pgTable(
       .notNull()
       .references(() => PostsTable.id),
   },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.userId, table.postId] }),
-    };
-  },
+  (table) => [primaryKey({ columns: [table.userId, table.postId] })],
 );
-export const likesRelations = relations(PostLikesTable, ({ one }) => ({
-  post: one(PostsTable, {
-    fields: [PostLikesTable.postId],
-    references: [PostsTable.id],
-  }),
-  user: one(UsersTable, {
-    fields: [PostLikesTable.userId],
-    references: [UsersTable.id],
-  }),
-}));
 
-//===========================================================================
 export const CommentsTable = pgTable("comments", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id")
@@ -262,20 +184,7 @@ export const CommentsTable = pgTable("comments", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
-export const commentsRelations = relations(CommentsTable, ({ one, many }) => ({
-  owner: one(UsersTable, {
-    fields: [CommentsTable.userId],
-    references: [UsersTable.id],
-  }),
-  post: one(PostsTable, {
-    fields: [CommentsTable.postId],
-    references: [PostsTable.id],
-  }),
-  likes: many(CommentLikesTable),
-  replies: many(RepliesTable),
-}));
 
-//===========================================================================
 export const CommentLikesTable = pgTable(
   "comment_likes",
   {
@@ -286,27 +195,9 @@ export const CommentLikesTable = pgTable(
       .notNull()
       .references(() => CommentsTable.id),
   },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.commentId, table.userId] }),
-    };
-  },
-);
-export const commentLikesRelations = relations(
-  CommentLikesTable,
-  ({ one }) => ({
-    comment: one(CommentsTable, {
-      fields: [CommentLikesTable.commentId],
-      references: [CommentsTable.id],
-    }),
-    user: one(UsersTable, {
-      fields: [CommentLikesTable.userId],
-      references: [UsersTable.id],
-    }),
-  }),
+  (table) => [primaryKey({ columns: [table.commentId, table.userId] })],
 );
 
-//===========================================================================
 export const RepliesTable = pgTable("replies", {
   id: uuid("id").primaryKey().defaultRandom(),
   message: text("message").notNull(),
@@ -319,22 +210,7 @@ export const RepliesTable = pgTable("replies", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
-export const repliesTableRelations = relations(
-  RepliesTable,
-  ({ one, many }) => ({
-    owner: one(UsersTable, {
-      fields: [RepliesTable.userId],
-      references: [UsersTable.id],
-    }),
-    comment: one(CommentsTable, {
-      fields: [RepliesTable.commentId],
-      references: [CommentsTable.id],
-    }),
-    likes: many(ReplyLikesTable),
-  }),
-);
 
-//===========================================================================
 export const ReplyLikesTable = pgTable(
   "reply_likes",
   {
@@ -345,17 +221,5 @@ export const ReplyLikesTable = pgTable(
       .notNull()
       .references(() => RepliesTable.id),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.replyId, table.userId] }),
-  }),
+  (table) => [primaryKey({ columns: [table.replyId, table.userId] })],
 );
-export const replyLikesRelations = relations(ReplyLikesTable, ({ one }) => ({
-  user: one(UsersTable, {
-    fields: [ReplyLikesTable.userId],
-    references: [UsersTable.id],
-  }),
-  reply: one(RepliesTable, {
-    fields: [ReplyLikesTable.replyId],
-    references: [RepliesTable.id],
-  }),
-}));

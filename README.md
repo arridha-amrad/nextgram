@@ -1,6 +1,6 @@
 Features:
 
-1. Authentication
+1. Authentication, using authjs
 
 - Signup
 - Login

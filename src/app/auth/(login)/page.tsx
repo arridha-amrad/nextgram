@@ -6,6 +6,8 @@ import { page } from "@/lib/pages";
 import InstagramDownloadLinks from "@/components/InstagramDownloadLinks";
 import FormLogin from "./FormLogin";
 import { Suspense } from "react";
+import GoogleButton from "@/components/SocialButtons/GoogleButton";
+import GithubButton from "@/components/SocialButtons/GithubButton";
 
 export default function Page() {
   return (
@@ -28,6 +30,10 @@ export default function Page() {
             >
               Forgot password
             </Link>
+          </div>
+          <div className="mb-4 flex items-center gap-4">
+            <GoogleButton />
+            <GithubButton />
           </div>
         </div>
         <div className="border-skin-elevated-separator mt-4 flex items-center justify-center rounded-lg border p-4">

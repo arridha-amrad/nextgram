@@ -1,12 +1,11 @@
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import Spinner from "./Spinner";
-import { Dispatch, SetStateAction } from "react";
 import UserWithFollowButtonCard from "@/components/UserCardWithFollowButton";
 import { TFollow } from "@/lib/drizzle/queries/users/fetchUserFollowers";
 
 type Props = {
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  handleClose: VoidFunction;
   isLoading: boolean;
   users: TFollow[];
   userId: string;
@@ -15,18 +14,14 @@ type Props = {
 
 export default function ModalUsers({
   open,
-  setOpen,
+  handleClose,
   isLoading,
   userId,
   users,
   title,
 }: Props) {
   return (
-    <Dialog
-      open={open}
-      onClose={() => setOpen(false)}
-      className="relative z-50"
-    >
+    <Dialog open={open} onClose={handleClose} className="relative z-50">
       <DialogBackdrop className="fixed inset-0 bg-black/50" />
       <div className="fixed inset-0 flex items-center justify-center px-4 py-10">
         <DialogPanel className="flex w-full max-w-sm items-center justify-center">
@@ -34,7 +29,7 @@ export default function ModalUsers({
             <div className="relative space-x-2 py-3 text-center">
               <h1 className="font-semibold tracking-wide">{title}</h1>
               <div className="absolute top-7 right-3 -translate-y-1/2">
-                <button onClick={() => setOpen(false)}>
+                <button onClick={handleClose}>
                   <svg
                     aria-label="Close"
                     fill="currentColor"
@@ -71,7 +66,14 @@ export default function ModalUsers({
               </div>
             </div>
             <hr className="border-foreground/20" />
-            <div className="max-h-[500px] w-full max-w-sm overflow-y-auto">
+            <div className="relative w-full px-4 py-3">
+              <input
+                type="text"
+                placeholder="Search"
+                className="bg-foreground/10 w-full rounded-lg px-4 py-2 text-sm outline-0 placeholder:font-light"
+              />
+            </div>
+            <div className="custom-scrollbar max-h-[320px] w-full max-w-sm overflow-y-auto border-y-[10px] border-transparent">
               {isLoading ? (
                 <div className="flex items-center justify-center py-4">
                   <Spinner className="w-6" />

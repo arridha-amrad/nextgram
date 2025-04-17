@@ -4,6 +4,7 @@ import { EmojiClickData, SuggestionMode, Theme } from "emoji-picker-react";
 import { Dispatch, RefObject, SetStateAction } from "react";
 
 import dynamic from "next/dynamic";
+import { useTheme } from "next-themes";
 const EmojiPicker = dynamic(() => import("emoji-picker-react"), { ssr: false });
 
 export type TEmojiProps = {
@@ -43,13 +44,14 @@ export default function MyEmoji({
     }, 0);
   };
 
+  const { theme } = useTheme();
+
   return (
     <div className="size-max shrink-0">
       <EmojiPicker
         suggestedEmojisMode={SuggestionMode.RECENT}
         previewConfig={{ showPreview: false }}
-        searchDisabled
-        theme={Theme.DARK}
+        theme={theme === "dark" ? Theme.DARK : Theme.LIGHT}
         onEmojiClick={handleEmojiClick}
         open={open}
       />

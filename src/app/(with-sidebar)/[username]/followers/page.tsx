@@ -9,7 +9,7 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const username = (await params).username;
-  const data = await fetchUserPosts({ username });
+  const data = await fetchUserPosts(username);
 
   return <Posts initialPosts={data} />;
 }

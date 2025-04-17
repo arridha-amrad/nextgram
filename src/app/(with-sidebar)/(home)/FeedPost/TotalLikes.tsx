@@ -34,6 +34,10 @@ export default function ModalPostLovers() {
     }
   };
 
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+
   if (!post || post.sumLikes === 0) return null;
 
   return (
@@ -51,7 +55,7 @@ export default function ModalPostLovers() {
       <ModalUsers
         isLoading={loading}
         open={open}
-        setOpen={setOpen}
+        handleClose={handleCloseModal}
         title="Likes"
         userId={data?.user.id ?? ""}
         users={users}
