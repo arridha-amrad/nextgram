@@ -16,6 +16,8 @@ export const follow = authActionClient
   .schema(schema)
   .bindArgsSchemas<[pathname: z.ZodString]>([z.string()])
   .action(async ({ ctx: { session }, parsedInput: { followId } }) => {
+    console.log("reach out...");
+
     const { id } = session.user;
     const followService = new FollowService();
     const rowExists = await followService.find({ followId, userId: id });

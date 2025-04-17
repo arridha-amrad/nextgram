@@ -1,13 +1,12 @@
 import { cn } from "@/lib/utils";
-import { Lobster } from "next/font/google";
+import { HTMLAttributes } from "react";
 
-const lobster = Lobster({
-  subsets: ["latin"],
-  weight: "400",
-});
+type Props = HTMLAttributes<HTMLHeadingElement>;
 
-export default function InstagramLogo() {
+export default function InstagramLogo(props: Props) {
   return (
-    <h1 className={cn(lobster.className, "text-5xl font-normal")}>Nextgram</h1>
+    <h1 className={cn("font-title text-5xl font-normal", props.className)}>
+      Nextgram
+    </h1>
   );
 }

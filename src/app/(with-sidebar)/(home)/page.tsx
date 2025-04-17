@@ -1,12 +1,18 @@
 import { fetchFeedPosts } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import { getAuth } from "@/lib/next.auth";
 import FeedPosts from "./FeedPosts";
+import { redirect } from "next/navigation";
+import { page } from "@/lib/pages";
 
 export default async function Page() {
   const session = await getAuth();
   const userId = session?.user.id;
 
-  const posts = await fetchFeedPosts({ page: 1, userId: userId ?? "" });
+  if (!userId) {
+    redirect(page.login);
+  }
+
+  const posts = await fetchFeedPosts({ page: 1, userId });
 
   return (
     <div className="mx-auto w-full max-w-[468px] space-y-8 pb-16">

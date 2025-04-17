@@ -5,6 +5,7 @@ import {
 import { SafeActionError } from "./errors/SafeActionError";
 import { getAuth } from "./next.auth";
 import { redirect } from "next/navigation";
+import { page } from "./pages";
 
 export const actionClient = createSafeActionClient({
   handleServerError(e) {
@@ -23,9 +24,9 @@ export const authActionClient = actionClient.use(
 
     if (!session) {
       if (typeof pathname === "string" && pathname.includes("/")) {
-        return redirect(`/login?cb_url=${pathname}`);
+        return redirect(`${page.login}?cb_url=${pathname}`);
       } else {
-        return redirect(`/login`);
+        return redirect(page.login);
       }
     }
 

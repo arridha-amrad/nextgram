@@ -3,6 +3,7 @@
 import Button from "@/components/core/Button";
 import { follow as fl } from "@/lib/actions/follow";
 import { cn } from "@/lib/utils";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -21,6 +22,9 @@ const ButtonFollow = ({ userId, isFollow }: Props) => {
     try {
       await fl.bind(null, pathname)({ followId: userId });
     } catch (err) {
+      if (isRedirectError(err)) {
+        return;
+      }
       console.log(err);
       toast.error("Something went wrong");
     } finally {
@@ -32,7 +36,6 @@ const ButtonFollow = ({ userId, isFollow }: Props) => {
     <Button
       onClick={follow}
       className={cn(
-        "w-24",
         isFollow && "text-skin-base bg-neutral-100 dark:bg-neutral-700",
       )}
       isLoading={isPending}
