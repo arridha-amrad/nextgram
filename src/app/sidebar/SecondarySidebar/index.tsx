@@ -4,6 +4,7 @@ import { FloatingPortal } from "@floating-ui/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useSidebarContext } from "../Context";
 import Search from "./Search";
+import Notifications from "./Notifications";
 
 type Props = {
   setFloating: (node: HTMLElement | null) => void;
@@ -40,11 +41,7 @@ export default function SecondarySidebar({
                   </h1>
                 </div>
                 {isSearchOpen && <Search />}
-                {isNotificationsOpen && (
-                  <div className="relative">
-                    <div>Notification Open</div>
-                  </div>
-                )}
+                {isNotificationsOpen && <Notifications />}
               </div>
             </motion.div>
           </div>

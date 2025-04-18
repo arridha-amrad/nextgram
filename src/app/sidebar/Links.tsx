@@ -35,7 +35,10 @@ function Links({ avatar, username }: Props) {
     setSearchOpen,
     isSearchOpen,
     setNotificationsOpen,
+    notifications,
   } = useSidebarContext();
+
+  const totalNotifications = notifications.length;
 
   return (
     <div className="space-y-2">
@@ -76,17 +79,22 @@ function Links({ avatar, username }: Props) {
         activePath={page.inbox}
         label="Messages"
       />
-      <ButtonLink
-        activeIcon={<NotificationsFilledIcon />}
-        icon={<NotificationsOutlinedIcon />}
-        callback={() => {
-          setNotificationsOpen((val) => !val);
-          if (isSearchOpen) {
-            setSearchOpen(false);
-          }
-        }}
-        label="Notifications"
-      />
+      <div className="relative">
+        <div className="absolute top-5 left-2 flex size-4 -translate-y-1/2 items-center justify-center rounded-full bg-red-500 text-xs">
+          {totalNotifications}
+        </div>
+        <ButtonLink
+          activeIcon={<NotificationsFilledIcon />}
+          icon={<NotificationsOutlinedIcon />}
+          callback={() => {
+            setNotificationsOpen((val) => !val);
+            if (isSearchOpen) {
+              setSearchOpen(false);
+            }
+          }}
+          label="Notifications"
+        />
+      </div>
 
       <CreatePostProvider>
         <NewPostModal>

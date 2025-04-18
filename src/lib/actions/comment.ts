@@ -10,6 +10,8 @@ import CommentService from "../drizzle/services/CommentService";
 import { authActionClient } from "../safeAction";
 import { revalidateTag } from "next/cache";
 import { COMMENTS } from "../cacheKeys";
+import NotificationService from "../drizzle/services/NotificationService";
+import PostService from "../drizzle/services/PostService";
 
 export const create = authActionClient
   .schema(
@@ -29,10 +31,20 @@ export const create = authActionClient
     }) => {
       const { id: userId, username, image } = session.user;
       const commentService = new CommentService();
+      const notifService = new NotificationService();
+      const postService = new PostService();
+      const [post] = await postService.findById(postId);
       const [result] = await commentService.create({
         message,
         postId,
         userId,
+      });
+      await notifService.create({
+        actorId: userId,
+        userId: post.userId,
+        commentId: result.id,
+        type: "comment",
+        postId,
       });
       const data: TComment = {
         ...result,

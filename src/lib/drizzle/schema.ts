@@ -21,6 +21,14 @@ export const providerEnum = pgEnum("provider_enum", [
   "facebook",
 ]);
 
+export const notifEnum = pgEnum("notif_enum", [
+  "follow",
+  "like",
+  "reply",
+  "comment",
+  "save",
+]);
+
 export const genderEnum = pgEnum("gender_enum", ["male", "female"]);
 
 type PostContentUrl = {
@@ -82,10 +90,10 @@ export const SearchUsersTable = pgTable(
   "search_users",
   {
     userId: uuid("user_id")
-      .references(() => UsersTable.id)
+      .references(() => UsersTable.id, { onDelete: "cascade" })
       .notNull(),
     searchId: uuid("search_id")
-      .references(() => UsersTable.id)
+      .references(() => UsersTable.id, { onDelete: "cascade" })
       .notNull(),
   },
   (table) => [
@@ -100,7 +108,7 @@ export const UserInfoTable = pgTable(
   {
     id: serial("id").primaryKey(),
     userId: uuid("user_id")
-      .references(() => UsersTable.id)
+      .references(() => UsersTable.id, { onDelete: "cascade" })
       .notNull(),
     website: varchar("website"),
     occupation: varchar("occupation"),
@@ -109,6 +117,28 @@ export const UserInfoTable = pgTable(
   },
   (table) => [uniqueIndex("userIndex").on(table.userId)],
 );
+
+export const NotificationsTable = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  type: notifEnum("type").notNull(),
+  userId: uuid("user_id")
+    .references(() => UsersTable.id, { onDelete: "cascade" })
+    .notNull(),
+  actorId: uuid("actor_id")
+    .references(() => UsersTable.id, { onDelete: "cascade" })
+    .notNull(),
+  postId: uuid("post_id").references(() => PostsTable.id, {
+    onDelete: "cascade",
+  }),
+  commentId: uuid("comment_id").references(() => CommentsTable.id, {
+    onDelete: "cascade",
+  }),
+  replyId: uuid("reply_id").references(() => RepliesTable.id, {
+    onDelete: "cascade",
+  }),
+  isRead: boolean("is_read").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
 
 export const FollowingsTable = pgTable(
   "followings_table",
@@ -153,7 +183,7 @@ export const PostsTable = pgTable("posts", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id")
     .notNull()
-    .references(() => UsersTable.id),
+    .references(() => UsersTable.id, { onDelete: "cascade" }),
   description: text("description"),
   location: varchar("location"),
   urls: json("urls").$type<PostContentUrl[]>().notNull(),
@@ -166,10 +196,10 @@ export const PostLikesTable = pgTable(
   {
     userId: uuid("user_id")
       .notNull()
-      .references(() => UsersTable.id),
+      .references(() => UsersTable.id, { onDelete: "cascade" }),
     postId: uuid("post_id")
       .notNull()
-      .references(() => PostsTable.id),
+      .references(() => PostsTable.id, { onDelete: "cascade" }),
   },
   (table) => [primaryKey({ columns: [table.userId, table.postId] })],
 );
@@ -178,10 +208,10 @@ export const CommentsTable = pgTable("comments", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id")
     .notNull()
-    .references(() => UsersTable.id),
+    .references(() => UsersTable.id, { onDelete: "cascade" }),
   postId: uuid("post_id")
     .notNull()
-    .references(() => PostsTable.id),
+    .references(() => PostsTable.id, { onDelete: "cascade" }),
   message: text("message").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -192,10 +222,10 @@ export const CommentLikesTable = pgTable(
   {
     userId: uuid("user_id")
       .notNull()
-      .references(() => UsersTable.id),
+      .references(() => UsersTable.id, { onDelete: "cascade" }),
     commentId: uuid("comment_id")
       .notNull()
-      .references(() => CommentsTable.id),
+      .references(() => CommentsTable.id, { onDelete: "cascade" }),
   },
   (table) => [primaryKey({ columns: [table.commentId, table.userId] })],
 );
@@ -205,10 +235,10 @@ export const RepliesTable = pgTable("replies", {
   message: text("message").notNull(),
   userId: uuid("user_id")
     .notNull()
-    .references(() => UsersTable.id),
+    .references(() => UsersTable.id, { onDelete: "cascade" }),
   commentId: uuid("comment_id")
     .notNull()
-    .references(() => CommentsTable.id),
+    .references(() => CommentsTable.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -218,10 +248,10 @@ export const ReplyLikesTable = pgTable(
   {
     userId: uuid("user_id")
       .notNull()
-      .references(() => UsersTable.id),
+      .references(() => UsersTable.id, { onDelete: "cascade" }),
     replyId: uuid("reply_id")
       .notNull()
-      .references(() => RepliesTable.id),
+      .references(() => RepliesTable.id, { onDelete: "cascade" }),
   },
   (table) => [primaryKey({ columns: [table.replyId, table.userId] })],
 );

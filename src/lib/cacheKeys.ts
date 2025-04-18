@@ -19,3 +19,7 @@ export const POST = {
 export const COMMENTS = {
   post: "post-comments",
 };
+
+export const NOTIFICATIONS = {
+  all: "user notifications",
+};

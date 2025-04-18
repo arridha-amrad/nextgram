@@ -1,6 +1,7 @@
 "use client";
 
 import { TSearchUser } from "@/lib/drizzle/queries/users/fetchSearchHistories";
+import { TNotification } from "@/lib/drizzle/queries/users/fetchUserNotifications";
 import { page } from "@/lib/pages";
 import { usePathname } from "next/navigation";
 import {
@@ -23,6 +24,7 @@ type TContext = {
   closeSecondarySidebar: () => void;
   histories: TSearchUser[];
   searchResult: TSearchUser[];
+  notifications: TNotification[];
 };
 
 const Context = createContext<TContext>({
@@ -35,20 +37,24 @@ const Context = createContext<TContext>({
   closeSecondarySidebar: () => {},
   histories: [],
   searchResult: [],
+  notifications: [],
 });
 
 export const SidebarProvider = ({
   children,
   histories,
   searchResult,
+  notificationsData,
 }: {
   children: ReactNode;
   histories: TSearchUser[];
   searchResult: TSearchUser[];
+  notificationsData: TNotification[];
 }) => {
   const [isSmallSidebar, setSmallSidebar] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications] = useState<TNotification[]>(notificationsData);
 
   const pathname = usePathname();
 
@@ -89,6 +95,7 @@ export const SidebarProvider = ({
         closeSecondarySidebar,
         histories,
         searchResult,
+        notifications,
       }}
     >
       {children}

@@ -38,8 +38,8 @@ const Modal = ({ children }: Props) => {
     <Dialog open={open} onClose={closeModal} className="relative z-50">
       <DialogBackdrop
         className={cn(
-          "fixed inset-0 backdrop-blur-sm",
-          theme === "dark" ? "bg-background/50" : "bg-foreground/50",
+          "fixed inset-0",
+          theme === "dark" ? "bg-black/50" : "bg-black/20",
         )}
       />
       <div className="fixed inset-0 flex items-center justify-center">

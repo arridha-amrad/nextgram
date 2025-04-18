@@ -8,6 +8,14 @@ export default class PostService extends BaseService {
     return result;
   }
 
+  public async findById(postId: string) {
+    const result = await this.db
+      .select()
+      .from(PostsTable)
+      .where(eq(PostsTable.id, postId));
+    return result;
+  }
+
   public async findLike(params: typeof PostLikesTable.$inferSelect) {
     const result = await this.db
       .select()

@@ -1,27 +1,36 @@
-import { fetchSearchHistories } from "@/lib/drizzle/queries/users/fetchSearchHistories";
-import { getAuth } from "@/lib/next.auth";
+import { TSearchUser } from "@/lib/drizzle/queries/users/fetchSearchHistories";
 import Container from "./Container";
 import { SidebarProvider } from "./Context";
 import Links from "./Links";
 
+import { TNotification } from "@/lib/drizzle/queries/users/fetchUserNotifications";
 import Options from "./Options";
 import SidebarBrand from "./SidebarBrand";
 import Threads from "./Threads";
 
-export default async function Sidebar() {
-  const session = await getAuth();
-  if (!session) return null;
-  const histories = await fetchSearchHistories({ userId: session.user.id });
+type Props = {
+  avatar: string;
+  username: string;
+  users: TSearchUser[];
+  notifications: TNotification[];
+};
 
+export default async function Sidebar({
+  notifications,
+  users,
+  avatar,
+  username,
+}: Props) {
   return (
-    <SidebarProvider histories={histories} searchResult={[]}>
+    <SidebarProvider
+      notificationsData={notifications}
+      histories={users}
+      searchResult={[]}
+    >
       <Container>
         <SidebarBrand />
         <div className="mb-2 flex-1">
-          <Links
-            avatar={session.user.image ?? "/default.jpg"}
-            username={session.user.username}
-          />
+          <Links avatar={avatar} username={username} />
         </div>
         <div className="mb-8 space-y-2">
           <Threads />
