@@ -4,7 +4,7 @@ import NotificationCard from "./Card";
 function Notifications() {
   const { notifications } = useSidebarContext();
   return (
-    <div className="px-2 pr-4">
+    <div className="custom-scrollbar space-y-4 overflow-y-auto">
       {notifications.map((n) => (
         <NotificationCard key={n.id} notification={n} />
       ))}

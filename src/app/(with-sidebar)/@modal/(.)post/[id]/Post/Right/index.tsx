@@ -13,7 +13,7 @@ const PostExpanded = () => {
     <div className="bg-background border-foreground/10 flex w-[500px] shrink-0 flex-col border-l">
       <Header />
       <hr className="border-foreground/10" />
-      <section className="flex flex-1 basis-0 flex-col items-start overflow-y-auto p-4">
+      <section className="custom-scrollbar flex flex-1 basis-0 flex-col items-start overflow-y-auto p-4">
         <Description />
         <Comments />
       </section>

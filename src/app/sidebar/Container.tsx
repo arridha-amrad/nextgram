@@ -27,7 +27,7 @@ function Container({ children }: Props) {
   const { refs, floatingStyles } = useFloating({
     placement: "right-end",
     strategy: "fixed",
-    middleware: [offset(5), shift()],
+    middleware: [offset(0), shift()],
     whileElementsMounted: autoUpdate,
   });
 

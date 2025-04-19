@@ -1,17 +1,17 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
+import { COMMENTS } from "../cacheKeys";
 import {
   fetchComments,
   TComment,
 } from "../drizzle/queries/comments/fetchComments";
 import CommentService from "../drizzle/services/CommentService";
-import { authActionClient } from "../safeAction";
-import { revalidateTag } from "next/cache";
-import { COMMENTS } from "../cacheKeys";
 import NotificationService from "../drizzle/services/NotificationService";
 import PostService from "../drizzle/services/PostService";
+import { authActionClient } from "../safeAction";
 
 export const create = authActionClient
   .schema(
@@ -34,18 +34,22 @@ export const create = authActionClient
       const notifService = new NotificationService();
       const postService = new PostService();
       const [post] = await postService.findById(postId);
+      // Create comment
       const [result] = await commentService.create({
         message,
         postId,
         userId,
       });
-      await notifService.create({
-        actorId: userId,
-        userId: post.userId,
-        commentId: result.id,
-        type: "comment",
-        postId,
-      });
+      // Create notification if session.userId !== post owner
+      if (userId !== post.userId) {
+        await notifService.create({
+          actorId: userId,
+          userId: post.userId,
+          commentId: result.id,
+          type: "comment",
+          postId,
+        });
+      }
       const data: TComment = {
         ...result,
         avatar: image ?? null,
@@ -69,9 +73,20 @@ export const likeComment = authActionClient
   .action(async ({ ctx: { session }, parsedInput: { commentId } }) => {
     const userId = session.user.id;
     const commentService = new CommentService();
+    const notifService = new NotificationService();
     const likeRows = await commentService.findLike({ commentId, userId });
     if (likeRows.length === 0) {
       await commentService.like({ commentId, userId });
+      const [comment] = await commentService.findById(commentId);
+      if (userId !== comment.userId) {
+        await notifService.create({
+          postId: comment.postId,
+          actorId: userId,
+          userId: comment.userId,
+          type: "like",
+          commentId: commentId,
+        });
+      }
     } else {
       await commentService.disLike({ commentId, userId });
     }

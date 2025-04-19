@@ -8,6 +8,14 @@ class CommentService extends BaseService {
     return result;
   }
 
+  public async findById(id: string) {
+    const result = await this.db
+      .select()
+      .from(CommentsTable)
+      .where(eq(CommentsTable.id, id));
+    return result;
+  }
+
   public async like(data: typeof CommentLikesTable.$inferInsert) {
     await this.db.insert(CommentLikesTable).values(data);
   }

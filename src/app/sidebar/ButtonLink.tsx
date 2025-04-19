@@ -66,7 +66,7 @@ export default function ButtonLink({
         <span
           className={cn(
             "hidden pr-4 pl-2 select-none lg:block",
-            isActive ? "font-normal" : "font-light",
+            isActive ? "font-medium" : "font-normal",
           )}
         >
           {label}

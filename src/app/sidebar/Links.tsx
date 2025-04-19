@@ -79,10 +79,13 @@ function Links({ avatar, username }: Props) {
         activePath={page.inbox}
         label="Messages"
       />
+
       <div className="relative">
-        <div className="absolute top-5 left-2 flex size-4 -translate-y-1/2 items-center justify-center rounded-full bg-red-500 text-xs">
-          {totalNotifications}
-        </div>
+        {totalNotifications > 0 && (
+          <div className="border-background absolute top-4 left-6 flex size-[25px] -translate-y-1/2 items-center justify-center rounded-full border-2 bg-red-500 text-xs text-white">
+            {totalNotifications}
+          </div>
+        )}
         <ButtonLink
           activeIcon={<NotificationsFilledIcon />}
           icon={<NotificationsOutlinedIcon />}

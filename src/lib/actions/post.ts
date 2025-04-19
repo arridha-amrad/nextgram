@@ -25,12 +25,14 @@ export const savePost = authActionClient
     if (savedPosts.length === 0) {
       await postService.savePost({ postId, userId });
       const [post] = await postService.findById(postId);
-      await notifService.create({
-        actorId: userId,
-        userId: post.userId,
-        postId: postId,
-        type: "save",
-      });
+      if (userId !== post.userId) {
+        await notifService.create({
+          actorId: userId,
+          userId: post.userId,
+          postId: postId,
+          type: "save",
+        });
+      }
       message = "saved";
     } else {
       await postService.deleteSavedPost({ postId, userId });
@@ -59,12 +61,14 @@ export const likePost = authActionClient
       if (likeRows.length === 0) {
         await postService.like({ postId, userId });
         const [post] = await postService.findById(postId);
-        await notifService.create({
-          actorId: userId,
-          userId: post.userId,
-          postId: postId,
-          type: "like",
-        });
+        if (userId !== post.userId) {
+          await notifService.create({
+            actorId: userId,
+            userId: post.userId,
+            postId: postId,
+            type: "like",
+          });
+        }
         message = "like";
       } else {
         await postService.dislike({ postId, userId });

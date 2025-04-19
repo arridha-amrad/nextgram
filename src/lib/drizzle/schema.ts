@@ -127,9 +127,11 @@ export const NotificationsTable = pgTable("notifications", {
   actorId: uuid("actor_id")
     .references(() => UsersTable.id, { onDelete: "cascade" })
     .notNull(),
-  postId: uuid("post_id").references(() => PostsTable.id, {
-    onDelete: "cascade",
-  }),
+  postId: uuid("post_id")
+    .references(() => PostsTable.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
   commentId: uuid("comment_id").references(() => CommentsTable.id, {
     onDelete: "cascade",
   }),

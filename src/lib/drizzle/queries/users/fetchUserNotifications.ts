@@ -1,6 +1,6 @@
 import { NOTIFICATIONS } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import {
   CommentsTable,
@@ -33,7 +33,8 @@ const query = async (userId: string) => {
     .innerJoin(UsersTable, eq(UsersTable.id, NotificationsTable.actorId))
     .leftJoin(PostsTable, eq(PostsTable.id, NotificationsTable.postId))
     .leftJoin(CommentsTable, eq(CommentsTable.id, NotificationsTable.commentId))
-    .leftJoin(RepliesTable, eq(RepliesTable.id, NotificationsTable.replyId));
+    .leftJoin(RepliesTable, eq(RepliesTable.id, NotificationsTable.replyId))
+    .orderBy(desc(NotificationsTable.createdAt));
 };
 
 export type TNotification = Awaited<ReturnType<typeof query>>[number];

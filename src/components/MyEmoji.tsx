@@ -1,6 +1,11 @@
 "use client";
 
-import { EmojiClickData, SuggestionMode, Theme } from "emoji-picker-react";
+import {
+  EmojiClickData,
+  EmojiStyle,
+  SuggestionMode,
+  Theme,
+} from "emoji-picker-react";
 import { Dispatch, RefObject, SetStateAction } from "react";
 
 import dynamic from "next/dynamic";
@@ -54,6 +59,8 @@ export default function MyEmoji({
         theme={theme === "dark" ? Theme.DARK : Theme.LIGHT}
         onEmojiClick={handleEmojiClick}
         open={open}
+        className="custom-scrollbar"
+        emojiStyle={EmojiStyle.NATIVE}
       />
     </div>
   );

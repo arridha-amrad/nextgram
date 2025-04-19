@@ -8,6 +8,14 @@ export default class ReplyService extends BaseService {
     return result;
   }
 
+  public async findById(id: string) {
+    const result = await this.db
+      .select()
+      .from(RepliesTable)
+      .where(eq(RepliesTable.id, id));
+    return result;
+  }
+
   public async findLike(params: typeof ReplyLikesTable.$inferSelect) {
     const result = await this.db
       .select()

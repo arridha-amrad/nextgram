@@ -33,6 +33,6 @@ export const fetchSearchHistories = unstable_cache(
   [USERS.searchHistories],
   {
     tags: [USERS.searchHistories],
-    revalidate: 5 * 60,
+    revalidate: 60,
   },
 );
