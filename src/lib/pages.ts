@@ -11,6 +11,7 @@ export const page = {
   settings: "/settings",
   changeUsername: "/settings/change-username",
   changePassword: "/settings/change-password",
+  accountPrivacy: "/settings/account-privacy",
   postDetail: (id: string) => `/post/${id}`,
   profile: (username: string) => `/${username}`,
 };

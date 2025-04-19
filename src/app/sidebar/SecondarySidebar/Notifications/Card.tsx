@@ -8,7 +8,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
-import { HTMLAttributes, ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   notification: TNotification;
@@ -34,65 +34,44 @@ function NotificationCard({
     setTimeAgo(formatDistanceToNowStrict(createdAt));
   }, [createdAt]);
 
-  if (type === "like") {
-    if (postId && !commentId && !replyId) {
-      return (
-        <NotificationCardContainer
-          postId={postId}
-          avatarUrl={actorAvatar}
-          postImageUrl={postData ? postData[0].url : ""}
-        >
+  const router = useRouter();
+
+  let content = <></>;
+
+  switch (type) {
+    case "like":
+      if (postId && !commentId && !replyId) {
+        content = (
           <div className="flex flex-1 flex-wrap items-center gap-x-1">
             <p className="font-medium">{actorUsername}</p>
             <p className="font-light">liked your post.</p>
             <p className="text-foreground/50 font-light">{timeAgo}</p>
           </div>
-        </NotificationCardContainer>
-      );
-    }
-
-    if (postId && commentId && !replyId) {
-      return (
-        <NotificationCardContainer
-          postId={postId}
-          avatarUrl={actorAvatar}
-          postImageUrl={postData ? postData[0].url : ""}
-        >
+        );
+      }
+      if (postId && commentId && !replyId) {
+        content = (
           <div className="flex flex-1 flex-wrap items-center gap-x-1">
             <p className="font-medium">{actorUsername}</p>
             <p className="font-light">liked your comment :</p>
             <p>{commentData}</p>
             <p className="text-foreground/50 font-light">{timeAgo}</p>
           </div>
-        </NotificationCardContainer>
-      );
-    }
-  }
-
-  if (type === "comment") {
-    return (
-      <NotificationCardContainer
-        postId={postId}
-        avatarUrl={actorAvatar}
-        postImageUrl={postData ? postData[0].url : ""}
-      >
+        );
+      }
+      break;
+    case "comment":
+      content = (
         <div className="flex flex-1 flex-wrap items-center gap-x-1">
           <p className="font-medium">{actorUsername}</p>
           <p className="font-light">commented :</p>
           <p>{commentData}</p>
           <p className="text-foreground/50 font-light">{timeAgo}</p>
         </div>
-      </NotificationCardContainer>
-    );
-  }
-
-  if (type === "reply") {
-    return (
-      <NotificationCardContainer
-        postId={postId}
-        avatarUrl={actorAvatar}
-        postImageUrl={postData ? postData[0].url : ""}
-      >
+      );
+      break;
+    case "reply":
+      content = (
         <div className="flex flex-1 flex-wrap items-center gap-x-1 pt-1">
           <p className="font-medium">{actorUsername}</p>
           <p className="font-light">commented :</p>
@@ -113,54 +92,44 @@ function NotificationCard({
           </p>
           <p className="text-foreground/50 font-light">{timeAgo}</p>
         </div>
-      </NotificationCardContainer>
-    );
+      );
+    default:
+      break;
   }
 
-  return null;
-}
-
-export default NotificationCard;
-
-const NotificationCardContainer = ({
-  postId,
-  avatarUrl,
-  children,
-  postImageUrl,
-  ...props
-}: {
-  postId: string;
-  children: ReactNode;
-  avatarUrl: string | null;
-  postImageUrl: string;
-} & HTMLAttributes<HTMLDivElement>) => {
-  const router = useRouter();
   return (
     <div
-      onClick={() => router.push(page.postDetail(postId))}
+      onClick={() => {
+        if (postId) {
+          router.push(page.postDetail(postId));
+        }
+      }}
       className={cn(
-        "hover:bg-foreground/5 flex cursor-pointer items-center gap-2 px-2 py-1 text-sm",
-        props.className,
+        "hover:bg-foreground/5 flex cursor-pointer items-center gap-2 px-4 py-1 text-sm",
       )}
     >
       <AvatarWithStoryIndicator
         isStoryExists={false}
         isStoryWatched={false}
         size={44}
-        avatarUrl={avatarUrl}
+        avatarUrl={actorAvatar}
       />
-      {children}
-      <div className="size-[44px] shrink-0 overflow-hidden rounded-lg">
-        <Image
-          placeholder="blur"
-          blurDataURL={rgbDataURL(60, 60, 60)}
-          src={postImageUrl}
-          alt="post data"
-          width={100}
-          height={100}
-          className="h-full w-full object-cover"
-        />
-      </div>
+      {content}
+      {postData && (
+        <div className="size-[44px] shrink-0 overflow-hidden rounded-lg">
+          <Image
+            placeholder="blur"
+            blurDataURL={rgbDataURL(60, 60, 60)}
+            src={postData ? postData[0].url : ""}
+            alt="post data"
+            width={100}
+            height={100}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
     </div>
   );
-};
+}
+
+export default NotificationCard;

@@ -82,8 +82,8 @@ function Links({ avatar, username }: Props) {
 
       <div className="relative">
         {totalNotifications > 0 && (
-          <div className="border-background absolute top-4 left-6 flex size-[25px] -translate-y-1/2 items-center justify-center rounded-full border-2 bg-red-500 text-xs text-white">
-            {totalNotifications}
+          <div className="border-background absolute top-4 left-6 flex -translate-y-1/2 items-center justify-center rounded-full border-2 bg-red-500 p-1 text-xs text-white">
+            {totalNotifications}+
           </div>
         )}
         <ButtonLink

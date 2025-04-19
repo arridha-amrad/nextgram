@@ -51,12 +51,12 @@ const ButtonFetchReplies = ({
   if (hasMore && comment.sumReplies - comment.replies.length > 0) {
     return (
       <div className="relative flex items-center gap-4 py-3">
-        <div className="h-0.5 w-[30px] bg-gray-500" />
+        <div className="bg-foreground/50 h-0.5 w-[30px]" />
         <button
           onClick={fetchReplies}
           disabled={isPending}
           type="submit"
-          className="text-skin-muted text-xs font-medium"
+          className="text-foreground/50 text-xs font-medium"
         >
           View {comment.sumReplies - comment.replies.length}{" "}
           {page > 1 && "more"} replies

@@ -18,6 +18,12 @@ type Props = {
 export default function Profile({ isAuthUser, profile }: Props) {
   const { username } = useParams();
 
+  const canViewFollowingList = isAuthUser
+    ? true
+    : !profile.isProtected
+      ? true
+      : profile.isFollowed;
+
   return (
     <section className="mt-10 flex flex-col sm:grid sm:grid-cols-3 md:mt-0">
       <div className="flex items-center justify-start px-4 sm:justify-center">
@@ -34,9 +40,7 @@ export default function Profile({ isAuthUser, profile }: Props) {
       </div>
       <div className="mt-4 px-4 sm:col-span-2 sm:mt-0 sm:px-0">
         <div className="flex items-center gap-4">
-          <div>
-            <h1 className="text-xl">{profile.username}</h1>
-          </div>
+          <h1 className="text-xl">{profile.username}</h1>
           {isAuthUser ? (
             <>
               <Link
@@ -56,21 +60,39 @@ export default function Profile({ isAuthUser, profile }: Props) {
           )}
         </div>
         <div className="flex items-center gap-10 py-4">
-          <div className="inline-flex">
-            <h1 className="font-semibold">{profile.sumPosts}</h1>
-            <span className="text-foreground/70 pl-2">posts</span>
-          </div>
+          <ProfilePostFollowersFollowings
+            label="posts"
+            total={profile.sumPosts}
+          />
+          {canViewFollowingList ? (
+            <Link scroll={false} href={`/${username}/followers`}>
+              <ProfilePostFollowersFollowings
+                label="followers"
+                total={profile.sumFollowers}
+              />
+            </Link>
+          ) : (
+            <ProfilePostFollowersFollowings
+              label="followers"
+              total={profile.sumFollowers}
+            />
+          )}
 
-          <Link scroll={false} href={`/${username}/followers`}>
-            <span className="font-semibold">{profile.sumFollowers}</span>
-            <span className="text-foreground/70 pl-2">followers</span>
-          </Link>
-
-          <Link scroll={false} href={`/${username}/followings`}>
-            <span className="font-semibold">{profile.sumFollowings}</span>
-            <span className="text-foreground/70 pl-2">followings</span>
-          </Link>
+          {canViewFollowingList ? (
+            <Link scroll={false} href={`/${username}/followings`}>
+              <ProfilePostFollowersFollowings
+                label="followings"
+                total={profile.sumFollowings}
+              />
+            </Link>
+          ) : (
+            <ProfilePostFollowersFollowings
+              label="followings"
+              total={profile.sumFollowings}
+            />
+          )}
         </div>
+
         <div className="spacey-2 text-sm">
           <div className="flex items-center gap-1">
             <h1 className="font-medium">{profile.name}</h1>
@@ -97,3 +119,18 @@ export default function Profile({ isAuthUser, profile }: Props) {
     </section>
   );
 }
+
+const ProfilePostFollowersFollowings = ({
+  label,
+  total,
+}: {
+  total: number;
+  label: string;
+}) => {
+  return (
+    <div className="flex shrink-0 items-center gap-2">
+      <p className="font-semibold">{total}</p>
+      <p className="text-foreground/70">{label}</p>
+    </div>
+  );
+};

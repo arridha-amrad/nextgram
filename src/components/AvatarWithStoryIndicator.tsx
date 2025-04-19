@@ -30,7 +30,7 @@ function AvatarWithStoryIndicator({
       <div
         className={cn(
           "bg-background relative shrink-0 cursor-pointer rounded-full",
-          size === 150 ? "p-1.5" : "p-[3px]",
+          isStoryExists ? (size === 150 ? "p-1.5" : "p-[3px]") : "",
           props.className,
         )}
       >

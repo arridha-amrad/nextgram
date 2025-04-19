@@ -7,6 +7,8 @@ import FollowService from "../drizzle/services/FollowService";
 import { authActionClient } from "../safeAction";
 import { revalidateTag } from "next/cache";
 import { POST, USERS } from "../cacheKeys";
+import UserService from "../drizzle/services/UserService";
+import NotificationService from "../drizzle/services/NotificationService";
 
 const schema = z.object({
   followId: z.string(),
@@ -16,15 +18,24 @@ export const follow = authActionClient
   .schema(schema)
   .bindArgsSchemas<[pathname: z.ZodString]>([z.string()])
   .action(async ({ ctx: { session }, parsedInput: { followId } }) => {
-    console.log("reach out...");
-
     const { id } = session.user;
     const followService = new FollowService();
+    const userService = new UserService();
+    const notifService = new NotificationService();
     const rowExists = await followService.find({ followId, userId: id });
     let message = "";
     if (rowExists.length === 0) {
-      await followService.create({ followId, userId: id });
-      message = "follow";
+      const [user] = await userService.findUserById(followId);
+      if (user.isProtected) {
+        await notifService.create({
+          actorId: id,
+          userId: followId,
+          type: "follow",
+        });
+      } else {
+        await followService.create({ followId, userId: id });
+        message = "follow";
+      }
     } else {
       await followService.delete({ followId, userId: id });
       message = "unFollow";

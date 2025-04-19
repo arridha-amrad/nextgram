@@ -59,7 +59,11 @@ const Layout = async ({ children, modal, params }: Props) => {
 
   const isAuthUser = session?.user.username === username;
 
-  const canYouSee = profile.isProtected ? profile.isFollowed : true;
+  const canYouSee = profile.isProtected
+    ? isAuthUser
+      ? true
+      : profile.isFollowed
+    : true;
 
   return (
     <ProfileStoreProvider>

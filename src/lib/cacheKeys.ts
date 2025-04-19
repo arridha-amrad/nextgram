@@ -23,3 +23,13 @@ export const COMMENTS = {
 export const NOTIFICATIONS = {
   all: "user notifications",
 };
+
+export const cacheKeys = {
+  users: {
+    profile: "user-profile",
+    metadata: "user-metadata",
+    auth: "user-auth",
+    histories: "user-search-histories",
+    suggestions: "user-suggested-users",
+  },
+};

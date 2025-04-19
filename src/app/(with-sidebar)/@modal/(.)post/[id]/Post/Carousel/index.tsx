@@ -42,7 +42,7 @@ const Carousel = () => {
   }, [emblaApi]);
 
   return (
-    <div className="bg-background relative w-max max-w-[700px]">
+    <div className="bg-background relative aspect-[4/5] h-[90vh] w-max max-w-[700px]">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex touch-pan-y touch-pinch-zoom">
           {post?.urls.map((url, i) => (
@@ -60,8 +60,9 @@ const Carousel = () => {
                 alt="post image"
                 width={1000}
                 height={1000}
+                placeholder="blur"
                 blurDataURL={rgbDataURL(60, 60, 60)}
-                className="h-full w-full object-contain"
+                className="h-full w-full object-cover"
               />
             </div>
           ))}

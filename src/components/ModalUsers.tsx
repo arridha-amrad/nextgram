@@ -66,7 +66,7 @@ export default function ModalUsers({
               </div>
             </div>
             <hr className="border-foreground/20" />
-            <div className="relative w-full px-4 py-3">
+            <div className="relative mt-4 w-full px-4">
               <input
                 type="text"
                 placeholder="Search"
