@@ -101,10 +101,7 @@ const Layout = async ({ children, modal, params }: Props) => {
             {modal}
           </>
         ) : (
-          <PrivateAccountInfo
-            profileIsFollowed={profile.isFollowed}
-            profileUserId={profile.id}
-          />
+          <PrivateAccountInfo />
         )}
         <Footer />
       </main>

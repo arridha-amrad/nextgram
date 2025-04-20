@@ -1,10 +1,8 @@
 "use client";
 
 import { FeedPost, useFeedPosts } from "@/app/(with-sidebar)/(home)/store";
-import { useUserPosts } from "@/app/(with-sidebar)/[username]/store";
 import Avatar from "@/components/Avatar";
 import { cn, showToast } from "@/lib/utils";
-import { useParams } from "next/navigation";
 import { FormEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Accessibility from "./Accessibility";
@@ -21,9 +19,6 @@ type Props = {
 const FormCreatePost = ({ username }: Props) => {
   const { setStep, files, newPostFormRef } = useCreatePost();
   const { addPost } = useFeedPosts();
-  const { addPost: addUserPost } = useUserPosts();
-
-  const params = useParams();
 
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -50,15 +45,6 @@ const FormCreatePost = ({ username }: Props) => {
         showToast(data.message, "success");
         const newPost = data.post as FeedPost;
         addPost(newPost);
-        if (params.username && params.username === username) {
-          addUserPost({
-            id: newPost.id,
-            createdAt: newPost.createdAt,
-            sumComments: 0,
-            sumLikes: 0,
-            urls: newPost.urls,
-          });
-        }
         setStep("isSubmitted");
         createPostActionRevalidate();
       }

@@ -32,6 +32,7 @@ export const follow = authActionClient
           userId: followId,
           type: "follow",
         });
+        message = "request";
       } else {
         await followService.create({ followId, userId: id });
         message = "follow";

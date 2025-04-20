@@ -1,4 +1,5 @@
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
+import { TProfile } from "@/lib/drizzle/queries/users/fetchUserProfile";
 import { filterUniquePosts } from "@/lib/utils";
 import { createStore, StateCreator } from "zustand";
 import { devtools } from "zustand/middleware";
@@ -13,6 +14,7 @@ type ProfileState = {
   savedPosts: TUserPost[];
   totalPosts: number;
   totalSavedPosts: number;
+  profile: TProfile | null;
 };
 
 type ProfileAction = {
@@ -22,6 +24,8 @@ type ProfileAction = {
     type: "saved" | "default",
     total: number,
   ) => void;
+  updateProfile: (data: Partial<TProfile>) => void;
+  setProfile: (data: TProfile) => void;
 };
 
 export type ProfileStore = ProfileState & ProfileAction;
@@ -33,6 +37,7 @@ const defaultInitState: ProfileState = {
   hasMoreSavedPosts: false,
   totalPosts: 0,
   totalSavedPosts: 0,
+  profile: null,
 };
 
 // Wrap with middlewares: immer inside devtools (order matters for naming!)
@@ -43,6 +48,18 @@ const storeCreator: StateCreator<
 > = devtools(
   immer((set) => ({
     ...defaultInitState,
+    setProfile(data) {
+      set((state) => {
+        state.profile = data;
+      });
+    },
+    updateProfile(data) {
+      set((state) => {
+        if (state.profile) {
+          state.profile = { ...state.profile, ...data, id: state.profile?.id };
+        }
+      });
+    },
     setPosts(posts, type, total) {
       set((state) => {
         if (type === "default") {

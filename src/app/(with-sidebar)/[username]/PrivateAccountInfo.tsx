@@ -1,15 +1,10 @@
-import ButtonFollow from "@/components/ButtonFollow";
+import ButtonFollow from "./ButtonFollow";
 
-type Props = {
-  profileIsFollowed: boolean;
-  profileUserId: string;
-};
-
-function PrivateAccountInfo({ profileIsFollowed, profileUserId }: Props) {
+function PrivateAccountInfo() {
   return (
     <div className="flex-1 py-10">
       <hr className="border-foreground/20" />
-      <div className="flex items-start justify-center gap-4 py-4">
+      <div className="my-8 flex items-start justify-center gap-4">
         <svg
           aria-label=""
           fill="currentColor"
@@ -38,12 +33,12 @@ function PrivateAccountInfo({ profileIsFollowed, profileUserId }: Props) {
             strokeWidth="2"
           ></path>
         </svg>
-        <div className="space-y-1">
+        <div className="space-y-4">
           <h1 className="text-sm font-medium">This account is private</h1>
           <p className="text-foreground/60 text-sm font-light">
             Follow to see their photos and videos.
           </p>
-          <ButtonFollow isFollow={profileIsFollowed} userId={profileUserId} />
+          <ButtonFollow />
         </div>
       </div>
     </div>

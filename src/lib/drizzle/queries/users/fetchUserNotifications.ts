@@ -1,4 +1,4 @@
-import { NOTIFICATIONS } from "@/lib/cacheKeys";
+import { cacheKeys } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
 import { desc, eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
@@ -44,6 +44,6 @@ export const fetchNotifications = unstable_cache(
     const result = await query(userId);
     return result;
   },
-  [NOTIFICATIONS.all],
-  { tags: [NOTIFICATIONS.all], revalidate: 60 },
+  [cacheKeys.users.notifications],
+  { tags: [cacheKeys.users.notifications], revalidate: 60 },
 );

@@ -20,10 +20,6 @@ export const COMMENTS = {
   post: "post-comments",
 };
 
-export const NOTIFICATIONS = {
-  all: "user notifications",
-};
-
 export const cacheKeys = {
   users: {
     profile: "user-profile",
@@ -31,5 +27,15 @@ export const cacheKeys = {
     auth: "user-auth",
     histories: "user-search-histories",
     suggestions: "user-suggested-users",
+    notifications: "user notifications",
+  },
+
+  posts: {
+    home: "hope-posts",
+    user: "user-posts",
+    save: "saved-posts",
+    detail: "post-detail",
+    likes: "post-likes",
+    metadata: "post-metadata",
   },
 };

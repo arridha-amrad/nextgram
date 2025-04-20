@@ -11,6 +11,14 @@ export default class NotificationService extends BaseService {
     return result;
   }
 
+  public async findById(id: number) {
+    const result = await this.db
+      .select()
+      .from(NotificationsTable)
+      .where(eq(NotificationsTable.id, id));
+    return result;
+  }
+
   public async find(args: typeof NotificationsTable.$inferSelect) {
     const conditions = [eq(NotificationsTable.userId, args.userId)];
     if (args.commentId) {
@@ -35,6 +43,14 @@ export default class NotificationService extends BaseService {
       .select()
       .from(NotificationsTable)
       .where(and(...conditions));
+    return result;
+  }
+
+  public async removeById(id: number) {
+    const result = await this.db
+      .delete(NotificationsTable)
+      .where(eq(NotificationsTable.id, id))
+      .returning();
     return result;
   }
 }

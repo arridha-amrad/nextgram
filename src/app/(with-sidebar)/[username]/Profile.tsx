@@ -2,13 +2,15 @@
 
 import AvatarEditable from "@/components/AvatarEditable";
 import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
-import ButtonFollow from "@/components/ButtonFollow";
 import Settings from "@/components/Settings";
 import SvgFemale from "@/components/svg/SvgFemale";
 import SvgMale from "@/components/svg/SvgMale";
 import { TProfile } from "@/lib/drizzle/queries/users/fetchUserProfile";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import ButtonFollow from "./ButtonFollow";
+import { useEffect } from "react";
+import { useProfileStore } from "@/providers/profile-store-provider";
 
 type Props = {
   isAuthUser: boolean;
@@ -17,12 +19,14 @@ type Props = {
 
 export default function Profile({ isAuthUser, profile }: Props) {
   const { username } = useParams();
+  const setProfile = useProfileStore((store) => store.setProfile);
 
-  const canViewFollowingList = isAuthUser
-    ? true
-    : !profile.isProtected
-      ? true
-      : profile.isFollowed;
+  useEffect(() => {
+    setProfile(profile);
+  }, [setProfile, profile]);
+
+  const canViewFollowingList =
+    isAuthUser || !profile.isProtected || profile.isFollowed;
 
   return (
     <section className="mt-10 flex flex-col sm:grid sm:grid-cols-3 md:mt-0">
@@ -53,10 +57,7 @@ export default function Profile({ isAuthUser, profile }: Props) {
               <Settings />
             </>
           ) : (
-            <ButtonFollow
-              isFollow={profile.isFollowed ?? false}
-              userId={profile.id ?? ""}
-            />
+            <ButtonFollow />
           )}
         </div>
         <div className="flex items-center gap-10 py-4">

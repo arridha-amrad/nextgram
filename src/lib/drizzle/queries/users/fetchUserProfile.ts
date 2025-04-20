@@ -2,6 +2,7 @@ import { cacheKeys } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
 import {
   FollowingsTable,
+  NotificationsTable,
   PostsTable,
   UserInfoTable,
   UsersTable,
@@ -49,6 +50,16 @@ const query = async (userId: string, authUserId?: string) => {
         END
       `,
       isProtected: UsersTable.isProtected,
+      isFollowRequested: sql<boolean>`
+        CASE WHEN EXISTS(
+          SELECT 1
+          FROM ${NotificationsTable}
+          WHERE ${NotificationsTable.actorId} = ${authUserId}
+          AND ${NotificationsTable.userId} = ${userId}
+          AND ${NotificationsTable.type} = 'follow'
+        )
+          THEN true ELSE false END
+      `,
     })
     .from(UsersTable)
     .where(eq(UsersTable.id, userId))
