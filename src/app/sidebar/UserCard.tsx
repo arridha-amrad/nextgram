@@ -6,6 +6,7 @@ import {
   saveUserToSearchHistory,
 } from "@/lib/actions/user";
 import { TSearchUser } from "@/lib/drizzle/queries/users/fetchSearchHistories";
+import { page } from "@/lib/pages";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useTransition } from "react";
@@ -24,7 +25,7 @@ export default function UserCard({ user, isRemovable }: Props) {
   const navigateToUserProfile = () => {
     startTransition(() => {
       saveUserToSearchHistory.bind(null, pathname)({ searchId: user.id });
-      router.push(`/${user.username}`);
+      router.push(page.profile(user.username), { scroll: false });
     });
   };
 

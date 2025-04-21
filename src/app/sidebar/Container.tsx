@@ -56,7 +56,7 @@ function Container({ children }: Props) {
         />
         <div
           className={cn(
-            "flex h-screen w-fit flex-col overflow-y-auto pr-4 pl-1",
+            "custom-scrollbar flex h-screen w-fit flex-col overflow-y-auto pr-4 pl-1",
             isSmallSidebar ? "border-foreground/20 border-r" : "",
           )}
         >

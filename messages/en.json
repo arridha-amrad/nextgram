@@ -1,0 +1,82 @@
+{
+  "Sidebar": {
+    "home": "Home",
+    "search": "Search",
+    "explore": "Explore",
+    "reels": "Reels",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "newPost": "New Post",
+    "threads": "Threads",
+    "more": "More",
+    "settings": "Settings",
+    "bookMark": "BookMark",
+    "switchAppearance": "Switch Appearance",
+    "darkMode": "Dark Mode",
+    "recentActivity": "Recent Activity",
+    "reportAProblem": "Report a Problem",
+    "switchAccount": "Switch Account",
+    "logout": "Logout"
+  },
+  "SecondarySidebar": {
+    "search": "Search",
+    "notification": "Notification"
+  },
+  "Search": {
+    "title": "Search",
+    "recent": "Recent",
+    "clearAll": "Clear All",
+    "inputPlaceHolder": "Search"
+  },
+  "Notification": {
+    "likeOnPost": "liked your post",
+    "likeOnComment": "liked your comment",
+    "commented": "commented",
+    "follow": "sent a request to follow you",
+    "followAcc": "Accepted",
+    "followBtnDecline": "Decline",
+    "followBtnAccept": "Accept"
+  },
+  "CurrentUser": {
+    "visit": "Visit"
+  },
+  "SuggestedUsers": {
+    "title": "Suggested Users",
+    "seeAll": "See All",
+    "follow": "Follow",
+    "unFollow": "unFollow"
+  },
+  "Footer": {
+    "title": "Nextgram from Arridha Amrad",
+    "meta": "Meta",
+    "about": "About",
+    "blog": "Blog",
+    "jobs": "Jobs",
+    "help": "Help",
+    "API": "API",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "location": "Location",
+    "instagramLite": "Instagram Lite",
+    "threads": "Threads",
+    "contactUploadingAndNonUsers": "Contact Uploading & Non-Users",
+    "metaVerified": "Meta Verified",
+    "metaInIndonesia": "Meta in Indonesia"
+  },
+  "ProfilePage": {
+    "follow": "Follow",
+    "unFollow": "unFollow",
+    "requested": "Requested",
+    "posts": "posts",
+    "followers": "followers",
+    "followings": "followings",
+    "saved": "Saved",
+    "tagged": "Tagged",
+    "editProfile": "Edit Profile"
+  },
+  "TaggedPosts": {
+    "title": "Photos of you",
+    "description": "When people tag you in photos, the'll appear here."
+  }
+}

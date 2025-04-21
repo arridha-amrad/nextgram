@@ -39,6 +39,7 @@ import LogoutDialog from "@/components/LogoutDialog";
 import MySwitch from "@/components/MySwitch";
 import { page } from "@/lib/pages";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Options() {
   const [open, setOpen] = useState(false);
@@ -72,6 +73,7 @@ export default function Options() {
     });
   };
 
+  const t = useTranslations("Sidebar");
   return (
     <>
       <ButtonLink
@@ -83,7 +85,7 @@ export default function Options() {
         }}
         activeIcon={<OptionsFilledIcon />}
         icon={<OptionsOutlinedIcon />}
-        label="More"
+        label={t("more")}
       />
 
       <AnimatePresence>
@@ -114,36 +116,39 @@ export default function Options() {
                         onClick={() => setOpenTheme(false)}
                         className="size-4"
                       />
-                      <h1 className="block">Switch Appearance</h1>
+                      <h1 className="block">{t("switchAppearance")}</h1>
                       {theme === "dark" ? <MoonIcon /> : <SunIcon />}
                     </div>
                     <div className="flex h-12 justify-between px-2">
-                      <h1>Dark Mode</h1>
+                      <h1>{t("darkMode")}</h1>
                       <SwitchTheme />
                     </div>
                   </motion.div>
                 ) : (
                   <>
-                    <OptionsButton icon={<SettingsIcon />} label="Settings" />
+                    <OptionsButton
+                      icon={<SettingsIcon />}
+                      label={t("settings")}
+                    />
                     <OptionsButton
                       icon={<ActivityIcon />}
-                      label="Recent Activity"
+                      label={t("recentActivity")}
                     />
-                    <OptionsButton icon={<SaveIcon />} label="Saved" />
+                    <OptionsButton icon={<SaveIcon />} label={t("bookMark")} />
                     <OptionsButton
                       onClick={() => {
                         setOpenTheme(true);
                       }}
                       icon={theme === "dark" ? <MoonIcon /> : <SunIcon />}
-                      label="Switch Appearance"
+                      label={t("switchAccount")}
                     />
                     <OptionsButton
                       icon={<ReportProblemIcon />}
-                      label="Report a Problem"
+                      label={t("reportAProblem")}
                     />
                     <hr className="bg-skin-muted/20 my-2 h-px w-full border-0" />
-                    <OptionsButton label="Switch Account" />
-                    <OptionsButton onClick={logout} label="Logout" />
+                    <OptionsButton label={t("switchAccount")} />
+                    <OptionsButton onClick={logout} label={t("logout")} />
                   </>
                 )}
               </motion.div>

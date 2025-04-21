@@ -1,0 +1,83 @@
+{
+  "Sidebar": {
+    "home": "ホーム",
+    "search": "検索",
+    "explore": "発見",
+    "reels": "リール",
+    "messages": "メッセージ",
+    "notifications": "通知",
+    "profile": "プロフィール",
+    "newPost": "新規投稿",
+    "threads": "スレッド",
+    "more": "もっと見る",
+    "settings": "設定",
+    "bookMark": "ブックマーク",
+    "switchAppearance": "表示モードを切り替える",
+    "darkMode": "ダークモード",
+    "recentActivity": "最近のアクティビティ",
+    "reportAProblem": "問題を報告",
+    "switchAccount": "アカウントを切り替え",
+    "logout": "ログアウト"
+  },
+  "SecondarySidebar": {
+    "search": "検索",
+    "notification": "通知"
+  },
+  "Search": {
+    "title": "検索",
+    "recent": "最近の検索",
+    "clearAll": "すべてクリア",
+    "inputPlaceHolder": "検索"
+  },
+  "Notification": {
+    "likeOnPost": "さんがあなたの投稿にいいねしました",
+    "likeOnComment": "さんがあなたのコメントにいいねしました",
+    "commented": "さんがコメントしました",
+    "follow": "さんがあなたにフォローリクエストを送りました",
+    "followAcc": "承認済み",
+    "followBtnDecline": "辞退",
+    "followBtnAccept": "承認"
+  },
+  "SuggestedUsers": {
+    "title": "おすすめユーザー",
+    "seeAll": "すべて見る",
+    "follow": "フォロー",
+    "unFollow": "フォロー解除"
+  },
+  "CurrentUser": {
+    "visit": "見る"
+  },
+  "Footer": {
+    "title": "Nextgram - アリッダ・アムラッドより",
+    "meta": "Meta",
+    "about": "会社情報",
+    "blog": "ブログ",
+    "jobs": "採用情報",
+    "help": "ヘルプ",
+    "API": "API",
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "location": "地域",
+    "instagramLite": "Instagram Lite",
+    "threads": "スレッド",
+    "contactUploadingAndNonUsers": "連絡先のアップロードと非ユーザー",
+    "metaVerified": "Meta認証済み",
+    "metaInIndonesia": "インドネシアのMeta"
+  },
+  "ProfilePage": {
+    "follow": "フォローする",
+    "unFollow": "フォロー解除",
+    "requested": "リクエスト済み",
+    "posts": "投稿",
+    "followers": "フォロワー",
+    "followings": "フォロー中",
+    "saved": "保存済み",
+    "tagged": "タグ付けされた",
+    "editProfile": "プロフィールを編集"
+  },
+
+  "TaggedPosts": {
+    "title": "あなたが写っている写真",
+    "description": "他の人があなたを写真にタグ付けすると、ここに表示されます。"
+  }
+}

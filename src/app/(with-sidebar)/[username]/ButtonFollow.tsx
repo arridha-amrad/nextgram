@@ -4,6 +4,7 @@ import Button from "@/components/core/Button";
 import { handleFollow } from "@/handlers/user";
 import { cn } from "@/lib/utils";
 import { useProfileStore } from "@/providers/profile-store-provider";
+import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -29,6 +30,8 @@ const ButtonFollow = () => {
     }
   };
 
+  const t = useTranslations("ProfilePage");
+
   if (!profile) return null;
 
   return (
@@ -42,10 +45,10 @@ const ButtonFollow = () => {
     >
       <span>
         {profile.isFollowed
-          ? "Unfollow"
+          ? t("unFollow")
           : profile.isFollowRequested
-            ? "Requested"
-            : "Follow"}
+            ? t("requested")
+            : t("follow")}
       </span>
     </Button>
   );

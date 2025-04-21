@@ -2,6 +2,7 @@ import GridFilledIcon from "@/icons/GridFilledIcon";
 import GridIcon from "@/icons/GridIcon";
 import TabSavedIcon from "@/icons/TabSavedIcon";
 import Tab from "./Tab";
+import { useTranslations } from "next-intl";
 
 const TagIcon = () => (
   <svg
@@ -46,30 +47,28 @@ type Props = {
   username: string;
 };
 
-const tabs = [
-  {
-    name: "Posts",
-    href: "",
-    icon: <GridIcon />,
-    fillIcon: <GridFilledIcon />,
-  },
-  {
-    name: "Saved",
-    href: "saved",
-    icon: <TabSavedIcon />,
-    fillIcon: <TabSavedIcon />,
-  },
-  {
-    name: "Tagged",
-    href: "tagged",
-    icon: <TagIcon />,
-    fillIcon: <TagIcon />,
-  },
-];
-
-export type TTab = (typeof tabs)[number];
-
 export default function Tabs({ username }: Props) {
+  const t = useTranslations("ProfilePage");
+  const tabs = [
+    {
+      name: t("posts"),
+      href: "",
+      icon: <GridIcon />,
+      fillIcon: <GridFilledIcon />,
+    },
+    {
+      name: t("saved"),
+      href: "saved",
+      icon: <TabSavedIcon />,
+      fillIcon: <TabSavedIcon />,
+    },
+    {
+      name: t("tagged"),
+      href: "tagged",
+      icon: <TagIcon />,
+      fillIcon: <TagIcon />,
+    },
+  ];
   return (
     <section className="border-foreground/20 mt-20 w-full border-t">
       <div className="flex items-center justify-center gap-4">

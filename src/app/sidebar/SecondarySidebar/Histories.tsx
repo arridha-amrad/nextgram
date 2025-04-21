@@ -5,6 +5,7 @@ import { useSidebarContext } from "../Context";
 import UserCard from "../UserCard";
 import { usePathname } from "next/navigation";
 import { removeAllSearchHistories } from "@/lib/actions/user";
+import { useTranslations } from "next-intl";
 
 function Histories() {
   const { histories } = useSidebarContext();
@@ -14,15 +15,17 @@ function Histories() {
     await removeAllSearchHistories.bind(null, pathname)();
   };
 
+  const t = useTranslations("Search");
+
   return (
     <>
       <div className="mb-4 flex justify-between px-4">
-        <h1 className="text-foreground font-medium">Recent</h1>
+        <h1 className="text-foreground font-medium">{t("recent")}</h1>
         <Button
           onClick={removeAll}
           className="text-skin-primary text-sm font-medium"
         >
-          Clear all
+          {t("clearAll")}
         </Button>
       </div>
       <div className="w-full">

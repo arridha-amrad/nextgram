@@ -13,6 +13,7 @@ import ModalTitle from "./ModalTitle";
 import Picker from "./Picker";
 import Preview from "./Preview";
 import ModalDiscardPost from "./ModalDiscardPost";
+import { useTranslations } from "next-intl";
 
 type Props = {
   children: ReactNode;
@@ -46,6 +47,8 @@ const NewPostModal = ({ children }: Props) => {
     }
   };
 
+  const t = useTranslations("Sidebar");
+
   return (
     <>
       <ButtonLink
@@ -53,7 +56,7 @@ const NewPostModal = ({ children }: Props) => {
         callback={() => {
           setOpen(true);
         }}
-        label="New Post"
+        label={t("newPost")}
       />
 
       <Dialog open={open} onClose={handleOnClose} className="relative z-50">

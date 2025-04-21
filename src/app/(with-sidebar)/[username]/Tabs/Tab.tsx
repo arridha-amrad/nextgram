@@ -3,11 +3,15 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
-import { TTab } from ".";
+import React, { ReactNode } from "react";
 
 type Props = {
-  tab: TTab;
+  tab: {
+    name: string;
+    href: string;
+    icon: ReactNode;
+    fillIcon: ReactNode;
+  };
   username: string;
 };
 

@@ -6,6 +6,7 @@ import { Button } from "@headlessui/react";
 import { usePathname } from "next/navigation";
 import { HTMLAttributes, ReactNode, Ref } from "react";
 import { useSidebarContext } from "./Context";
+import { useTranslations } from "next-intl";
 
 type Props = {
   callback?: VoidFunction;
@@ -30,14 +31,16 @@ export default function ButtonLink({
   const pathname = usePathname();
   const isActive = pathname === activePath;
 
+  const t = useTranslations("SecondarySidebar");
+
   const isApplySmallSidebar = isSmallSidebar || pathname === page.inbox;
 
   const currentIcon = () => {
     if (activeIcon) {
-      if (label === "Search") {
+      if (label === t("search")) {
         return isSearchOpen ? activeIcon : icon;
       }
-      if (label === "Notifications") {
+      if (label === t("notification")) {
         return isNotificationsOpen ? activeIcon : icon;
       }
       return isActive ? activeIcon : icon;

@@ -1,3 +1,5 @@
+import FooterTitle from "@/components/FooterTitle";
+import SelectLanguage from "@/components/SelectLanguage";
 import Link from "next/link";
 import { Fragment } from "react";
 
@@ -27,9 +29,10 @@ function Footer() {
           </Fragment>
         ))}
       </div>
-      <p className="mt-10 pl-4 text-sm">
-        &copy; {new Date().getFullYear()} Nextgram from Arridha Amrad
-      </p>
+      <div className="mt-10 flex w-full flex-col items-center justify-center gap-2">
+        <SelectLanguage />
+        <FooterTitle />
+      </div>
     </footer>
   );
 }

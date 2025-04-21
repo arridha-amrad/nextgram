@@ -13,6 +13,7 @@ import {
 } from "react";
 import { toast } from "react-toastify";
 import { CloseIcon } from "../Icons";
+import { useTranslations } from "next-intl";
 
 const searchUser = async (username: string) => {
   try {
@@ -67,13 +68,15 @@ function SearchInput({
     }
   }, [valueKey]);
 
+  const t = useTranslations("Search");
+
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="relative px-4">
       <Input
         name="searchUser"
         value={searchKey}
         onChange={(e) => setSearchKey(e.target.value)}
-        placeholder="Search"
+        placeholder={t("inputPlaceHolder")}
         className="bg-foreground/10 h-10 w-full rounded-lg pr-10 pl-4 outline-hidden"
         {...props}
       />

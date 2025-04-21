@@ -7,6 +7,8 @@ import NextTopLoader from "nextjs-toploader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,8 +32,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   return (
-    <html suppressHydrationWarning lang="en">
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={cn(
           inter.variable,
@@ -42,7 +45,7 @@ export default async function RootLayout({
         <NextTopLoader showSpinner={false} color="#0095f6" />
         <SessionProvider>
           <ThemeProvider enableColorScheme={false} attribute="class">
-            {children}
+            <NextIntlClientProvider>{children}</NextIntlClientProvider>
           </ThemeProvider>
         </SessionProvider>
         <ToastContainer

@@ -12,6 +12,7 @@ import ButtonFollow from "./ButtonFollow";
 import { useEffect } from "react";
 import { useProfileStore } from "@/providers/profile-store-provider";
 import ProfileSettings from "./ProfileSettings";
+import { useTranslations } from "next-intl";
 
 type Props = {
   isAuthUser: boolean;
@@ -28,6 +29,8 @@ export default function Profile({ isAuthUser, profile }: Props) {
 
   const canViewFollowingList =
     isAuthUser || !profile.isProtected || profile.isFollowed;
+
+  const t = useTranslations("ProfilePage");
 
   return (
     <section className="mt-10 flex flex-col sm:grid sm:grid-cols-3 md:mt-0">
@@ -52,7 +55,7 @@ export default function Profile({ isAuthUser, profile }: Props) {
                 href="/settings"
                 className="bg-bg-secondary flex cursor-pointer items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm leading-5 font-medium transition-all duration-200 ease-linear disabled:brightness-125"
               >
-                Edit Profile
+                {t("editProfile")}
               </Link>
 
               <ProfileSettings />
@@ -63,19 +66,19 @@ export default function Profile({ isAuthUser, profile }: Props) {
         </div>
         <div className="flex items-center gap-10 py-4">
           <ProfilePostFollowersFollowings
-            label="posts"
+            label={t("posts")}
             total={profile.sumPosts}
           />
           {canViewFollowingList ? (
             <Link scroll={false} href={`/${username}/followers`}>
               <ProfilePostFollowersFollowings
-                label="followers"
+                label={t("followers")}
                 total={profile.sumFollowers}
               />
             </Link>
           ) : (
             <ProfilePostFollowersFollowings
-              label="followers"
+              label={t("followers")}
               total={profile.sumFollowers}
             />
           )}
@@ -83,13 +86,13 @@ export default function Profile({ isAuthUser, profile }: Props) {
           {canViewFollowingList ? (
             <Link scroll={false} href={`/${username}/followings`}>
               <ProfilePostFollowersFollowings
-                label="followings"
+                label={t("followings")}
                 total={profile.sumFollowings}
               />
             </Link>
           ) : (
             <ProfilePostFollowersFollowings
-              label="followings"
+              label={t("followings")}
               total={profile.sumFollowings}
             />
           )}

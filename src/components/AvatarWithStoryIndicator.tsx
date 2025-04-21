@@ -17,7 +17,10 @@ function AvatarWithStoryIndicator({
   ...props
 }: Props) {
   return (
-    <div className="relative flex size-max shrink-0 items-center justify-center p-0.5">
+    <div
+      onClick={props.onClick}
+      className="relative flex size-max shrink-0 items-center justify-center p-0.5"
+    >
       {isStoryExists ? (
         isStoryWatched ? (
           <div className="bg-bg-secondary absolute inset-0 size-full rounded-full" />

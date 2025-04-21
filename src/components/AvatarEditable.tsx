@@ -57,10 +57,7 @@ const EditableAvatar = ({ avatar }: Props) => {
           <MySpinner />
         </div>
       )}
-      <div
-        onClick={() => inputRef.current?.click()}
-        className="absolute inset-0 z-10 flex items-center justify-center rounded-full bg-black/30 opacity-0 group-hover:opacity-100"
-      >
+      <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/30 opacity-0 group-hover:opacity-100">
         <PhotoIcon className="aspect-square w-7" />
         <input
           disabled={isPending}
@@ -74,6 +71,7 @@ const EditableAvatar = ({ avatar }: Props) => {
         />
       </div>
       <AvatarWithStoryIndicator
+        onClick={() => inputRef.current?.click()}
         isStoryExists={true}
         isStoryWatched={false}
         size={150}

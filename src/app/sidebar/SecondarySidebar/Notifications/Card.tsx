@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "nextjs-toploader/app";
 import { useEffect, useState, useTransition } from "react";
 import { acceptFollow, declineFollow } from "./action";
+import { useTranslations } from "next-intl";
 
 type Props = {
   notification: TNotification;
@@ -55,6 +56,8 @@ function NotificationCard({
     });
   };
 
+  const t = useTranslations("Notification");
+
   let content = <></>;
 
   switch (type) {
@@ -63,7 +66,7 @@ function NotificationCard({
         content = (
           <div className="flex flex-1 flex-wrap items-center gap-x-1">
             <p className="font-medium">{actorUsername}</p>
-            <p>liked your post.</p>
+            <p>{t("likeOnPost")}.</p>
             <p className="text-foreground/50 font-light">{timeAgo}</p>
           </div>
         );
@@ -72,7 +75,7 @@ function NotificationCard({
         content = (
           <div className="flex flex-1 flex-wrap items-center gap-x-1">
             <p className="font-medium">{actorUsername}</p>
-            <p>liked your comment :</p>
+            <p>{t("likeOnComment")} :</p>
             <p>{commentData}</p>
             <p className="text-foreground/50 font-light">{timeAgo}</p>
           </div>
@@ -83,7 +86,7 @@ function NotificationCard({
       content = (
         <div className="flex flex-1 flex-wrap items-center gap-x-1">
           <p className="font-medium">{actorUsername}</p>
-          <p>commented :</p>
+          <p>{t("commented")} :</p>
           <p>{commentData}</p>
           <p className="text-foreground/50 font-light">{timeAgo}</p>
         </div>
@@ -93,7 +96,7 @@ function NotificationCard({
       content = (
         <div className="flex flex-1 flex-wrap items-center gap-x-1 pt-1">
           <p className="font-medium">{actorUsername}</p>
-          <p>commented :</p>
+          <p>{t("commented")} :</p>
           <p className="space-x-1">
             {replyData?.split(" ").map((v, i) =>
               v.startsWith("@") ? (
@@ -117,10 +120,10 @@ function NotificationCard({
       content = isShowNotif ? (
         <div className="flex flex-1 flex-wrap items-center gap-x-1 pt-1">
           <p>{actorUsername}</p>
-          <p>sent a request to follow you</p>
+          <p>{t("follow")}</p>
           {isFollowAccepted ? (
             <div className="my-2">
-              <h3 className="text-skin-primary text-xs">Accepted</h3>
+              <h3 className="text-skin-primary text-xs">{t("followAcc")}</h3>
             </div>
           ) : (
             <div className="my-2 flex items-center gap-2">
@@ -128,13 +131,13 @@ function NotificationCard({
                 onClick={handleDeclineFollowRequest}
                 className="bg-bg-secondary flex h-[30px] w-[60px] items-center justify-center rounded text-xs"
               >
-                Decline
+                {t("followBtnDecline")}
               </button>
               <button
                 onClick={handleAcceptFollowRequest}
                 className="text-skin-primary hover:bg-skin-primary hover:text-foreground flex h-[30px] w-[56px] items-center justify-center rounded text-xs outline-0 transition-colors duration-150 ease-in"
               >
-                Accept
+                {t("followBtnAccept")}
               </button>
             </div>
           )}

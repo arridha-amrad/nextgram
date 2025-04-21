@@ -4,6 +4,7 @@ import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import { follow as fl } from "@/lib/actions/follow";
 import { TSearchUser } from "@/lib/drizzle/queries/type";
 import { cn, showToast } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -29,6 +30,7 @@ const UserCard = ({ user: { name, username, avatar, id } }: Props) => {
       setFollow((val) => !val);
     }
   };
+  const t = useTranslations("SuggestedUsers");
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center justify-start gap-3">
@@ -55,7 +57,7 @@ const UserCard = ({ user: { name, username, avatar, id } }: Props) => {
           isFollow ? "text-foreground/70" : "text-skin-primary",
         )}
       >
-        {isFollow ? "unFollow" : "follow"}
+        {isFollow ? t("unFollow") : t("follow")}
       </button>
     </div>
   );

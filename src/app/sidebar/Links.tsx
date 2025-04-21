@@ -22,6 +22,7 @@ import {
 import NewPostModal from "./ModalCreatePost";
 import { CreatePostProvider } from "./ModalCreatePost/Context";
 import FormCreatePost from "./ModalCreatePost/FormCreatePost";
+import { useTranslations } from "next-intl";
 
 type Props = {
   username: string;
@@ -40,6 +41,8 @@ function Links({ avatar, username }: Props) {
 
   const totalNotifications = notifications.filter((n) => !n.isRead);
 
+  const t = useTranslations("Sidebar");
+
   return (
     <div className="space-y-2">
       <ButtonLink
@@ -47,7 +50,7 @@ function Links({ avatar, username }: Props) {
         icon={<HomeOutlinedIcon />}
         activePath="/"
         callback={() => router.push("/")}
-        label="Home"
+        label={t("home")}
       />
       <ButtonLink
         icon={<SearchOutlinedIcon />}
@@ -58,26 +61,26 @@ function Links({ avatar, username }: Props) {
           }
           setSearchOpen((val) => !val);
         }}
-        label="Search"
+        label={t("search")}
       />
       <ButtonLink
         activeIcon={<ExploreFilledIcon />}
         icon={<ExploreOutlinedIcon />}
         callback={() => router.push(page.explore)}
-        label="Explore"
+        label={t("explore")}
       />
       <ButtonLink
         activeIcon={<ReelsFilledIcon />}
         icon={<ReelsOutlinedIcon />}
         callback={() => router.push(page.reels)}
-        label="Reels"
+        label={t("reels")}
       />
       <ButtonLink
         activeIcon={<MessengerFilledIcon />}
         icon={<MessengerOutlinedIcon />}
         callback={() => router.push(page.inbox)}
         activePath={page.inbox}
-        label="Messages"
+        label={t("messages")}
       />
 
       <div className="relative">
@@ -95,7 +98,7 @@ function Links({ avatar, username }: Props) {
               setSearchOpen(false);
             }
           }}
-          label="Notifications"
+          label={t("notifications")}
         />
       </div>
 
@@ -115,7 +118,7 @@ function Links({ avatar, username }: Props) {
           />
         }
         callback={() => router.push(`/${username}`)}
-        label="Profile"
+        label={t("profile")}
         activePath={`/${username}`}
       />
     </div>

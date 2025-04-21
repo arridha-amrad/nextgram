@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useSidebarContext } from "../Context";
 import Search from "./Search";
 import Notifications from "./Notifications";
+import { useTranslations } from "next-intl";
 
 type Props = {
   setFloating: (node: HTMLElement | null) => void;
@@ -16,6 +17,8 @@ export default function SecondarySidebar({
   floatingStyles,
 }: Props) {
   const { isSearchOpen, isNotificationsOpen } = useSidebarContext();
+
+  const t = useTranslations("SecondarySidebar");
 
   return (
     <AnimatePresence key="secondary-sidebar">
@@ -37,7 +40,7 @@ export default function SecondarySidebar({
               >
                 <div className="flex h-25 items-center px-4">
                   <h1 className="text-2xl font-bold">
-                    {isNotificationsOpen ? "Notifications" : "Search"}
+                    {isNotificationsOpen ? t("notification") : t("search")}
                   </h1>
                 </div>
                 {isSearchOpen && <Search />}
