@@ -4,12 +4,22 @@ import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import ModalActionOptions from "@/components/ModalActionOptions";
 import PostHeaderOptions from "@/components/PostHeaderOptions";
 import { formatDistanceToNowStrict } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFeedPostContext } from "./Context";
+import Link from "next/link";
+import { page } from "@/lib/pages";
 
 function Header() {
   const [open, setOpen] = useState(false);
   const { post } = useFeedPostContext();
+
+  const [date, setDate] = useState("");
+
+  useEffect(() => {
+    if (post?.createdAt) {
+      setDate(formatDistanceToNowStrict(post.createdAt, { addSuffix: true }));
+    }
+  }, [post?.createdAt]);
 
   if (!post) {
     return null;
@@ -24,12 +34,15 @@ function Header() {
         avatarUrl={post.avatar}
       />
       <div className="flex-1">
-        <div className="flex items-center gap-3">
-          <h1 className="text-sm font-bold">{post.username}</h1>
+        <div className="flex items-center gap-1">
+          <Link
+            href={page.profile(post.username)}
+            className="text-sm font-bold"
+          >
+            {post.username}
+          </Link>
           <span>·</span>
-          <h3 className="text-foreground/70 text-sm">
-            {formatDistanceToNowStrict(post.createdAt, { addSuffix: true })}
-          </h3>
+          <h3 className="text-foreground/70 text-sm">{date}</h3>
         </div>
         <p className="text-xs">{post.location}</p>
       </div>

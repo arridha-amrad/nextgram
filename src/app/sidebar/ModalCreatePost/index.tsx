@@ -34,7 +34,7 @@ const NewPostModal = ({ children }: Props) => {
   };
 
   const handleOnClose = () => {
-    if (step === "pick") {
+    if (step === "pick" || step === "makeCaption") {
       if (preview.length === 0) {
         setOpen(false);
       } else {

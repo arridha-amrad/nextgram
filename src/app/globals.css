@@ -79,3 +79,13 @@ button {
   border-radius: 10px;
   background-clip: content-box;
 }
+
+@layer utilities {
+  input:-webkit-autofill {
+    box-shadow: 0 0 0 1000px var(--bg-secondary) inset !important;
+    -webkit-text-fill-color: var(
+      --foreground
+    ) !important; /* Tailwind's gray-800, for example */
+    transition: background-color 5000s ease-in-out 0s !important;
+  }
+}

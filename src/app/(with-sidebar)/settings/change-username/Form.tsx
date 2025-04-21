@@ -11,17 +11,21 @@ import { useUpdateSession } from "@/hooks/useUpdateSession";
 
 const FormChangeUsername = () => {
   const formRef = useRef<HTMLFormElement | null>(null);
+
   const [state, setState] = useState({
     currentUsername: "",
     newUsername: "",
   });
+
   const pathname = usePathname();
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
       [e.target.name]: e.target.value,
     });
   };
+
   const { execute, result, isPending, hasSucceeded } = useAction(
     changeUsername.bind(null, pathname),
     {
@@ -34,15 +38,24 @@ const FormChangeUsername = () => {
       },
     },
   );
+
   useUpdateSession(hasSucceeded, { username: result.data?.username });
+
   const currUsernameErrValidation =
     result.validationErrors?.currentUsername?._errors;
+
   const newUsernameErrValidation =
     result.validationErrors?.newUsername?._errors;
+
   const actionError = result.serverError;
+
   return (
-    <form ref={formRef} className="w-full max-w-md" action={execute}>
-      <fieldset className="space-y-3" disabled={isPending}>
+    <form
+      ref={formRef}
+      className="flex w-full max-w-md flex-col"
+      action={execute}
+    >
+      <fieldset className="w-full space-y-3" disabled={isPending}>
         {actionError && (
           <p className="text-skin-error text-sm">{actionError}</p>
         )}
@@ -62,8 +75,13 @@ const FormChangeUsername = () => {
           name="newUsername"
           label="New username"
         />
-        <div className="self-end">
-          <Button isLoading={isPending} type="submit" className="w-24">
+        <div className="flex justify-end">
+          <Button
+            disabled={!state.currentUsername || !state.newUsername || isPending}
+            isLoading={isPending}
+            type="submit"
+            className="disabled:bg-skin-primary/70 w-20"
+          >
             Update
           </Button>
         </div>

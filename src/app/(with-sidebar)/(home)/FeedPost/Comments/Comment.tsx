@@ -29,7 +29,7 @@ const Comment = ({ comment }: Props) => {
   };
 
   return (
-    <div className="flex items-start justify-between" key={comment.id}>
+    <div className="flex items-start justify-between gap-2" key={comment.id}>
       <div>
         <Link
           href={`/${comment.username}`}
@@ -37,7 +37,9 @@ const Comment = ({ comment }: Props) => {
         >
           {comment.username}
         </Link>
-        <p className="text-foreground/80 inline text-sm">{comment.body}</p>
+        <p className="text-foreground/80 inline text-sm whitespace-break-spaces">
+          {comment.body}
+        </p>
       </div>
       <div className="pt-1">
         <button onClick={like}>

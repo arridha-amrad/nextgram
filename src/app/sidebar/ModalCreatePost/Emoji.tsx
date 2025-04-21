@@ -8,15 +8,16 @@ import {
   autoUpdate,
   FloatingPortal,
   offset,
+  Placement,
   shift,
   useFloating,
   useInteractions,
   useRole,
 } from "@floating-ui/react";
 
-type Props = TEmojiProps;
+type Props = { placement?: Placement } & TEmojiProps;
 
-function Emoji({ cursorPosition, inputRef, setText }: Props) {
+function Emoji({ cursorPosition, inputRef, setText, placement }: Props) {
   const [open, setOpen] = useState(false);
   const clickOutsideRef = useClickOutside(() => setOpen(false), inputRef);
 
@@ -25,7 +26,7 @@ function Emoji({ cursorPosition, inputRef, setText }: Props) {
     onOpenChange: setOpen,
     strategy: "fixed",
     whileElementsMounted: autoUpdate,
-    placement: "bottom-start",
+    placement: placement ?? "bottom-start",
     middleware: [offset(5), shift()],
   });
 

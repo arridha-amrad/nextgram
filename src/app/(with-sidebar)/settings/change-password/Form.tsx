@@ -68,8 +68,13 @@ const FormChangePassword = () => {
           label="New password"
           type="password"
         />
-        <div className="self-end">
-          <Button isLoading={isPending} type="submit" className="h-10 w-24">
+        <div className="flex justify-end">
+          <Button
+            isLoading={isPending}
+            disabled={isPending || !state.newPassword || !state.oldPassword}
+            type="submit"
+            className="disabled:bg-skin-primary/70 w-24"
+          >
             Update
           </Button>
         </div>

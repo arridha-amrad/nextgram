@@ -11,7 +11,10 @@ const usernameSchema = zfd.formData({
     z
       .string()
       .min(5, { message: "New Username is too short" })
-      .max(20, { message: "New Username is too long" }),
+      .max(20, { message: "New Username is too long" })
+      .regex(/^[\x00-\x7F]*$/, {
+        message: "Only ASCII characters are allowed",
+      }),
   ),
   currentUsername: zfd.text(z.string()),
 });

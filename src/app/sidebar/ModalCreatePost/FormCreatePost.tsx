@@ -97,6 +97,7 @@ const FormCreatePost = ({ username }: Props) => {
             cursorPosition={cursorPositionRef}
             inputRef={textAreaRef}
             setText={setDescription}
+            placement="left"
           />
           <h2 className="text-foreground/20 text-sm">0/2200</h2>
         </div>

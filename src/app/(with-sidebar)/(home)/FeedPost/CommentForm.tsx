@@ -15,7 +15,7 @@ export default function FeedPostCommentForm() {
   const { post } = useFeedPostContext();
 
   const [message, setMessage] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const cursorPositionRef = useRef<number>(0);
 
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -44,11 +44,13 @@ export default function FeedPostCommentForm() {
     },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
 
-  const handleCursorPosition = (e: React.SyntheticEvent<HTMLInputElement>) => {
+  const handleCursorPosition = (
+    e: React.SyntheticEvent<HTMLTextAreaElement>,
+  ) => {
     const position = e.currentTarget.selectionStart;
     cursorPositionRef.current = position ?? 0;
   };
@@ -62,21 +64,21 @@ export default function FeedPostCommentForm() {
       )}
       <form
         action={execute}
-        className="border-foreground/20 -b relative h-full w-full border-b pb-4"
+        className="border-foreground/20 relative h-full w-full border-b"
         ref={formRef}
       >
-        <input
+        <textarea
           ref={inputRef}
+          rows={2}
           value={message}
           onChange={handleChange}
           name="message"
-          type="text"
-          className="h-full w-full py-2 pr-16 text-sm outline-0"
+          className="h-full w-full resize-none pt-2 pr-18 text-sm outline-0"
           placeholder="Add a comment..."
           onClick={handleCursorPosition}
           onKeyUp={handleCursorPosition}
-        />
-        <div className="absolute top-0 right-2 flex h-full w-max items-start gap-2">
+        ></textarea>
+        <div className="absolute top-1 right-0 flex h-full w-max items-start gap-2">
           {message && (
             <button
               type="submit"

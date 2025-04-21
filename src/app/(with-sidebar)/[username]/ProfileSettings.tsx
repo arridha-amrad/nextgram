@@ -5,10 +5,10 @@ import { signOut } from "next-auth/react";
 import { useRouter as useR } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useState, useTransition } from "react";
-import LogoutDialog from "../LogoutDialog";
-import ModalActionOptions from "../ModalActionOptions";
+import LogoutDialog from "../../../components/LogoutDialog";
+import ModalActionOptions from "../../../components/ModalActionOptions";
 
-const Settings = () => {
+const ProfileSettings = () => {
   const [open, setOpen] = useState(false);
 
   const openModal = () => {
@@ -74,7 +74,7 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default ProfileSettings;
 
 const SettingsIcon = () => (
   <svg

@@ -13,11 +13,10 @@ const Button = ({ children, isLoading = false, ...props }: Props) => {
   return (
     <button
       {...props}
-      disabled={isLoading}
       className={cn(
         "bg-skin-primary relative flex h-8 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm leading-5 font-medium transition-all duration-200 ease-linear disabled:brightness-125",
-        props.className,
         isLoading ? "text-transparent" : "text-foreground",
+        props.className,
       )}
     >
       {children}

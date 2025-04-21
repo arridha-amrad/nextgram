@@ -2,7 +2,7 @@
 
 import AvatarEditable from "@/components/AvatarEditable";
 import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
-import Settings from "@/components/Settings";
+
 import SvgFemale from "@/components/svg/SvgFemale";
 import SvgMale from "@/components/svg/SvgMale";
 import { TProfile } from "@/lib/drizzle/queries/users/fetchUserProfile";
@@ -11,6 +11,7 @@ import { useParams } from "next/navigation";
 import ButtonFollow from "./ButtonFollow";
 import { useEffect } from "react";
 import { useProfileStore } from "@/providers/profile-store-provider";
+import ProfileSettings from "./ProfileSettings";
 
 type Props = {
   isAuthUser: boolean;
@@ -54,7 +55,7 @@ export default function Profile({ isAuthUser, profile }: Props) {
                 Edit Profile
               </Link>
 
-              <Settings />
+              <ProfileSettings />
             </>
           ) : (
             <ButtonFollow />

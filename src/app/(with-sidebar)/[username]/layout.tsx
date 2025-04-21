@@ -10,9 +10,9 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import Footer from "../../../components/Footer";
 import Highlights from "./Highlights";
+import PrivateAccountInfo from "./PrivateAccountInfo";
 import Profile from "./Profile";
 import Tabs from "./Tabs";
-import PrivateAccountInfo from "./PrivateAccountInfo";
 
 type Props = {
   params: Promise<{ username: string }>;
@@ -35,7 +35,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const Layout = async ({ children, modal, params }: Props) => {
-  const username = (await params).username;
+  const username = decodeURIComponent((await params).username);
+
   const session = await getAuth();
 
   const profile = await fetchUserProfile({

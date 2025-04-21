@@ -9,7 +9,11 @@ import { zfd } from "zod-form-data";
 
 const schema = zfd.formData({
   oldPassword: zfd.text(z.string()),
-  newPassword: zfd.text(z.string()),
+  newPassword: zfd.text(
+    z.string().regex(/^[\x00-\x7F]*$/, {
+      message: "Only ASCII characters are allowed",
+    }),
+  ),
 });
 
 export const changePassword = authActionClient
