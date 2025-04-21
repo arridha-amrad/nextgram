@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useFeedPostContext } from "./Context";
 import Link from "next/link";
 import { page } from "@/lib/pages";
+import { useFeedPosts } from "../store";
 
 function Header() {
   const [open, setOpen] = useState(false);
@@ -21,6 +22,9 @@ function Header() {
     }
   }, [post?.createdAt]);
 
+  const bookMark = useFeedPosts((store) => store.savePost);
+  const removePost = useFeedPosts((store) => store.removePost);
+
   if (!post) {
     return null;
   }
@@ -28,8 +32,8 @@ function Header() {
   return (
     <div className="flex items-center gap-4">
       <AvatarWithStoryIndicator
-        isStoryExists
-        isStoryWatched
+        isStoryExists={false}
+        isStoryWatched={false}
         size={32}
         avatarUrl={post.avatar}
       />
@@ -46,23 +50,17 @@ function Header() {
         </div>
         <p className="text-xs">{post.location}</p>
       </div>
-      <button onClick={() => setOpen(true)}>
-        <svg
-          aria-label="Options"
-          fill="currentColor"
-          height="24"
-          role="img"
-          viewBox="0 0 24 24"
-          width="24"
-        >
-          <title>Options</title>
-          <circle cx="12" cy="12" r="1.5"></circle>
-          <circle cx="6" cy="12" r="1.5"></circle>
-          <circle cx="18" cy="12" r="1.5"></circle>
-        </svg>
-      </button>
       <ModalActionOptions open={open} setOpen={setOpen}>
-        <PostHeaderOptions close={() => setOpen(false)} />
+        <PostHeaderOptions
+          isFollow={post.isUserFollowed}
+          followCallback={() => {
+            removePost(post.id);
+          }}
+          bookMarkCallback={() => bookMark(post.id)}
+          postId={post.id}
+          postOwnerId={post.userId}
+          close={() => setOpen(false)}
+        />
       </ModalActionOptions>
     </div>
   );

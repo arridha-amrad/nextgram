@@ -1,26 +1,73 @@
+import { bookmarkFeedPost } from "@/handlers/post";
+import { handleFollow } from "@/handlers/user";
+import { page } from "@/lib/pages";
+import { usePathname } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
+
 type Props = {
+  isFollow: boolean;
   close: VoidFunction;
+  postId: string;
+  postOwnerId: string;
+  bookMarkCallback: VoidFunction;
+  followCallback: VoidFunction;
 };
 
-function PostHeaderOptions({ close }: Props) {
+function PostHeaderOptions({
+  close,
+  postId,
+  postOwnerId,
+  bookMarkCallback,
+  followCallback,
+  isFollow,
+}: Props) {
+  const pathname = usePathname();
+  const router = useRouter();
+
   return (
     <>
-      <button className="h-12 w-max self-center text-sm font-medium text-red-400">
+      <button
+        onClick={() => alert("not implemented")}
+        className="h-12 w-max self-center text-sm font-medium text-red-400"
+      >
         Report
       </button>
       <hr className="border-foreground/10" />
 
-      <button className="h-12 w-max self-center text-sm font-medium text-red-400">
-        Unfollow
-      </button>
-      <hr className="border-foreground/10" />
+      {isFollow && (
+        <>
+          <button
+            onClick={async () => {
+              await handleFollow(postOwnerId, pathname, followCallback);
+              close();
+            }}
+            className="h-12 w-max self-center text-sm font-medium text-red-400"
+          >
+            Unfollow
+          </button>
+          <hr className="border-foreground/10" />
+        </>
+      )}
 
-      <button className="h-12 w-max self-center text-sm">
+      <button
+        onClick={() => {
+          bookmarkFeedPost(postId, pathname, bookMarkCallback);
+          close();
+        }}
+        className="h-12 w-max self-center text-sm"
+      >
         Mark as favorite
       </button>
       <hr className="border-foreground/10" />
 
-      <button className="h-12 w-max self-center text-sm">Go to post</button>
+      <button
+        onClick={() => {
+          router.push(page.postDetail(postId), { scroll: false });
+        }}
+        className="h-12 w-max self-center text-sm"
+      >
+        Go to post
+      </button>
       <hr className="border-foreground/10" />
 
       <button className="h-12 w-max self-center text-sm">Share to...</button>

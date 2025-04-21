@@ -12,11 +12,17 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { Button, Switch } from "@headlessui/react";
+import { Button } from "@headlessui/react";
 import { AnimatePresence, motion } from "motion/react";
 import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
-import { HTMLAttributes, ReactNode, useState, useTransition } from "react";
+import {
+  HTMLAttributes,
+  ReactNode,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import ButtonLink from "./ButtonLink";
 import {
   ActivityIcon,
@@ -30,6 +36,7 @@ import {
 } from "./Icons";
 
 import LogoutDialog from "@/components/LogoutDialog";
+import MySwitch from "@/components/MySwitch";
 import { page } from "@/lib/pages";
 import { useRouter } from "next/navigation";
 
@@ -152,17 +159,21 @@ export default function Options() {
 export function SwitchTheme() {
   const { setTheme, theme } = useTheme();
 
+  useEffect(() => {
+    const isDarkMode = document.documentElement.classList.contains("dark");
+    if (isDarkMode) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+    // eslint-disable-next-line
+  }, []);
+
   return (
-    <Switch
-      checked={theme === "dark"}
+    <MySwitch
+      isChecked={theme === "dark"}
       onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="group bg-foreground/10 data-[checked]:bg-foreground data-[focus]:outline-foreground relative flex h-7 w-12 cursor-pointer rounded-full p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1"
-    >
-      <span
-        aria-hidden="true"
-        className="bg-background pointer-events-none inline-block size-5 translate-x-0 rounded-full shadow-lg ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-5"
-      />
-    </Switch>
+    />
   );
 }
 

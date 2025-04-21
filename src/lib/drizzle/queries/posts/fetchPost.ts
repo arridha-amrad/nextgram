@@ -1,6 +1,7 @@
 import { db } from "@/lib/drizzle/db";
 import {
   CommentsTable,
+  FollowingsTable,
   PostLikesTable,
   PostsTable,
   RepliesTable,
@@ -54,6 +55,13 @@ const query = async (postId: string, userId?: string) => {
             THEN true
             ELSE false
         END
+      `,
+      isUserFollowed: sql<boolean>`
+        CASE WHEN EXISTS (
+          SELECT 1 FROM ${FollowingsTable}
+          WHERE ${FollowingsTable.followId} = ${UsersTable.id}
+          AND ${FollowingsTable.userId} = ${userId}
+        ) THEN true ELSE false END
       `,
     })
     .from(PostsTable)

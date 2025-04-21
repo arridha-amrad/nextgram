@@ -26,8 +26,8 @@ function Post({ post, comments }: Props) {
   }, []);
 
   return (
-    <div className="border-skin-border bg-background overflow-hidden rounded-lg border">
-      <div className="group relative">
+    <div className="bg-background overflow-hidden rounded-lg">
+      <div className="group relative xl:flex">
         <Left />
         {isOpen ? (
           <>
@@ -40,7 +40,7 @@ function Post({ post, comments }: Props) {
             </div>
           </>
         ) : (
-          <div className="absolute top-2 right-4 opacity-0 group-hover:opacity-100">
+          <div className="absolute top-2 right-4 block opacity-0 group-hover:opacity-100 2xl:hidden">
             <button
               title="show content"
               className="bg-background/70 flex aspect-square w-10 items-center justify-center rounded-full"
@@ -50,6 +50,9 @@ function Post({ post, comments }: Props) {
             </button>
           </div>
         )}
+        <div className="hidden 2xl:flex">
+          <Right />
+        </div>
       </div>
     </div>
   );

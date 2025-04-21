@@ -23,6 +23,7 @@ interface Action {
   savePost: (postId: string) => void;
   likeComment: (comment: TFeedComment) => void;
   addComment: (comment: TFeedComment) => void;
+  removePost: (id: string) => void;
 }
 interface State {
   isLoading: boolean;
@@ -49,6 +50,11 @@ export const useFeedPosts = create<State & Action>()(
           const post = state.posts.find((v) => v.id === postId);
           if (!post) return;
           post.isSaved = !post.isSaved;
+        });
+      },
+      removePost(id) {
+        set((state) => {
+          state.posts = state.posts.filter((p) => p.id !== id);
         });
       },
       setPosts({ data, page, total }) {

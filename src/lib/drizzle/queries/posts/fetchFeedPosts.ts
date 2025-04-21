@@ -33,6 +33,13 @@ const runQuery = async ({ date, userId, followings }: TArgs) => {
       description: PostsTable.description,
       location: PostsTable.location,
       urls: PostsTable.urls,
+      isUserFollowed: sql<boolean>`
+        CASE WHEN EXISTS (
+          SELECT 1 FROM ${FollowingsTable}
+          WHERE ${FollowingsTable.followId} = ${UsersTable.id}
+          AND ${FollowingsTable.userId} = ${userId}
+        ) THEN true ELSE false END
+      `,
       isLiked: sql<boolean>`
         CASE 
           WHEN EXISTS (

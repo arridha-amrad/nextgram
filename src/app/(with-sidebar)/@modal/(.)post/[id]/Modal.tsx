@@ -35,7 +35,7 @@ const Modal = ({ children }: Props) => {
   const { theme } = useTheme();
 
   return (
-    <Dialog open={open} onClose={closeModal} className="relative z-50">
+    <Dialog open={open} onClose={closeModal} className="relative">
       <DialogBackdrop
         className={cn(
           "fixed inset-0",

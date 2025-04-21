@@ -30,9 +30,9 @@
     --color-skin-link: rgb(224, 241, 255);
     --color-skin-separator: rgb(38, 38, 38);
     --color-skin-elevated-separator: rgb(255, 255, 255);
-    --color-scrollbar-track: #333;
-    --color-scrollbar-thumb: #888;
-    --color-scrollbar-thumb-hover: #e0e0e0;
+    --color-scrollbar-track: #ebebeb;
+    --color-scrollbar-thumb: #707070;
+    --color-scrollbar-thumb-hover: #b9b9b9;
   }
 
   .dark {

@@ -1,10 +1,7 @@
 "use client";
 
 import { useFeedPosts } from "../store";
-import {
-  likePost as likeFeedPost,
-  savePost as savedFeedPost,
-} from "@/lib/actions/post";
+import { likePost as likeFeedPost } from "@/lib/actions/post";
 import { usePathname } from "next/navigation";
 import { useFeedPostContext } from "./Context";
 import { showToast } from "@/lib/utils";
@@ -14,6 +11,7 @@ import { HeartEmptyPostIcon, HeartRedPostIcon } from "@/icons/HeartIcon";
 import CommentIcon from "@/icons/CommentIcon";
 import ShareIcon from "@/icons/ShareIcon";
 import { BookMarkFilledIcon, BookmarkIcon } from "@/icons/BookMarkIcon";
+import { bookmarkFeedPost } from "@/handlers/post";
 
 function Actions() {
   const pathname = usePathname();
@@ -31,24 +29,8 @@ function Actions() {
   };
 
   const bookMarkPost = useFeedPosts((store) => store.savePost);
-  const savePost = async () => {
-    if (!post) return;
-    bookMarkPost(post.id);
-    const result = await savedFeedPost.bind(
-      null,
-      pathname,
-    )({ postId: post.id });
-    if (result?.serverError) {
-      showToast(result.serverError, "error");
-      bookMarkPost(post.id);
-    }
-  };
 
   const router = useRouter();
-  const navigateToPostDetail = () => {
-    if (!post) return;
-    router.push(page.postDetail(post.id), { scroll: false });
-  };
 
   return (
     <section className="flex items-center justify-between py-2">
@@ -56,14 +38,28 @@ function Actions() {
         <button onClick={likePost}>
           {post?.isLiked ? <HeartRedPostIcon /> : <HeartEmptyPostIcon />}
         </button>
-        <button onClick={navigateToPostDetail} className="size-6">
+        <button
+          onClick={() => {
+            if (!post) return;
+            router.push(page.postDetail(post.id), { scroll: false });
+          }}
+          className="size-6"
+        >
           <CommentIcon />
         </button>
         <button className="size-6">
           <ShareIcon />
         </button>
       </div>
-      <button onClick={savePost} className="size-6">
+      <button
+        onClick={async () => {
+          if (!post) return;
+          await bookmarkFeedPost(post.id, pathname, () =>
+            bookMarkPost(post.id),
+          );
+        }}
+        className="size-6"
+      >
         {post?.isSaved ? <BookMarkFilledIcon /> : <BookmarkIcon />}
       </button>
     </section>

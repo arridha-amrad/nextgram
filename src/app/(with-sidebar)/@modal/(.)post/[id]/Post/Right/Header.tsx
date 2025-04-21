@@ -1,9 +1,15 @@
 import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import Link from "next/link";
 import { usePostStore } from "../store";
+import ModalActionOptions from "@/components/ModalActionOptions";
+import PostHeaderOptions from "@/components/PostHeaderOptions";
+import { useState } from "react";
 
 function PostHeader() {
   const post = usePostStore((store) => store.post);
+  const [open, setOpen] = useState(false);
+  const bookMark = usePostStore((store) => store.bookMarkPost);
+
   if (!post) return null;
 
   return (
@@ -27,21 +33,16 @@ function PostHeader() {
           <p className="text-foreground/70 text-xs">{post.location}</p>
         </div>
       </div>
-      <button>
-        <svg
-          aria-label="More options"
-          fill="currentColor"
-          height="24"
-          role="img"
-          viewBox="0 0 24 24"
-          width="24"
-        >
-          <title>More options</title>
-          <circle cx="12" cy="12" r="1.5"></circle>
-          <circle cx="6" cy="12" r="1.5"></circle>
-          <circle cx="18" cy="12" r="1.5"></circle>
-        </svg>
-      </button>
+      <ModalActionOptions open={open} setOpen={setOpen}>
+        <PostHeaderOptions
+          isFollow={post.isUserFollowed}
+          followCallback={() => {}}
+          bookMarkCallback={bookMark}
+          postId={post.id}
+          postOwnerId={post.userId}
+          close={() => setOpen(false)}
+        />
+      </ModalActionOptions>
     </section>
   );
 }

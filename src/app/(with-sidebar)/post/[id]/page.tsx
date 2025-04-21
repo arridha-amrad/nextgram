@@ -46,7 +46,7 @@ export default async function Page({ params }: Props) {
   }
 
   return (
-    <main className="py-4">
+    <main className="mx-auto w-max py-4">
       <Post comments={comments} post={post} />
     </main>
   );
