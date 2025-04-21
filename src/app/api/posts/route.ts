@@ -4,7 +4,6 @@ import { getAuth } from "@/lib/next.auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { FeedPost } from "@/app/(with-sidebar)/(home)/store";
 
 export const POST = async (request: Request) => {
   const session = await getAuth();
@@ -37,14 +36,13 @@ export const POST = async (request: Request) => {
 
   if (!success) {
     const errors = error.flatten().fieldErrors;
-    console.log("validation errors : ", errors);
     return NextResponse.json(errors, {
       status: 400,
     });
   }
 
   const {
-    user: { id: userId, image, username },
+    user: { id: userId },
   } = session;
 
   const promises = data.images.map(async (image) => {
@@ -56,7 +54,7 @@ export const POST = async (request: Request) => {
   const pinataUrls = await Promise.all(promises);
 
   const postService = new PostService();
-  const [post] = await postService.create({
+  await postService.create({
     urls: pinataUrls.map((v) => ({
       url: v,
       type: "image",
@@ -70,19 +68,8 @@ export const POST = async (request: Request) => {
     location: data.location,
   });
 
-  const newPost: FeedPost = {
-    ...post,
-    avatar: image,
-    isLiked: false,
-    isSaved: false,
-    sumComments: 0,
-    sumLikes: 0,
-    username,
-    comments: [],
-  };
-
   return NextResponse.json(
-    { message: "New post created successfully", post: newPost },
+    { message: "New post created successfully" },
     { status: 201 },
   );
 };

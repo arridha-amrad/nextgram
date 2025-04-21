@@ -1,6 +1,5 @@
 "use client";
 
-import { FeedPost, useFeedPosts } from "@/app/(with-sidebar)/(home)/store";
 import Avatar from "@/components/Avatar";
 import { cn, showToast } from "@/lib/utils";
 import { FormEvent, useRef, useState } from "react";
@@ -18,7 +17,6 @@ type Props = {
 
 const FormCreatePost = ({ username }: Props) => {
   const { setStep, files, newPostFormRef } = useCreatePost();
-  const { addPost } = useFeedPosts();
 
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -43,8 +41,6 @@ const FormCreatePost = ({ username }: Props) => {
       } else {
         const data = await response.json();
         showToast(data.message, "success");
-        const newPost = data.post as FeedPost;
-        addPost(newPost);
         setStep("isSubmitted");
         createPostActionRevalidate();
       }

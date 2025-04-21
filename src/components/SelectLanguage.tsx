@@ -24,6 +24,7 @@ export default function SelectLanguage() {
       onChange={handleChange}
       value={language}
       name="status"
+      className="outline-0"
       aria-label="Project status"
     >
       <option className="bg-background text-foreground" value="en">

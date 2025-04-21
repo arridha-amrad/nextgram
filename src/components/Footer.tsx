@@ -24,7 +24,7 @@ const links = [
 function Footer() {
   const t = useTranslations("Footer");
   return (
-    <footer className="text-skin-muted mt-6 mb-10 text-xs">
+    <footer className="text-skin-muted mt-10 text-xs">
       <div className="flex flex-wrap items-center justify-center gap-2">
         {links.map((link, i) => (
           <Link className="block h-max shrink-0" href="/" key={i}>

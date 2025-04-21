@@ -96,11 +96,11 @@ const Layout = async ({ children, modal, params }: Props) => {
         <Profile isAuthUser={isAuthUser} profile={profile} />
         {isAuthUser && <Highlights />}
         {canYouSee ? (
-          <>
+          <div className="flex-1">
             <Tabs username={username} />
             {children}
             {modal}
-          </>
+          </div>
         ) : (
           <PrivateAccountInfo />
         )}

@@ -72,7 +72,7 @@ const EditableAvatar = ({ avatar }: Props) => {
       </div>
       <AvatarWithStoryIndicator
         onClick={() => inputRef.current?.click()}
-        isStoryExists={true}
+        isStoryExists={false}
         isStoryWatched={false}
         size={150}
         avatarUrl={currAvatar}
