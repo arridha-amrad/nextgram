@@ -38,7 +38,7 @@ function Links({ avatar, username }: Props) {
     notifications,
   } = useSidebarContext();
 
-  const totalNotifications = notifications.length;
+  const totalNotifications = notifications.filter((n) => !n.isRead);
 
   return (
     <div className="space-y-2">
@@ -81,15 +81,15 @@ function Links({ avatar, username }: Props) {
       />
 
       <div className="relative">
-        {totalNotifications > 0 && (
-          <div className="border-background absolute top-4 left-6 flex -translate-y-1/2 items-center justify-center rounded-full border-2 bg-red-500 p-1 text-xs text-white">
-            {totalNotifications}+
+        {totalNotifications.length > 0 && (
+          <div className="border-background absolute top-4 left-6 flex aspect-square w-[28px] -translate-y-1/2 items-center justify-center rounded-full border-2 bg-red-500 p-1 text-xs text-white">
+            {totalNotifications.length}
           </div>
         )}
         <ButtonLink
           activeIcon={<NotificationsFilledIcon />}
           icon={<NotificationsOutlinedIcon />}
-          callback={() => {
+          callback={async () => {
             setNotificationsOpen((val) => !val);
             if (isSearchOpen) {
               setSearchOpen(false);

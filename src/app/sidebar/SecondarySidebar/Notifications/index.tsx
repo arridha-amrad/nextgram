@@ -2,6 +2,8 @@ import { TNotification } from "@/lib/drizzle/queries/users/fetchUserNotification
 import { format, isThisWeek, isToday, isYesterday, parseISO } from "date-fns";
 import { useSidebarContext } from "../../Context";
 import NotificationCard from "./Card";
+import { useEffect, useMemo } from "react";
+import { readNotifications } from "./action";
 
 function getLabel(dateString: string): string {
   const date = parseISO(dateString);
@@ -25,12 +27,26 @@ function groupByDateLabel(items: TNotification[]) {
 }
 
 function Notifications() {
-  const { notifications } = useSidebarContext();
+  const { notifications, markNotificationAsRead } = useSidebarContext();
   const groupedItems = groupByDateLabel(notifications);
   const data = Object.entries(groupedItems);
 
+  const unreadIds = useMemo(() => {
+    return notifications.filter((n) => !n.isRead).map((n) => n.id);
+  }, [notifications]);
+
+  useEffect(() => {
+    return () => {
+      if (unreadIds.length > 0) {
+        markNotificationAsRead();
+        readNotifications({ ids: unreadIds });
+      }
+    };
+    // eslint-disable-next-line
+  }, [unreadIds]);
+
   return (
-    <div className="custom-scrollbar space-y-4 overflow-y-auto">
+    <div className="space-y-4">
       {data.map(([label, items], i) => (
         <div key={label}>
           <h1 className="px-4 pb-2 font-bold">{label}</h1>

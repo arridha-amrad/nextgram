@@ -102,9 +102,7 @@ export default function Profile({ isAuthUser, profile }: Props) {
               <SvgFemale className="fill-pink-500" />
             )}
           </div>
-          <div className="text-skin-muted font-medium">
-            {profile.occupation}
-          </div>
+          <div className="text-foreground/70">{profile.occupation}</div>
           <div className="whitespace-pre-line">{profile.bio}</div>
           <div>
             <a

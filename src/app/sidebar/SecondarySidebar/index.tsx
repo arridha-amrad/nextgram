@@ -33,7 +33,7 @@ export default function SecondarySidebar({
             >
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="bg-background border-foreground/20 relative h-screen w-[400px] overflow-y-auto rounded-xl border-r"
+                className="bg-background border-foreground/20 custom-scrollbar relative h-screen w-[400px] overflow-y-auto rounded-xl border-r"
               >
                 <div className="flex h-25 items-center px-4">
                   <h1 className="text-2xl font-bold">

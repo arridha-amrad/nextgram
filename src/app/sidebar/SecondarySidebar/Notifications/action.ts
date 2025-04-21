@@ -53,3 +53,20 @@ export const declineFollow = authActionClient
     revalidateTag(cacheKeys.users.profile);
     revalidateTag(cacheKeys.users.notifications);
   });
+
+export const readNotifications = authActionClient
+  .schema(
+    z.object({
+      ids: z.number().array(),
+    }),
+  )
+  .action(async ({ ctx, parsedInput: { ids } }) => {
+    const {
+      session: {
+        user: { id: userId },
+      },
+    } = ctx;
+    const notifService = new NotificationService();
+    await notifService.updateReadNotification(userId, ids);
+    // revalidateTag(cacheKeys.users.notifications);
+  });

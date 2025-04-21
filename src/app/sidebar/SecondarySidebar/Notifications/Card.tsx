@@ -151,7 +151,7 @@ function NotificationCard({
     <div
       onClick={() => {
         if (postId) {
-          router.push(page.postDetail(postId));
+          router.push(page.postDetail(postId), { scroll: false });
         }
       }}
       className={cn(

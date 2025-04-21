@@ -25,6 +25,7 @@ type TContext = {
   histories: TSearchUser[];
   searchResult: TSearchUser[];
   notifications: TNotification[];
+  markNotificationAsRead: () => void;
 };
 
 const Context = createContext<TContext>({
@@ -38,6 +39,7 @@ const Context = createContext<TContext>({
   histories: [],
   searchResult: [],
   notifications: [],
+  markNotificationAsRead: () => {},
 });
 
 export const SidebarProvider = ({
@@ -54,7 +56,8 @@ export const SidebarProvider = ({
   const [isSmallSidebar, setSmallSidebar] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [isNotificationsOpen, setNotificationsOpen] = useState(false);
-  const [notifications] = useState<TNotification[]>(notificationsData);
+  const [notifications, setNotifications] =
+    useState<TNotification[]>(notificationsData);
 
   const pathname = usePathname();
 
@@ -83,6 +86,15 @@ export const SidebarProvider = ({
     }
   }, [isSearchOpen, isNotificationsOpen, pathname]);
 
+  const markNotificationAsRead = () => {
+    setNotifications((notifs) => {
+      return notifs.map((n) => ({
+        ...n,
+        isRead: true,
+      }));
+    });
+  };
+
   return (
     <Context
       value={{
@@ -96,6 +108,7 @@ export const SidebarProvider = ({
         histories,
         searchResult,
         notifications,
+        markNotificationAsRead,
       }}
     >
       {children}
