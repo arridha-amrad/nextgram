@@ -26,7 +26,6 @@ export default function StoryPlayer() {
       clearInterval(intervalRef.current);
     }
   };
-
   const startTimer = () => {
     startTimeRef.current = Date.now();
     intervalRef.current = setInterval(updateProgress, 16); // ~60fps
