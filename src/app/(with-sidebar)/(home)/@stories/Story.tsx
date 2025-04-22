@@ -2,10 +2,12 @@
 
 import { cn, rgbDataURL } from "@/lib/utils";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Story({ name }: { name: number }) {
   const [isClicked, setIsClicked] = useState(false);
+  const router = useRouter();
   return (
     <div className="w-[70px]">
       <div className="relative flex size-[66px] shrink-0 items-center justify-center select-none">
@@ -19,7 +21,10 @@ export default function Story({ name }: { name: number }) {
           <div className="absolute inset-0 size-[66px] rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600"></div>
         )}
         <div
-          onClick={() => setIsClicked(true)}
+          onClick={() => {
+            setIsClicked(true);
+            router.push(`/stories/${name}`, { scroll: false });
+          }}
           className="bg-background relative cursor-pointer rounded-full p-0.5"
         >
           <Image

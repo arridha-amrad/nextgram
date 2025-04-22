@@ -4,7 +4,6 @@ import { HTMLAttributes } from "react";
 
 type Props = {
   url: string;
-  isPriority?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
 const Avatar = ({ url, ...props }: Props) => {
