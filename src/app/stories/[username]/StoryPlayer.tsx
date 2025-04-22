@@ -92,7 +92,7 @@ export default function StoryPlayer() {
         <div className="absolute inset-0">
           <div className="h-full w-full">
             <Image
-              src="https://ik.imagekit.io/o12xdvxz5l/491417560_18384080140140689_3174286363655844921_n.jpg?updatedAt=1745310140396"
+              src="https://images.pexels.com/photos/2385210/pexels-photo-2385210.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
               alt="story"
               width={900}
               height={1600}

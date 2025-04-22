@@ -74,7 +74,7 @@ export const loadMoreFeedPosts = async ({
 }): Promise<TInfiniteResult<TFeedPost>> => {
   try {
     const res = await fetch(
-      `${NEXT_PUBLIC_BASE_URL}/api/posts/feed?date=${date}&page=${page}&total=${total}`,
+      `${NEXT_PUBLIC_BASE_URL}/api/posts/feed?date=${date.toISOString()}&page=${page}&total=${total}`,
     );
     if (!res.ok) {
       throw new Error("Something went wrong");

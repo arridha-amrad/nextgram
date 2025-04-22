@@ -13,6 +13,8 @@ export type TFeedComment = {
   isLiked: boolean;
 };
 
+const MAX_POST_PER_QUERY = 5;
+
 export type FeedPost = TFeedPost & { comments: TFeedComment[] };
 
 interface Action {
@@ -31,6 +33,7 @@ interface State {
   total: number;
   page: number;
   date: Date;
+  hasMore: boolean;
 }
 
 const transform = (posts: TFeedPost[]) => {
@@ -40,6 +43,7 @@ const transform = (posts: TFeedPost[]) => {
 export const useFeedPosts = create<State & Action>()(
   devtools(
     immer((set) => ({
+      hasMore: false,
       date: new Date(),
       total: 0,
       page: 0,
@@ -64,6 +68,7 @@ export const useFeedPosts = create<State & Action>()(
           state.date = state.posts[state.posts.length - 1].createdAt;
           state.page = page;
           state.total = total;
+          state.hasMore = total > state.posts.length;
         });
       },
       addPost(data) {
@@ -73,7 +78,19 @@ export const useFeedPosts = create<State & Action>()(
       },
       addPosts({ data, page }) {
         set((state) => {
-          state.posts = filterUniquePosts([...state.posts, ...transform(data)]);
+          const old = state.posts;
+          const newPosts = filterUniquePosts([
+            ...state.posts,
+            ...transform(data),
+          ]);
+          console.log({ newPosts });
+
+          if (old.length !== newPosts.length) {
+            state.hasMore =
+              data.length === MAX_POST_PER_QUERY &&
+              state.total > newPosts.length;
+          }
+          state.posts = newPosts;
           state.page = page;
           state.date = state.posts[state.posts.length - 1].createdAt;
         });

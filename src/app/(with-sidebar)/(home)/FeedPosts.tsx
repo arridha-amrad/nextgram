@@ -1,77 +1,81 @@
 "use client";
 
 import Spinner from "@/components/Spinner";
-import { useLastElement } from "@/hooks/useLastElement";
-import { useFeedPosts } from "./store";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import FeedPost from "./FeedPost";
+import { loadMoreFeedPosts } from "@/lib/api/posts";
 import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
-import { loadMoreFeedPosts } from "@/lib/api/posts";
+import { showToast } from "@/lib/utils";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import FeedPost from "./FeedPost";
+import { useFeedPosts } from "./store";
 
 type Props = {
   posts: TInfiniteResult<TFeedPost>;
 };
 
-export default function FeedPosts({ posts: initPosts }: Props) {
+export default function FeedPosts({ posts: initialPosts }: Props) {
   const addPosts = useFeedPosts((state) => state.addPosts);
-  const page = useFeedPosts((state) => state.page);
+  const hasMore = useFeedPosts((state) => state.hasMore);
   const posts = useFeedPosts((state) => state.posts);
   const total = useFeedPosts((state) => state.total);
-  const date = useFeedPosts((state) => state.date);
   const setPosts = useFeedPosts((state) => state.setPosts);
 
-  const [currPage, setCurrPage] = useState(page);
-  const [loading, setLoading] = useState(false);
-  const { theme } = useTheme();
+  const [currPage, setCurrPage] = useState(0);
+  const [hasInitialized, setHasInitialized] = useState(false);
+  const [latestDate, setLatestDate] = useState(new Date());
 
-  const lastElementRef = useLastElement({
-    callback: () => setCurrPage((val) => val + 1),
-    data: posts,
-    loading,
-    total: total,
-  });
+  const { ref: refObserver, inView } = useInView({ threshold: 1 });
+  const [stop, setStop] = useState(false);
 
   useEffect(() => {
-    if (initPosts.total > 0) {
-      setPosts(initPosts);
+    if (initialPosts.data.length > 0) {
+      setPosts(initialPosts);
+      const d = initialPosts.data[initialPosts.data.length - 1].createdAt;
+      setLatestDate(d);
+      setCurrPage(1);
+      const id = setTimeout(() => {
+        setHasInitialized(true);
+      }, 1000);
+      return () => {
+        clearTimeout(id);
+      };
     }
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     const loadPosts = async () => {
-      setLoading(true);
+      setCurrPage((val) => (val += 1));
       try {
         const result = await loadMoreFeedPosts({
-          date: new Date(date),
-          page: currPage,
+          date: new Date(latestDate),
+          page: currPage + 1,
           total,
         });
-        if (result.data) {
+        if (result.data.length > 0) {
           addPosts(result);
+          const date = result.data[result.data.length - 1].createdAt;
+          setLatestDate(date);
+        } else {
+          setStop(true);
         }
       } catch {
-        toast.error("Something went wrong", { theme });
-      } finally {
-        setLoading(false);
+        showToast("Something went wrong", "error");
+        setStop(true);
       }
     };
 
-    if (posts.length === 0) {
-      return;
-    } else {
+    if (inView && hasInitialized) {
       loadPosts();
     }
     // eslint-disable-next-line
-  }, [currPage]);
+  }, [inView]);
 
   const windowRowVirtualizer = useWindowVirtualizer({
-    count: posts.length === total ? total : posts.length + 1,
-    estimateSize: () => 50,
+    count: hasMore && !stop ? posts.length + 1 : posts.length,
+    estimateSize: () => 100,
     overscan: 5,
   });
 
@@ -106,9 +110,9 @@ export default function FeedPosts({ posts: initPosts }: Props) {
               data-index={virtualRow.index}
               ref={windowRowVirtualizer.measureElement}
             >
-              {isLoaderRow ? (
+              {isLoaderRow && hasMore && !stop ? (
                 <div
-                  ref={lastElementRef}
+                  ref={refObserver}
                   className="flex items-center justify-center py-10"
                 >
                   <Spinner />
