@@ -1,14 +1,14 @@
 "use client";
 
-import ButtonLink from "@/app/sidebar/ButtonLink";
+import ButtonLink from "@/components/sidebar/ButtonLink";
 import {
   Logo,
   NotificationsFilledIcon,
   NotificationsOutlinedIcon,
-} from "@/app/sidebar/Icons";
-import { SearchUser } from "@/app/sidebar/SecondarySidebar/Search";
-import SearchInput from "@/app/sidebar/SecondarySidebar/SearchInput";
-import SearchResult from "@/app/sidebar/SecondarySidebar/SearchResult";
+} from "@/components/sidebar/Icons";
+import { SearchUser } from "@/components/sidebar/SecondarySidebar/Search";
+import SearchInput from "@/components/sidebar/SecondarySidebar/SearchInput";
+import SearchResult from "@/components/sidebar/SecondarySidebar/SearchResult";
 import { TSearchUser } from "@/lib/drizzle/queries/users/fetchSearchHistories";
 import {
   autoUpdate,

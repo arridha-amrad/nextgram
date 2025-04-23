@@ -46,3 +46,4 @@ Features:
 - Animating with motion (sidebar)
 - Responsive view
 - Interactive carousel with embla
+- Multi language

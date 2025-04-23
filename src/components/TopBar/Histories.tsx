@@ -5,7 +5,7 @@ import { Button } from "@headlessui/react";
 import { usePathname } from "next/navigation";
 import { removeAllSearchHistories } from "@/lib/actions/user";
 import { TSearchUser } from "@/lib/drizzle/queries/users/fetchSearchHistories";
-import UserCard from "@/app/sidebar/UserCard";
+import UserCard from "@/components/sidebar/UserCard";
 
 type Props = {
   users: TSearchUser[];

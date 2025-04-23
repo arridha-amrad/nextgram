@@ -2,9 +2,9 @@ import BottomNavigationBar from "@/components/BottomNavigationBar";
 import TopBar from "@/components/TopBar";
 import { getAuth } from "@/lib/next.auth";
 import { ReactNode } from "react";
-import Sidebar from "../sidebar";
 import { fetchSearchHistories } from "@/lib/drizzle/queries/users/fetchSearchHistories";
 import { fetchNotifications } from "@/lib/drizzle/queries/users/fetchUserNotifications";
+import Sidebar from "@/components/sidebar";
 
 type Props = {
   children: ReactNode;

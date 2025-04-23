@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { page } from "@/lib/pages";
-import ButtonLink from "@/app/sidebar/ButtonLink";
+import ButtonLink from "@/components/sidebar/ButtonLink";
 import {
   HomeFill,
   HomeOutlinedIcon,
@@ -15,7 +15,7 @@ import {
   MessengerFilledIcon,
   MessengerOutlinedIcon,
   DefaultAvatar,
-} from "@/app/sidebar/Icons";
+} from "@/components/sidebar/Icons";
 
 type Props = {
   avatarUrl: string;
