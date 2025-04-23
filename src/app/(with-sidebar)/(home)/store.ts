@@ -83,8 +83,6 @@ export const useFeedPosts = create<State & Action>()(
             ...state.posts,
             ...transform(data),
           ]);
-          console.log({ newPosts });
-
           if (old.length !== newPosts.length) {
             state.hasMore =
               data.length === MAX_POST_PER_QUERY &&
