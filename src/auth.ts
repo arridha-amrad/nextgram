@@ -2,13 +2,16 @@ import NextAuth, { User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
+import { env } from "./env";
 import UserService from "./lib/drizzle/services/UserService";
 
 type Provider = "credentials" | "facebook" | "github" | "google";
 
 const providers = [
-  GitHub,
+  GitHub({ clientId: env.authGithubId, clientSecret: env.authGithubSecret }),
   Google({
+    clientId: env.authGoogleId,
+    clientSecret: env.authGoogleSecret,
     authorization: {
       params: {
         prompt: "consent",

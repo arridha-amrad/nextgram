@@ -1,9 +1,11 @@
-import { NEXT_PUBLIC_BASE_URL } from "@/config.env-client";
+import { InfiniteResult, TInfiniteResult } from "@/lib/drizzle/queries/type";
 import { POST } from "../cacheKeys";
 import { TFeedPost } from "../drizzle/queries/posts/fetchFeedPosts";
 import { TLikeUsers } from "../drizzle/queries/posts/fetchPostLikes";
-import { InfiniteResult, TInfiniteResult } from "@/lib/drizzle/queries/type";
 import { TUserPost } from "../drizzle/queries/posts/fetchUserPosts";
+import { envClient } from "@/env.client";
+
+const baseUrl = envClient.clientBaseUrl;
 
 export const getLikes = async ({
   date,
@@ -16,7 +18,7 @@ export const getLikes = async ({
 }) => {
   try {
     const res = await fetch(
-      `${NEXT_PUBLIC_BASE_URL}/api/posts/${postId}/likes?page=${page}&date=${date}`,
+      `${baseUrl}/api/posts/${postId}/likes?page=${page}&date=${date}`,
       { next: { revalidate: 60, tags: [POST.likes] } },
     );
     if (!res.ok) {
@@ -39,7 +41,7 @@ export const loadMoreUserPosts = async ({
 }: ProfilePostParams): Promise<InfiniteResult<TUserPost>> => {
   try {
     const res = await fetch(
-      `${NEXT_PUBLIC_BASE_URL}/api/user/${username}/posts?date=${date.toISOString()}`,
+      `${baseUrl}/api/user/${username}/posts?date=${date.toISOString()}`,
     );
     const data = await res.json();
     return data as InfiniteResult<TUserPost>;
@@ -54,7 +56,7 @@ export const loadMoreUserSavedPosts = async ({
 }: ProfilePostParams): Promise<InfiniteResult<TUserPost>> => {
   try {
     const res = await fetch(
-      `${NEXT_PUBLIC_BASE_URL}/api/user/${username}/posts?date=${date.toISOString()}`,
+      `${baseUrl}/api/user/${username}/posts?date=${date.toISOString()}`,
     );
     const data = await res.json();
     return data as InfiniteResult<TUserPost>;
@@ -74,7 +76,7 @@ export const loadMoreFeedPosts = async ({
 }): Promise<TInfiniteResult<TFeedPost>> => {
   try {
     const res = await fetch(
-      `${NEXT_PUBLIC_BASE_URL}/api/posts/feed?date=${date.toISOString()}&page=${page}&total=${total}`,
+      `${baseUrl}/api/posts/feed?date=${date.toISOString()}&page=${page}&total=${total}`,
     );
     if (!res.ok) {
       throw new Error("Something went wrong");

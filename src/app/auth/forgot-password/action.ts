@@ -1,6 +1,5 @@
 "use server";
 
-import config from "@/config.env";
 import PasswordResetRequestService from "@/lib/drizzle/services/PasswordResetRequestService";
 import { TransactionManager } from "@/lib/drizzle/services/TransactionManager";
 import UserService from "@/lib/drizzle/services/UserService";
@@ -12,6 +11,7 @@ import { createTokenForResetPassword } from "@/lib/tokenHandler";
 import { generateRandomOTP } from "@/lib/utils";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
+import { envClient } from "@/env.client";
 
 export const forgotPassword = actionClient
   .schema(
@@ -39,7 +39,7 @@ export const forgotPassword = actionClient
       return { token };
     });
 
-    const link = `${config.BASE_URL}/${page.resetPassword}?token=${response.token}`;
+    const link = `${envClient.clientBaseUrl}/${page.resetPassword}?token=${response.token}`;
 
     await EmailService.sendEmail({
       to: email,

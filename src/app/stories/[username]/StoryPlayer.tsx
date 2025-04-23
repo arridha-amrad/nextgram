@@ -54,6 +54,7 @@ export default function StoryPlayer() {
         clearInterval(intervalRef.current);
       }
     };
+    // eslint-disable-next-line
   }, []);
 
   return (

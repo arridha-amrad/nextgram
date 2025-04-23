@@ -1,7 +1,7 @@
-import config from "@/config.env";
+import { env } from "@/env";
 import { SignJWT, jwtVerify } from "jose";
 
-const secret = new TextEncoder().encode(config.TOKEN_SECRET_KEY);
+const secret = new TextEncoder().encode(env.tokenSecretKey);
 
 export async function createTokenForResetPassword(
   code: string,
