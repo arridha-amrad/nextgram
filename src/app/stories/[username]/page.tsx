@@ -1,13 +1,12 @@
 import InstagramLogo from "@/components/InstagramLogo";
 import CloseStoryPageButton from "../CloseStoryPageBtn";
-import StoryPlayer from "./StoryPlayer";
+import Stories from "./Stories";
+import { data as stories } from "./data";
 
-export default function Page() {
+export default async function Page() {
   return (
     <main className="flex h-screen w-screen items-center justify-center">
-      <div className="relative flex h-full w-full items-center justify-center border-amber-500">
-        <StoryPlayer />
-      </div>
+      <Stories stories={stories} />
       <div className="fixed top-4 left-4 shrink-0">
         <InstagramLogo className="text-2xl" />
       </div>

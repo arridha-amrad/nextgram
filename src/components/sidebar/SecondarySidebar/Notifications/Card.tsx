@@ -146,6 +146,14 @@ function NotificationCard({
         <></>
       );
       break;
+    case "save":
+      content = (
+        <div className="flex flex-1 flex-wrap items-center gap-x-1">
+          <p className="font-medium">{actorUsername}</p>
+          <p>{t("savePost")}.</p>
+          <p className="text-foreground/50 font-light">{timeAgo}</p>
+        </div>
+      );
     default:
       break;
   }

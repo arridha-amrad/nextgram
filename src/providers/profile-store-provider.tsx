@@ -34,11 +34,11 @@ export const ProfileStoreProvider = ({
 export const useProfileStore = <T,>(
   selector: (store: ProfileStore) => T,
 ): T => {
-  const counterStoreContext = useContext(ProfileStoreContext);
+  const context = useContext(ProfileStoreContext);
 
-  if (!counterStoreContext) {
+  if (!context) {
     throw new Error(`useCounterStore must be used within CounterStoreProvider`);
   }
 
-  return useStore(counterStoreContext, selector);
+  return useStore(context, selector);
 };

@@ -20,7 +20,7 @@ const FeedPost = memo(
   function FeedPost({ post }: Props) {
     return (
       <FeedPostProvider postId={post.id}>
-        <article className="w-full space-y-2 pb-14">
+        <article className="w-full origin-top space-y-2 pb-14">
           <Header />
           <Carousel />
           <Actions />

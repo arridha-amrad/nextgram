@@ -43,10 +43,10 @@ function Carousel() {
   return (
     <div ref={emblaRef} className="relative overflow-hidden px-2">
       <div className="-ml-4 flex touch-pan-y touch-pinch-zoom">
-        {[...Array(30)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="w-[14.5%] min-w-0 flex-none pl-4 sm:w-[12.5%]"
+            className="w-[18.5%] min-w-0 flex-none pl-4 sm:w-[14%]"
             style={{
               transform: "translate3d(0,0,0)",
             }}

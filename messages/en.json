@@ -36,7 +36,8 @@
     "follow": "sent a request to follow you",
     "followAcc": "Accepted",
     "followBtnDecline": "Decline",
-    "followBtnAccept": "Accept"
+    "followBtnAccept": "Accept",
+    "savePost": "bookmark your post"
   },
   "CurrentUser": {
     "visit": "Visit"

@@ -6,24 +6,27 @@ function FeedPostDescription() {
   const [isShowMore, setIsShowMore] = useState(false);
   const { post } = useFeedPostContext();
 
+  const [isClamp, setIsClamp] = useState(false);
+
   const [isShowBtn, setIsShowBtn] = useState(false);
 
   useEffect(() => {
     if (post?.description) {
       if (post.description.length > 100) {
         setIsShowBtn(true);
-        setIsShowMore(true);
+        setIsClamp(true);
       }
     }
   }, [post?.description]);
 
   if (!post || post.description === null) return null;
   return (
-    <div>
+    <>
       <p
         className={cn(
           "text-sm whitespace-break-spaces",
-          isShowMore ? "" : "line-clamp-2",
+          isClamp && "line-clamp-2",
+          isShowMore ? "line-clamp-none" : "line-clamp-2",
         )}
       >
         <span className="font-bold">{post.username}&nbsp;</span>
@@ -37,7 +40,7 @@ function FeedPostDescription() {
           {isShowMore ? "show less" : "show more"}
         </button>
       )}
-    </div>
+    </>
   );
 }
 

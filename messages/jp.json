@@ -36,7 +36,8 @@
     "follow": "さんがあなたにフォローリクエストを送りました",
     "followAcc": "承認済み",
     "followBtnDecline": "辞退",
-    "followBtnAccept": "承認"
+    "followBtnAccept": "承認",
+    "savePost": "あなたの投稿をブックマークする"
   },
   "SuggestedUsers": {
     "title": "おすすめユーザー",
