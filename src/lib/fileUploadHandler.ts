@@ -1,10 +1,11 @@
 "server only";
 
 import { PinataSDK } from "pinata-web3";
+import { env } from "@/env";
 
 export const pinata = new PinataSDK({
-  pinataJwt: `${process.env.PINATA_JWT}`,
-  pinataGateway: `${process.env.PINATA_GATEWAY}`,
+  pinataJwt: `${env.pinataJwt}`,
+  pinataGateway: `${env.pinataGateway}`,
 });
 
 export const uploadFileToPinata = async (file: File) => {

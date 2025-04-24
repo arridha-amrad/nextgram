@@ -1,11 +1,12 @@
 "use client";
 
+import { page } from "@/lib/pages";
 import { useRouter } from "next/navigation";
 
 export default function CloseStoryPageButton() {
   const router = useRouter();
   return (
-    <button onClick={() => router.back()}>
+    <button onClick={() => router.push(page.home)}>
       <svg
         aria-label="Close"
         fill="currentColor"

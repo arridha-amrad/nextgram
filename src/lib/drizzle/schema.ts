@@ -31,11 +31,46 @@ export const notifEnum = pgEnum("notif_enum", [
 
 export const genderEnum = pgEnum("gender_enum", ["male", "female"]);
 
+export const typeContentEnum = pgEnum("type_content", ["image", "video"]);
+
 type PostContentUrl = {
   type: "image" | "video";
   url: string;
   publicId: string;
 };
+
+export const StoriesTable = pgTable(
+  "stories",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => UsersTable.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    type: typeContentEnum("type").notNull(),
+    url: text("url").notNull(),
+    publicId: text("public_id").notNull(),
+  },
+  (table) => [index("index_user_id_of_stories_table").on(table.userId)],
+);
+
+export const StoryWatchers = pgTable(
+  "story_watchers",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => UsersTable.id, { onDelete: "cascade" }),
+    storyId: uuid("story_id")
+      .notNull()
+      .references(() => StoriesTable.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    primaryKey({
+      name: "composite_pk_story_watchers_table",
+      columns: [table.storyId, table.userId],
+    }),
+  ],
+);
 
 export const SavedPostsTable = pgTable(
   "saved_posts",
