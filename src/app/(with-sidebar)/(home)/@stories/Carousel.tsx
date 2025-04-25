@@ -5,12 +5,18 @@ import Story from "./Story";
 import { EmblaCarouselType } from "embla-carousel";
 import { useState, useCallback, useEffect } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { TFeedStory } from "@/lib/drizzle/queries/stories/fetchStoriesAtFeeds";
 
-function Carousel() {
+type Props = {
+  data: TFeedStory[];
+};
+
+function Carousel({ data }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     slidesToScroll: "auto",
     dragFree: false,
     watchDrag: false,
+    align: "start",
   });
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -41,17 +47,17 @@ function Carousel() {
   }, [emblaApi]);
 
   return (
-    <div ref={emblaRef} className="relative overflow-hidden px-2">
-      <div className="-ml-4 flex touch-pan-y touch-pinch-zoom">
-        {[...Array(15)].map((_, i) => (
+    <div ref={emblaRef} className="relative w-full overflow-hidden px-1">
+      <div className="flex touch-pan-y touch-pinch-zoom">
+        {data.map((s, i) => (
           <div
             key={i}
-            className="w-[18.5%] min-w-0 flex-none pl-4 sm:w-[14%]"
+            className="pl-2"
             style={{
               transform: "translate3d(0,0,0)",
             }}
           >
-            <Story name={i + 1} />
+            <Story avatar={s.avatar} username={s.username} />
           </div>
         ))}
       </div>

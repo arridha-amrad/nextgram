@@ -21,7 +21,7 @@ function FeedPostDescription() {
 
   if (!post || post.description === null) return null;
   return (
-    <>
+    <div className="px-2">
       <p
         className={cn(
           "text-sm whitespace-break-spaces",
@@ -40,7 +40,7 @@ function FeedPostDescription() {
           {isShowMore ? "show less" : "show more"}
         </button>
       )}
-    </>
+    </div>
   );
 }
 

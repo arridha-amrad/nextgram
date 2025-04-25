@@ -1,22 +1,45 @@
 import Avatar from "@/components/Avatar";
 import { rgbDataURL } from "@/lib/utils";
+import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 type Props = {
-  id: number;
+  avatar: string | null;
+  username: string;
+  id: string;
   contentUrl: string;
   duration: number;
+  createdAt: Date;
+  isDone: boolean;
   setProgress: Dispatch<SetStateAction<number>>;
+  setIsDone: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function Player({
   contentUrl,
   duration,
   setProgress,
+  avatar,
+  username,
+  createdAt,
   id,
+  isDone,
+  setIsDone,
 }: Props) {
   const [isPaused, setIsPaused] = useState<boolean>(false);
+
+  const [date, setDate] = useState("");
+
+  useEffect(() => {
+    if (isDone) {
+      setIsPaused(true);
+    }
+  }, [isDone]);
+
+  useEffect(() => {
+    setDate(formatDistanceToNowStrict(createdAt));
+  }, [createdAt]);
 
   const startTimeRef = useRef<number | null>(null);
   const elapsedRef = useRef<number>(0);
@@ -50,6 +73,12 @@ export default function Player({
   };
 
   const resumeTimer = () => {
+    if (isDone) {
+      setIsDone(false);
+      setIsPaused(false);
+      startTimer();
+      elapsedRef.current = 0;
+    }
     startTimeRef.current = Date.now();
     intervalRef.current = setInterval(updateProgress, 16);
     setIsPaused(false);
@@ -66,6 +95,7 @@ export default function Player({
     };
     // eslint-disable-next-line
   }, [id]);
+
   return (
     <>
       <div className="absolute inset-0">
@@ -84,9 +114,12 @@ export default function Player({
 
       <div className="relative flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Avatar url="/default.jpg" style={{ width: 32, height: 32 }} />
-          <p className="text-sm font-medium">arridha</p>
-          <p className="text-foreground/50 text-sm">20h</p>
+          <Avatar
+            url={avatar ?? "/default.jpg"}
+            style={{ width: 32, height: 32 }}
+          />
+          <p className="text-sm font-medium text-white">{username}</p>
+          <p className="text-sm text-white/50">{date}</p>
         </div>
         <div className="flex items-center gap-4">
           <button onClick={isPaused ? resumeTimer : pauseTimer}>
@@ -108,7 +141,7 @@ const Actions = () => (
       <form className="w-full" action="">
         <input
           type="text"
-          className="border-foreground/50 w-full rounded-full border-2 px-4 py-3 text-sm outline-0"
+          className="w-full rounded-full border-2 border-white/50 px-4 py-3 text-sm outline-0"
           placeholder="Reply to arridha"
         />
       </form>
@@ -125,8 +158,8 @@ const Actions = () => (
 const PauseIcon = () => (
   <svg
     aria-label="Pause"
-    fill="currentColor"
     height="16"
+    className="fill-white text-white"
     role="img"
     viewBox="0 0 48 48"
     width="16"
@@ -139,7 +172,7 @@ const PauseIcon = () => (
 const MenuIcon = () => (
   <svg
     aria-label="Menu"
-    fill="currentColor"
+    className="fill-white text-white"
     height="24"
     role="img"
     viewBox="0 0 24 24"
@@ -155,7 +188,7 @@ const MenuIcon = () => (
 const SendIcon = () => (
   <svg
     aria-label="Direct"
-    fill="currentColor"
+    className="fill-white text-white"
     height="24"
     role="img"
     viewBox="0 0 24 24"
@@ -185,7 +218,7 @@ const SendIcon = () => (
 const EmptyLikeIcon = () => (
   <svg
     aria-label="Like"
-    fill="currentColor"
+    className="fill-white text-white"
     height="24"
     role="img"
     viewBox="0 0 24 24"
@@ -199,6 +232,7 @@ const PlayIcon = () => (
   <svg
     aria-label="Play"
     fill="currentColor"
+    className="fill-white text-white"
     height="16"
     role="img"
     viewBox="0 0 24 24"

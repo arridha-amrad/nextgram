@@ -30,7 +30,7 @@ function Header() {
   }
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-4 px-2">
       <AvatarWithStoryIndicator
         isStoryExists={false}
         isStoryWatched={false}

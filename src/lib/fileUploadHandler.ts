@@ -2,6 +2,7 @@
 
 import { PinataSDK } from "pinata-web3";
 import { env } from "@/env";
+import ImageKit from "imagekit";
 
 export const pinata = new PinataSDK({
   pinataJwt: `${env.pinataJwt}`,
@@ -25,3 +26,9 @@ export const deleteFileFromPinataByUrl = async (url: string) => {
   }, "");
   await pinata.unpin([cid]);
 };
+
+export const imageKit = new ImageKit({
+  privateKey: env.imageKitPrivateKey,
+  publicKey: env.imageKitPublicKey,
+  urlEndpoint: env.imageKitUrlEndpoint,
+});

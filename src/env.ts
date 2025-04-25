@@ -18,4 +18,7 @@ export const env = {
   pinataApiSecret: getEnv("PINATA_API_SECRET"),
   pinataJwt: getEnv("PINATA_JWT"),
   pinataGateway: getEnv("PINATA_GATEWAY"),
+  imageKitPublicKey: getEnv("IMAGE_KIT_PUB_KEY"),
+  imageKitPrivateKey: getEnv("IMAGE_KIT_PRI_KEY"),
+  imageKitUrlEndpoint: getEnv("IMAGE_KIT_URL_ENDPOINT"),
 };

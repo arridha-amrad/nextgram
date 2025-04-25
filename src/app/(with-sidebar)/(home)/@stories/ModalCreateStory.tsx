@@ -12,7 +12,7 @@ export default function ModalCreateStory() {
   const [step, setStep] = useState<Step>("pick");
   const [children, setChildren] = useState<JSX.Element | null>(null);
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [preview, setPreview] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
@@ -30,10 +30,24 @@ export default function ModalCreateStory() {
   };
 
   const handleSubmit = async () => {
-    setStep("submitting");
-    await new Promise((res) => setTimeout(res, 3000));
-    setStep("submitted");
-    showToast("Your story has been shared", "success");
+    if (!file) return;
+    try {
+      setStep("submitting");
+      const formdata = new FormData();
+      formdata.append("file", file);
+      const response = await fetch("/api/stories", {
+        method: "POST",
+        body: formdata,
+      });
+      if (!response.ok) {
+        showToast("Failed to create story", "error");
+      } else {
+        setStep("submitted");
+      }
+    } catch {
+      showToast("Something went wrong", "error");
+      setStep("preview");
+    }
   };
 
   useEffect(() => {
@@ -62,7 +76,7 @@ export default function ModalCreateStory() {
           break;
         case "preview":
           content = (
-            <div className="h-full w-full">
+            <div className="h-full w-full max-w-md">
               <Image
                 placeholder="blur"
                 blurDataURL={rgbDataURL(60, 60, 60)}
@@ -83,6 +97,7 @@ export default function ModalCreateStory() {
                   placeholder="blur"
                   blurDataURL={rgbDataURL(60, 60, 60)}
                   src="/post-submitting.gif"
+                  unoptimized
                   alt="story image preview"
                   width={800}
                   height={1000}
@@ -100,6 +115,7 @@ export default function ModalCreateStory() {
                   placeholder="blur"
                   blurDataURL={rgbDataURL(60, 60, 60)}
                   src="/post-submitted.gif"
+                  unoptimized
                   alt="story image preview"
                   width={800}
                   height={1000}
@@ -117,6 +133,11 @@ export default function ModalCreateStory() {
     setChildren(chooseContent());
     // eslint-disable-next-line
   }, [step]);
+
+  const handleCloseModal = () => {
+    setStep("pick");
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -138,7 +159,7 @@ export default function ModalCreateStory() {
       </div>
       <Dialog
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={handleCloseModal}
         className="relative z-50"
       >
         <DialogBackdrop className="fixed inset-0 bg-black/50 backdrop-blur-sm" />

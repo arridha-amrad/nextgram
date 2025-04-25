@@ -5,7 +5,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function Story({ name }: { name: number }) {
+export default function Story({
+  username,
+  avatar,
+}: {
+  username: string;
+  avatar: string | null;
+}) {
   const [isClicked, setIsClicked] = useState(false);
   const router = useRouter();
   return (
@@ -23,12 +29,12 @@ export default function Story({ name }: { name: number }) {
         <div
           onClick={() => {
             setIsClicked(true);
-            router.push(`/stories/${name}`, { scroll: false });
+            router.push(`/stories/${username}`, { scroll: false });
           }}
           className="bg-background relative cursor-pointer rounded-full p-0.5"
         >
           <Image
-            src="/default.jpg"
+            src={avatar ?? "/default.jpg"}
             alt="Story"
             blurDataURL={rgbDataURL(60, 60, 60)}
             placeholder="blur"
@@ -39,7 +45,7 @@ export default function Story({ name }: { name: number }) {
         </div>
       </div>
       <p className="line-clamp-1 px-1 py-1 text-center text-xs select-none">
-        {name}
+        {username}
       </p>
     </div>
   );

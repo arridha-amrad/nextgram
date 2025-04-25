@@ -38,4 +38,9 @@ export const cacheKeys = {
     likes: "post-likes",
     metadata: "post-metadata",
   },
+
+  stories: {
+    feed: "feed-stories",
+    user: "user-stories",
+  },
 };

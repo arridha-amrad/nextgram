@@ -64,7 +64,7 @@ export default function FeedPostCommentForm() {
       )}
       <form
         action={execute}
-        className="border-foreground/20 relative h-full w-full border-b"
+        className="border-foreground/20 relative h-full w-full border-b px-2"
         ref={formRef}
       >
         <textarea

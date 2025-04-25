@@ -4,16 +4,15 @@ import { HTMLAttributes, useEffect, useState } from "react";
 import Player from "./Player";
 import Indicator from "./Indicator";
 import { usePathname, useRouter } from "next/navigation";
-import { Story } from "./store";
+import { TUserStory } from "@/lib/drizzle/queries/stories/fetchUserStories";
 
 type Props = {
-  data: Story;
-  nextStory?: Story | null;
-  prevStory?: Story | null;
+  data: TUserStory[];
 };
 
-export default function StoryPlayer({ data, nextStory, prevStory }: Props) {
+export default function StoryPlayer({ data }: Props) {
   const [progress, setProgress] = useState<number>(0);
+  const [isDone, setIsDone] = useState(false);
 
   const [index, setIndex] = useState(0);
 
@@ -32,19 +31,19 @@ export default function StoryPlayer({ data, nextStory, prevStory }: Props) {
 
   const prevAction = () => {
     if (index === 0) {
-      if (prevStory) {
-        router.push(`/stories/${prevStory.username}`);
-      }
+      // if (prevStory) {
+      //   router.push(`/stories/${prevStory.username}`);
+      // }
     } else {
       setIndex((val) => (val -= 1));
     }
   };
 
   const nextAction = () => {
-    if (index === data.stories.length - 1) {
-      if (nextStory) {
-        router.push(`/stories/${nextStory.username}`);
-      }
+    if (index === data.length - 1) {
+      // if (nextStory) {
+      //   router.push(`/stories/${nextStory.username}`);
+      // }
     } else {
       setIndex((val) => (val += 1));
     }
@@ -52,12 +51,15 @@ export default function StoryPlayer({ data, nextStory, prevStory }: Props) {
 
   useEffect(() => {
     if (progress === 100) {
-      const n = data.stories[index + 1];
+      const n = data[index + 1];
       if (n) {
         setIndex((val) => (val += 1));
-      } else if (nextStory) {
-        router.push(`/stories/${nextStory.username}`);
+      } else {
+        setIsDone(true);
       }
+      // if (nextStory) {
+      // router.push(`/stories/${nextStory.username}`);
+      // }
     }
     // eslint-disable-next-line
   }, [progress]);
@@ -66,17 +68,22 @@ export default function StoryPlayer({ data, nextStory, prevStory }: Props) {
     <div className="relative">
       <PrevBtn onClick={prevAction} />
       <NextBtn onClick={nextAction} />
-      <div className="bg-bg-secondary relative aspect-[9/16] h-[95vh] overflow-hidden rounded-xl px-4 py-6">
+      <div className="bg-bg-secondary relative h-screen w-screen overflow-hidden px-4 py-6 sm:aspect-[9/16] sm:h-[95vh] sm:w-max sm:rounded-xl">
         <div className="relative z-[99] flex h-max w-full items-center gap-2">
-          {data.stories.map((d, i) => (
+          {data.map((_, i) => (
             <Indicator progress={i === index ? progress : 0} key={i} />
           ))}
         </div>
         <Player
+          setIsDone={setIsDone}
+          isDone={isDone}
           setProgress={setProgress}
-          contentUrl={data.stories[index].contentUrl}
-          duration={data.stories[index].duration}
-          id={data.stories[index].id}
+          contentUrl={data[index].content}
+          duration={data[index].duration}
+          id={data[index].id}
+          avatar={data[index].avatar}
+          createdAt={data[index].createdAt}
+          username={data[index].username}
         />
       </div>
     </div>

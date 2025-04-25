@@ -47,7 +47,7 @@ export default function ModalPostLovers() {
           setOpen(true);
           await fetchLovers();
         }}
-        className="space-x-1 text-sm font-semibold"
+        className="space-x-1 px-2 text-sm font-semibold"
       >
         <span>{post.sumLikes}</span>
         <span>{post.sumLikes > 1 ? "likes" : "like"}</span>

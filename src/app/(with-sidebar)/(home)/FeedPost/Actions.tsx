@@ -33,7 +33,7 @@ function Actions() {
   const router = useRouter();
 
   return (
-    <section className="flex items-center justify-between py-2">
+    <section className="flex items-center justify-between px-2 py-2">
       <div className="flex items-center gap-4">
         <button onClick={likePost}>
           {post?.isLiked ? <HeartRedPostIcon /> : <HeartEmptyPostIcon />}
