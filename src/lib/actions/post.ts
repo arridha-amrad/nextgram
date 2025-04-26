@@ -6,6 +6,25 @@ import { POST } from "../cacheKeys";
 import PostService from "../drizzle/services/PostService";
 import { authActionClient } from "../safeAction";
 import NotificationService from "../drizzle/services/NotificationService";
+import { SafeActionError } from "../errors/SafeActionError";
+
+export const removePost = authActionClient
+  .schema(
+    z.object({
+      postId: z.string(),
+    }),
+  )
+  .action(async ({ parsedInput, ctx }) => {
+    const userId = ctx.session.user.id;
+    const postId = parsedInput.postId;
+
+    const postService = new PostService();
+    const storedPost = await postService.findById(postId);
+    if (storedPost.length === 0) {
+      throw new SafeActionError("Post not found");
+    }
+    const post = storedPost[0];
+  });
 
 export const savePost = authActionClient
   .schema(

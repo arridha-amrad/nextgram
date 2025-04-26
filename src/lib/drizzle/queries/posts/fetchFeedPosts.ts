@@ -8,6 +8,7 @@ import {
   PostsTable,
   RepliesTable,
   SavedPostsTable,
+  StoriesTable,
   UsersTable,
 } from "@/lib/drizzle/schema";
 import { and, desc, eq, inArray, lt, sql } from "drizzle-orm";
@@ -26,6 +27,14 @@ const runQuery = async ({ date, userId, followings }: TArgs) => {
     .select({
       id: PostsTable.id,
       username: UsersTable.username,
+      isUserStoryExists: sql<boolean>`
+        CASE WHEN EXISTS (
+          SELECT 1 FROM ${StoriesTable}
+          WHERE ${StoriesTable.userId} = ${UsersTable.id}
+          AND ${StoriesTable.createdAt} >= NOW() - INTERVAL '24 hours'
+          AND ${StoriesTable.createdAt} <= NOW()
+        ) THEN true ELSE false END
+      `,
       avatar: UsersTable.avatar,
       userId: PostsTable.userId,
       createdAt: PostsTable.createdAt,

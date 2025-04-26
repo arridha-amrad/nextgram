@@ -11,6 +11,7 @@ const Avatar = ({ url, ...props }: Props) => {
     <div
       className={cn("shrink-0 overflow-hidden rounded-full")}
       style={props.style}
+      {...props}
     >
       <Image
         alt="avatar"

@@ -78,10 +78,11 @@ export default function Player({
       setIsPaused(false);
       startTimer();
       elapsedRef.current = 0;
+    } else {
+      startTimeRef.current = Date.now();
+      intervalRef.current = setInterval(updateProgress, 16);
+      setIsPaused(false);
     }
-    startTimeRef.current = Date.now();
-    intervalRef.current = setInterval(updateProgress, 16);
-    setIsPaused(false);
   };
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Avatar from "./Avatar";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useRef } from "react";
 
 type Props = {
   isStoryExists: boolean;
@@ -16,11 +16,9 @@ function AvatarWithStoryIndicator({
   isStoryWatched,
   ...props
 }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
   return (
-    <div
-      onClick={props.onClick}
-      className="relative flex size-max shrink-0 items-center justify-center p-0.5"
-    >
+    <div className="relative flex size-max shrink-0 items-center justify-center p-0.5">
       {isStoryExists ? (
         isStoryWatched ? (
           <div className="bg-bg-secondary absolute inset-0 size-full rounded-full" />
@@ -31,6 +29,8 @@ function AvatarWithStoryIndicator({
         <div />
       )}
       <div
+        ref={ref}
+        onClick={props.onClick}
         className={cn(
           "bg-background relative shrink-0 cursor-pointer rounded-full",
           isStoryExists ? (size === 150 ? "p-1.5" : "p-[3px]") : "",

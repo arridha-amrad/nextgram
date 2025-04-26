@@ -14,4 +14,5 @@ export const page = {
   accountPrivacy: "/settings/account-privacy",
   postDetail: (id: string) => `/post/${id}`,
   profile: (username: string) => `/${username}`,
+  userStories: (username: string) => `/stories/${username}`,
 };

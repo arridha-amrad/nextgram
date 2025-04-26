@@ -9,10 +9,13 @@ import { useFeedPostContext } from "./Context";
 import Link from "next/link";
 import { page } from "@/lib/pages";
 import { useFeedPosts } from "../store";
+import { useRouter } from "next/navigation";
 
 function Header() {
   const [open, setOpen] = useState(false);
   const { post } = useFeedPostContext();
+
+  const router = useRouter();
 
   const [date, setDate] = useState("");
 
@@ -25,6 +28,15 @@ function Header() {
   const bookMark = useFeedPosts((store) => store.savePost);
   const removePost = useFeedPosts((store) => store.removePost);
 
+  const navigate = () => {
+    if (!post) return;
+    if (post.isUserStoryExists) {
+      router.push(page.userStories(post.username));
+    } else {
+      router.push(page.profile(post.username));
+    }
+  };
+
   if (!post) {
     return null;
   }
@@ -32,7 +44,8 @@ function Header() {
   return (
     <div className="flex items-center gap-4 px-2">
       <AvatarWithStoryIndicator
-        isStoryExists={false}
+        onClick={navigate}
+        isStoryExists={post.isUserStoryExists}
         isStoryWatched={false}
         size={32}
         avatarUrl={post.avatar}
@@ -53,6 +66,7 @@ function Header() {
       <ModalActionOptions open={open} setOpen={setOpen}>
         <PostHeaderOptions
           isFollow={post.isUserFollowed}
+          isFavorite={post.isSaved}
           followCallback={() => {
             removePost(post.id);
           }}

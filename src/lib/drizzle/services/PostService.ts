@@ -8,6 +8,14 @@ export default class PostService extends BaseService {
     return result;
   }
 
+  public async removePostById(id: string) {
+    const result = await this.db
+      .delete(PostsTable)
+      .where(eq(PostsTable.id, id))
+      .returning();
+    return result;
+  }
+
   public async findById(postId: string) {
     const result = await this.db
       .select()

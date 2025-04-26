@@ -1,6 +1,7 @@
 import { bookmarkFeedPost } from "@/handlers/post";
 import { handleFollow } from "@/handlers/user";
 import { page } from "@/lib/pages";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 
@@ -11,6 +12,7 @@ type Props = {
   postOwnerId: string;
   bookMarkCallback: VoidFunction;
   followCallback: VoidFunction;
+  isFavorite: boolean;
 };
 
 function PostHeaderOptions({
@@ -20,9 +22,13 @@ function PostHeaderOptions({
   bookMarkCallback,
   followCallback,
   isFollow,
+  isFavorite,
 }: Props) {
   const pathname = usePathname();
   const router = useRouter();
+
+  const { data } = useSession();
+  const userId = data?.user.id;
 
   return (
     <>
@@ -49,6 +55,20 @@ function PostHeaderOptions({
         </>
       )}
 
+      {userId === postOwnerId && (
+        <>
+          <button
+            onClick={async () => {
+              close();
+            }}
+            className="h-12 w-max self-center text-sm font-medium text-red-400"
+          >
+            Delete post
+          </button>
+          <hr className="border-foreground/10" />
+        </>
+      )}
+
       <button
         onClick={() => {
           bookmarkFeedPost(postId, pathname, bookMarkCallback);
@@ -56,7 +76,7 @@ function PostHeaderOptions({
         }}
         className="h-12 w-max self-center text-sm"
       >
-        Mark as favorite
+        {isFavorite ? "Remove from favorite" : "Mark as favorite"}
       </button>
       <hr className="border-foreground/10" />
 
