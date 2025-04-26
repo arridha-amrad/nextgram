@@ -1,6 +1,6 @@
 import StoryService from "@/lib/drizzle/services/StoryService";
-import { imageKit } from "@/lib/fileUploadHandler";
 import { getAuth } from "@/lib/next.auth";
+import StorageService from "@/lib/StorageService";
 import { NextResponse } from "next/server";
 import { zfd } from "zod-form-data";
 
@@ -42,15 +42,17 @@ export const POST = async (req: Request) => {
     user: { id: userId },
   } = session;
 
+  const storageService = new StorageService();
+  const storyService = new StoryService();
+
   const arrayBuffer = await data.file.arrayBuffer();
   const base64File = Buffer.from(arrayBuffer).toString("base64");
 
-  const { url, fileId } = await imageKit.upload({
-    file: base64File,
-    fileName: data.file.name,
-  });
-
-  const storyService = new StoryService();
+  const { url, fileId } = await storageService.upload(
+    base64File,
+    data.file.name,
+    "story",
+  );
 
   await storyService.create({
     publicId: fileId,

@@ -1,4 +1,4 @@
-import { POST } from "@/lib/cacheKeys";
+import { cacheKeys } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
 import { InfiniteResult } from "@/lib/drizzle/queries/type";
 import { and, desc, eq, lt, sql } from "drizzle-orm";
@@ -96,8 +96,9 @@ export const fetchUserPosts = unstable_cache(
       total: result.total,
     };
   },
-  [POST.userPosts],
+  [cacheKeys.posts.user],
   {
-    tags: [POST.userPosts],
+    revalidate: 60,
+    tags: [cacheKeys.posts.user],
   },
 );

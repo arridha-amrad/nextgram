@@ -4,6 +4,10 @@ import { page } from "@/lib/pages";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
+import { removePost } from "@/lib/actions/post";
+import Spinner from "./Spinner";
+import { useTransition } from "react";
+import { showToast } from "@/lib/utils";
 
 type Props = {
   isFollow: boolean;
@@ -29,6 +33,26 @@ function PostHeaderOptions({
 
   const { data } = useSession();
   const userId = data?.user.id;
+
+  const [isPending, start] = useTransition();
+
+  const handleDeletePost = () => {
+    start(async () => {
+      await removePost({ postId });
+      close();
+      router.back();
+      showToast("Post deleted successfully", "success");
+    });
+  };
+
+  if (isPending) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-2 py-10">
+        <Spinner />
+        <p className="text-foreground/50 animate-pulse text-sm">Please wait</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -58,9 +82,7 @@ function PostHeaderOptions({
       {userId === postOwnerId && (
         <>
           <button
-            onClick={async () => {
-              close();
-            }}
+            onClick={handleDeletePost}
             className="h-12 w-max self-center text-sm font-medium text-red-400"
           >
             Delete post

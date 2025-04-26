@@ -2,11 +2,41 @@ import { and, eq, inArray } from "drizzle-orm";
 import { NotificationsTable } from "../schema";
 import BaseService from "./BaseService";
 
+type NotifType = typeof NotificationsTable.$inferSelect;
+
 export default class NotificationService extends BaseService {
   public async create(data: typeof NotificationsTable.$inferInsert) {
     const result = await this.db
       .insert(NotificationsTable)
       .values(data)
+      .returning();
+    return result;
+  }
+
+  public async remove(data: Partial<NotifType>) {
+    const conditions = [];
+    if (data.actorId) {
+      conditions.push(eq(NotificationsTable.actorId, data.actorId));
+    }
+    if (data.commentId) {
+      conditions.push(eq(NotificationsTable.commentId, data.commentId));
+    }
+    if (data.postId) {
+      conditions.push(eq(NotificationsTable.postId, data.postId));
+    }
+    if (data.replyId) {
+      conditions.push(eq(NotificationsTable.replyId, data.replyId));
+    }
+    if (data.type) {
+      conditions.push(eq(NotificationsTable.type, data.type));
+    }
+    if (data.userId) {
+      conditions.push(eq(NotificationsTable.userId, data.userId));
+    }
+
+    const result = await this.db
+      .delete(NotificationsTable)
+      .where(and(...conditions))
       .returning();
     return result;
   }

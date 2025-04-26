@@ -26,6 +26,7 @@ type ProfileAction = {
   ) => void;
   updateProfile: (data: Partial<TProfile>) => void;
   setProfile: (data: TProfile) => void;
+  removePost: (postId: string) => void;
 };
 
 export type ProfileStore = ProfileState & ProfileAction;
@@ -48,6 +49,12 @@ const storeCreator: StateCreator<
 > = devtools(
   immer((set) => ({
     ...defaultInitState,
+    removePost(postId) {
+      set((state) => {
+        const posts = state.posts.filter((p) => p.id !== postId);
+        state.posts = posts;
+      });
+    },
     setProfile(data) {
       set((state) => {
         state.profile = data;

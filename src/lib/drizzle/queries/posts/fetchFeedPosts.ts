@@ -1,4 +1,4 @@
-import { POST } from "@/lib/cacheKeys";
+import { cacheKeys } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
 import {
@@ -146,7 +146,6 @@ export const fetchFeedPosts = unstable_cache(
     total = 0,
   }: Args): Promise<TInfiniteResult<TFeedPost>> => {
     const followingUsers = await getFollowingsUser(userId);
-
     if (total === 0) {
       const [result] = await db
         .select({
@@ -175,9 +174,9 @@ export const fetchFeedPosts = unstable_cache(
       page,
     };
   },
-  [POST.homePosts],
+  [cacheKeys.posts.home],
   {
-    tags: [POST.homePosts],
+    tags: [cacheKeys.posts.home],
     revalidate: 60,
   },
 );

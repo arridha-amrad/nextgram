@@ -1,4 +1,7 @@
+import { cacheKeys } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
+import { eq, sql } from "drizzle-orm";
+import { unstable_cache } from "next/cache";
 import {
   CommentsTable,
   FollowingsTable,
@@ -8,9 +11,6 @@ import {
   SavedPostsTable,
   UsersTable,
 } from "../../schema";
-import { eq, sql } from "drizzle-orm";
-import { unstable_cache } from "next/cache";
-import { POST } from "@/lib/cacheKeys";
 
 type Params = {
   postId: string;
@@ -80,9 +80,9 @@ export const fetchPost = unstable_cache(
     const post = await query(postId, userId);
     return post.length === 0 ? null : post[0];
   },
-  [POST.detail],
+  [cacheKeys.posts.detail],
   {
     revalidate: 60,
-    tags: [POST.detail],
+    tags: [cacheKeys.posts.detail],
   },
 );

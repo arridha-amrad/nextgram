@@ -1,7 +1,7 @@
-import { POST } from "@/lib/cacheKeys";
+import { cacheKeys } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
 import { InfiniteResult } from "@/lib/drizzle/queries/type";
-import { desc, eq, lt, sql, and } from "drizzle-orm";
+import { and, desc, eq, lt, sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import {
   CommentsTable,
@@ -91,9 +91,9 @@ export const fetchUserSavedPosts = unstable_cache(
       total: result.total,
     };
   },
-  [POST.savedPosts],
+  [cacheKeys.posts.save],
   {
-    tags: [POST.savedPosts],
+    tags: [cacheKeys.posts.save],
     revalidate: 60 * 10, // 10 minutes,
   },
 );

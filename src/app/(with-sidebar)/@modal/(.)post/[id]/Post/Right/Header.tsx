@@ -35,6 +35,7 @@ function PostHeader() {
       </div>
       <ModalActionOptions open={open} setOpen={setOpen}>
         <PostHeaderOptions
+          isFavorite={post.isSaved}
           isFollow={post.isUserFollowed}
           followCallback={() => {}}
           bookMarkCallback={bookMark}
