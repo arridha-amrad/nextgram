@@ -1,14 +1,13 @@
+import Footer from "@/components/Footer";
 import InstagramLogo from "@/components/InstagramLogo";
 import fetchUserMetadata from "@/lib/drizzle/queries/users/fetchUserMetadata";
 import { fetchUserProfile } from "@/lib/drizzle/queries/users/fetchUserProfile";
 import { getAuth } from "@/lib/next.auth";
 import { page } from "@/lib/pages";
 import { cn } from "@/lib/utils";
-import { ProfileStoreProvider } from "@/providers/profile-store-provider";
 import { Metadata } from "next";
 import Link from "next/link";
 import { ReactNode } from "react";
-import Footer from "../../../components/Footer";
 import Highlights from "./Highlights";
 import PrivateAccountInfo from "./PrivateAccountInfo";
 import Profile from "./Profile";
@@ -67,46 +66,44 @@ const Layout = async ({ children, modal, params }: Props) => {
     : true;
 
   return (
-    <ProfileStoreProvider>
-      <main
-        className={cn(
-          "mx-auto flex w-full flex-col xl:max-w-[935px]",
-          session ? "py-10" : "",
-        )}
-      >
-        {!session && (
-          <nav className="mb-10 flex w-full items-center justify-between px-4 py-2">
-            <InstagramLogo className="text-3xl" />
-            <div className="flex items-center gap-2">
-              <Link
-                className="bg-skin-primary roundedLg flex h-8 items-center justify-center px-4 text-sm font-medium"
-                href={page.login}
-              >
-                Login
-              </Link>
-              <Link
-                className="text-skin-primary roundedLg flex h-8 items-center justify-center px-4 text-sm font-medium"
-                href={page.signup}
-              >
-                Signup
-              </Link>
-            </div>
-          </nav>
-        )}
-        <Profile isAuthUser={isAuthUser} profile={profile} />
-        {isAuthUser && <Highlights />}
-        {canYouSee ? (
-          <div className="flex-1">
-            <Tabs username={username} />
-            {children}
-            {modal}
+    <main
+      className={cn(
+        "mx-auto flex w-full flex-col xl:max-w-[935px]",
+        session ? "py-10" : "",
+      )}
+    >
+      {!session && (
+        <nav className="mb-10 flex w-full items-center justify-between px-4 py-2">
+          <InstagramLogo className="text-3xl" />
+          <div className="flex items-center gap-2">
+            <Link
+              className="bg-skin-primary roundedLg flex h-8 items-center justify-center px-4 text-sm font-medium"
+              href={page.login}
+            >
+              Login
+            </Link>
+            <Link
+              className="text-skin-primary roundedLg flex h-8 items-center justify-center px-4 text-sm font-medium"
+              href={page.signup}
+            >
+              Signup
+            </Link>
           </div>
-        ) : (
-          <PrivateAccountInfo />
-        )}
-        <Footer />
-      </main>
-    </ProfileStoreProvider>
+        </nav>
+      )}
+      <Profile isAuthUser={isAuthUser} profile={profile} />
+      {isAuthUser && <Highlights />}
+      {canYouSee ? (
+        <div className="flex-1">
+          <Tabs username={username} />
+          {children}
+          {modal}
+        </div>
+      ) : (
+        <PrivateAccountInfo />
+      )}
+      <Footer />
+    </main>
   );
 };
 

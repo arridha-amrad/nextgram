@@ -1,4 +1,4 @@
-import { USERS } from "@/lib/cacheKeys";
+import { cacheKeys } from "@/lib/cacheKeys";
 import { db } from "@/lib/drizzle/db";
 import { eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
@@ -30,9 +30,9 @@ export const fetchHistories = async ({
 
 export const fetchSearchHistories = unstable_cache(
   fetchHistories,
-  [USERS.searchHistories],
+  [cacheKeys.users.histories],
   {
-    tags: [USERS.searchHistories],
+    tags: [cacheKeys.users.histories],
     revalidate: 60,
   },
 );

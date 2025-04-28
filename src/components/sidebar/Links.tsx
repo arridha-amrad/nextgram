@@ -2,6 +2,7 @@
 
 import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import { page } from "@/lib/pages";
+import { useTranslations } from "next-intl";
 import { useRouter } from "nextjs-toploader/app";
 import ButtonLink from "./ButtonLink";
 import { useSidebarContext } from "./Context";
@@ -22,7 +23,6 @@ import {
 import NewPostModal from "./ModalCreatePost";
 import { CreatePostProvider } from "./ModalCreatePost/Context";
 import FormCreatePost from "./ModalCreatePost/FormCreatePost";
-import { useTranslations } from "next-intl";
 
 type Props = {
   username: string;
@@ -104,7 +104,7 @@ function Links({ avatar, username }: Props) {
 
       <CreatePostProvider>
         <NewPostModal>
-          <FormCreatePost username={username} />
+          <FormCreatePost />
         </NewPostModal>
       </CreatePostProvider>
 

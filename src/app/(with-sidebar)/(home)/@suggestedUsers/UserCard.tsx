@@ -5,6 +5,7 @@ import { follow as fl } from "@/lib/actions/follow";
 import { TSearchUser } from "@/lib/drizzle/queries/type";
 import { cn, showToast } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -19,15 +20,22 @@ const UserCard = ({ user: { name, username, avatar, id } }: Props) => {
 
   const follow = async () => {
     setFollow((val) => !val);
-    const result = await fl.bind(
-      null,
-      pathname,
-    )({
-      followId: id,
-    });
-    if (result?.serverError) {
-      showToast(result.serverError, "error");
-      setFollow((val) => !val);
+    try {
+      const result = await fl.bind(
+        null,
+        pathname,
+      )({
+        followId: id,
+      });
+      if (result?.serverError) {
+        showToast(result.serverError, "error");
+        setFollow((val) => !val);
+      }
+    } catch (err) {
+      if (isRedirectError(err)) {
+        return;
+      }
+      showToast("Something went wrong", "error");
     }
   };
   const t = useTranslations("SuggestedUsers");

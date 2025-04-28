@@ -2,15 +2,17 @@
 
 import Button from "@/components/core/Button";
 import { handleFollow } from "@/handlers/user";
+import { useProfileStore } from "@/lib/stores/profileStore";
 import { cn } from "@/lib/utils";
-import { useProfileStore } from "@/providers/profile-store-provider";
 import { useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const ButtonFollow = () => {
   const profile = useProfileStore((store) => store.profile);
-  const updateProfile = useProfileStore((store) => store.updateProfile);
+  const toggleIsRequestFollow = useProfileStore(
+    (store) => store.toggleIsRequestFollow,
+  );
   const pathname = usePathname();
   const [isPending, setPending] = useState(false);
 
@@ -19,9 +21,7 @@ const ButtonFollow = () => {
     setPending(true);
     try {
       await handleFollow(profile.id, pathname, () => {
-        updateProfile({
-          isFollowRequested: true,
-        });
+        toggleIsRequestFollow();
       });
     } catch (err) {
       console.log(err);

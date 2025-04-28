@@ -1,7 +1,6 @@
 import { savePost as sp } from "@/lib/actions/post";
 import { showToast } from "@/lib/utils";
 
-import { useFeedPosts } from "@/app/(with-sidebar)/(home)/store";
 import { BookmarkIcon, BookMarkFilledIcon } from "@/icons/BookMarkIcon";
 import CommentIcon from "@/icons/CommentIcon";
 import { HeartEmptyPostIcon, HeartRedPostIcon } from "@/icons/HeartIcon";
@@ -9,12 +8,13 @@ import { likePost as lp } from "@/lib/actions/post";
 import { usePathname } from "next/navigation";
 import { usePostStore } from "../store";
 import ShareIcon from "@/icons/ShareIcon";
+import { useFeedPostStore } from "@/lib/stores/feedPostStore";
 
 function SomeActions() {
   const post = usePostStore((store) => store.post);
   const likeDetailedPost = usePostStore((store) => store.likePost);
   const toggle = usePostStore((store) => store.toggleFocusToCommentForm);
-  const bookMarkFeedPost = useFeedPosts((store) => store.savePost);
+  const bookMarkFeedPost = useFeedPostStore((store) => store.savePost);
   const bookMarkPost = usePostStore((store) => store.bookMarkPost);
 
   const pathname = usePathname();
@@ -34,7 +34,7 @@ function SomeActions() {
     }
   };
 
-  const likeFeedPost = useFeedPosts((store) => store.likePost);
+  const likeFeedPost = useFeedPostStore((store) => store.likePost);
   const likePost = async () => {
     if (!post) return;
     likeFeedPost(post.id);

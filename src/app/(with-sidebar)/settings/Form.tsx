@@ -1,7 +1,8 @@
 "use client";
 
+import Spinner from "@/components/Spinner";
 import { useUpdateSession } from "@/hooks/useUpdateSession";
-import { TProfileDetail } from "@/lib/drizzle/queries/users/fetchUserProfileDetails";
+import { TProfile } from "@/lib/drizzle/queries/users/fetchUserProfile";
 import { cn, showToast } from "@/lib/utils";
 import { Field, Label, Select } from "@headlessui/react";
 import { useAction } from "next-safe-action/hooks";
@@ -9,10 +10,9 @@ import { usePathname } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { updateProfile } from "./action";
 import InputText from "./InputText";
-import Spinner from "@/components/Spinner";
 
 type Props = {
-  user: TProfileDetail;
+  user: TProfile;
   fullName: string;
 };
 

@@ -1,8 +1,8 @@
 import { fetchFeedPosts } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import { getAuth } from "@/lib/next.auth";
-import FeedPosts from "./FeedPosts";
-import { redirect } from "next/navigation";
 import { page } from "@/lib/pages";
+import { redirect } from "next/navigation";
+import FeedPosts from "./FeedPosts";
 
 export default async function Page() {
   const session = await getAuth();

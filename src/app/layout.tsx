@@ -1,14 +1,14 @@
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
 import { Inter, Lobster } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
-import { NextIntlClientProvider } from "next-intl";
-import { getLocale } from "next-intl/server";
 
 const inter = Inter({
   subsets: ["latin"],

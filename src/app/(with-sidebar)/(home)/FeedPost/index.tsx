@@ -1,7 +1,7 @@
 "use client";
 
 import { memo } from "react";
-import type { FeedPost as TFeedPost } from "../store";
+import type { FeedPost as TFeedPost } from "@/lib/stores/feedPostStore";
 import Actions from "./Actions";
 import Carousel from "./Carousel";
 import CommentForm from "./CommentForm";

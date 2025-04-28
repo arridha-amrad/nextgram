@@ -1,8 +1,8 @@
 import { db } from "@/lib/drizzle/db";
-import { FollowingsTable, UsersTable } from "../../schema";
+import { FollowingsTable, NotificationsTable, UsersTable } from "../../schema";
 import { sql } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
-import { USERS } from "@/lib/cacheKeys";
+import { cacheKeys } from "@/lib/cacheKeys";
 
 const query2 = async (userId: string) => {
   const result = await db.execute(sql`
@@ -16,6 +16,11 @@ const query2 = async (userId: string) => {
       SELECT ${FollowingsTable.followId} 
       FROM ${FollowingsTable}
       WHERE ${FollowingsTable.userId} = ${userId}
+      UNION
+      SELECT ${NotificationsTable.userId}
+      FROM ${NotificationsTable}
+      WHERE ${NotificationsTable.type} = 'follow'
+      AND ${NotificationsTable.actorId} = ${userId}
     )
     AND ${UsersTable.id} != ${userId}
     LIMIT 5
@@ -36,9 +41,9 @@ const fetchSuggestedUsers = unstable_cache(
     const users = (await query2(authUserId)) as TSuggestedUsers[];
     return users;
   },
-  [USERS.suggestedUsers],
+  [cacheKeys.users.suggestions],
   {
-    tags: [USERS.suggestedUsers],
+    tags: [cacheKeys.users.suggestions],
     revalidate: 60 * 5,
   },
 );

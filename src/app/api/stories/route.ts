@@ -1,6 +1,8 @@
+import { cacheKeys } from "@/lib/cacheKeys";
 import StoryService from "@/lib/drizzle/services/StoryService";
 import { getAuth } from "@/lib/next.auth";
 import StorageService from "@/lib/StorageService";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { zfd } from "zod-form-data";
 
@@ -60,6 +62,9 @@ export const POST = async (req: Request) => {
     url,
     userId,
   });
+
+  revalidateTag(cacheKeys.stories.feed);
+  revalidateTag(cacheKeys.stories.user);
 
   return NextResponse.json(
     {

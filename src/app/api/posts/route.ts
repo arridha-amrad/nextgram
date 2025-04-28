@@ -1,6 +1,11 @@
-import { pinata } from "@/lib/fileUploadHandler";
+import { cacheKeys } from "@/lib/cacheKeys";
+import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import PostService from "@/lib/drizzle/services/PostService";
+import StoryService from "@/lib/drizzle/services/StoryService";
 import { getAuth } from "@/lib/next.auth";
+import StorageService from "@/lib/StorageService";
+import { convertFileToString } from "@/lib/utils";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
@@ -45,31 +50,55 @@ export const POST = async (request: Request) => {
     user: { id: userId },
   } = session;
 
-  const promises = data.images.map(async (image) => {
-    const uploadData = await pinata.upload.file(image);
-    const url = await pinata.gateways.convert(uploadData.IpfsHash);
-    return url;
+  const storageService = new StorageService();
+  const postService = new PostService();
+  const storyService = new StoryService();
+
+  const promises = data.images.map(async (file) => {
+    const fileStr = await convertFileToString(file);
+    const { url, fileId } = await storageService.upload(
+      fileStr,
+      file.name,
+      "post",
+    );
+    return { url, fileId };
   });
 
   const pinataUrls = await Promise.all(promises);
 
-  const postService = new PostService();
-  await postService.create({
-    urls: pinataUrls.map((v) => ({
-      url: v,
+  const [newPost] = await postService.create({
+    urls: pinataUrls.map(({ fileId, url }) => ({
+      url,
       type: "image",
-      publicId: v.split("/").reduce((pv, cv) => {
-        pv = cv;
-        return pv;
-      }, ""),
+      publicId: fileId,
     })),
     userId,
     description: data.description,
     location: data.location,
   });
 
+  revalidateTag(cacheKeys.posts.home);
+  revalidateTag(cacheKeys.posts.user);
+  revalidateTag(cacheKeys.users.profile);
+
+  const isUserStoryExists = await storyService.isUserStoriesExists(
+    session.user.id,
+  );
+
+  const feedPost: TFeedPost = {
+    ...newPost,
+    avatar: session.user.image,
+    username: session.user.username,
+    isLiked: false,
+    isSaved: false,
+    isUserFollowed: false,
+    isUserStoryExists,
+    sumComments: 0,
+    sumLikes: 0,
+  };
+
   return NextResponse.json(
-    { message: "New post created successfully" },
+    { post: feedPost, message: "New post created successfully" },
     { status: 201 },
   );
 };

@@ -10,9 +10,9 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import ButtonFollow from "./ButtonFollow";
 import { useEffect } from "react";
-import { useProfileStore } from "@/providers/profile-store-provider";
 import ProfileSettings from "./ProfileSettings";
 import { useTranslations } from "next-intl";
+import { useProfileStore } from "@/lib/stores/profileStore";
 
 type Props = {
   isAuthUser: boolean;

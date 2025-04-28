@@ -3,7 +3,7 @@
 import { HTMLAttributes, useEffect, useState } from "react";
 import Player from "./Player";
 import Indicator from "./Indicator";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { TUserStory } from "@/lib/drizzle/queries/stories/fetchUserStories";
 
 type Props = {
@@ -15,8 +15,6 @@ export default function StoryPlayer({ data }: Props) {
   const [isDone, setIsDone] = useState(false);
 
   const [index, setIndex] = useState(0);
-
-  const router = useRouter();
 
   const pathname = usePathname();
 

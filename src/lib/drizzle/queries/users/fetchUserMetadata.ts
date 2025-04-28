@@ -1,8 +1,8 @@
+import { cacheKeys } from "@/lib/cacheKeys";
+import { eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 import { db } from "../../db";
 import { UsersTable } from "../../schema";
-import { eq } from "drizzle-orm";
-import { USERS } from "@/lib/cacheKeys";
 
 const fetchUserMetadata = unstable_cache(
   async (username: string) => {
@@ -15,9 +15,9 @@ const fetchUserMetadata = unstable_cache(
       .where(eq(UsersTable.username, username));
     return user.length === 0 ? null : user[0];
   },
-  [USERS.metadata],
+  [cacheKeys.users.metadata],
   {
-    tags: [USERS.metadata],
+    tags: [cacheKeys.users.metadata],
   },
 );
 

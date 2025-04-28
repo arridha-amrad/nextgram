@@ -4,8 +4,8 @@ import Spinner from "@/components/Spinner";
 import { loadMoreUserPosts } from "@/lib/api/posts";
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
 import { InfiniteResult } from "@/lib/drizzle/queries/type";
+import { useUserPostStore } from "@/lib/stores/profilePostStore";
 import { showToast, toMatrixPost } from "@/lib/utils";
-import { useProfileStore } from "@/providers/profile-store-provider";
 import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useParams } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -18,10 +18,11 @@ type Props = {
 };
 
 export default function UserPosts({ initialPosts }: Props) {
-  const addPosts = useProfileStore((state) => state.addPosts);
-  const setPosts = useProfileStore((state) => state.setPosts);
-  const profilePosts = useProfileStore((state) => state.posts);
-  const hasMore = useProfileStore((state) => state.hasMorePosts);
+  const addPosts = useUserPostStore((state) => state.addPosts);
+  const setPosts = useUserPostStore((state) => state.setPosts);
+  const profilePosts = useUserPostStore((state) => state.posts);
+  const hasMore = useUserPostStore((state) => state.hasMorePosts);
+
   const params = useParams();
   const [rowRef, { width }] = useMeasure();
   const { ref: refObserver, inView } = useInView({ threshold: 1 });
@@ -35,14 +36,18 @@ export default function UserPosts({ initialPosts }: Props) {
   useEffect(() => {
     if (initialPosts.data.length > 0) {
       setPosts(initialPosts.data, "default", initialPosts.total);
-      const d = initialPosts.data[initialPosts.data.length - 1].createdAt;
-      setLatestDate(d);
-      const id = setTimeout(() => {
-        setHasInitialized(true);
-      }, 1000);
-      return () => {
-        clearTimeout(id);
-      };
+      if (initialPosts.total <= 6) {
+        setStop(true);
+      } else {
+        const d = initialPosts.data[initialPosts.data.length - 1].createdAt;
+        setLatestDate(d);
+        const id = setTimeout(() => {
+          setHasInitialized(true);
+        }, 1000);
+        return () => {
+          clearTimeout(id);
+        };
+      }
     }
     // eslint-disable-next-line
   }, []);
@@ -60,8 +65,12 @@ export default function UserPosts({ initialPosts }: Props) {
         });
         if (data.length > 0) {
           addPosts(data, "default");
-          const date = data[data.length - 1].createdAt;
-          setLatestDate(date);
+          if (data.length < 6) {
+            setStop(true);
+          } else {
+            const date = data[data.length - 1].createdAt;
+            setLatestDate(date);
+          }
         } else {
           setStop(true);
         }

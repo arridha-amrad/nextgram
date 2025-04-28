@@ -1,22 +1,27 @@
 "use client";
 
 import Avatar from "@/components/Avatar";
+import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
+import { useFeedPostStore } from "@/lib/stores/feedPostStore";
+import { useUserPostStore } from "@/lib/stores/profilePostStore";
 import { cn, showToast } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { FormEvent, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Accessibility from "./Accessibility";
-import { createPostActionRevalidate } from "./action";
 import AdvanceSettings from "./AdvanceSettings";
 import { useCreatePost } from "./Context";
 import Emoji from "./Emoji";
 import ShareTo from "./ShareTo";
 
-type Props = {
-  username: string;
-};
-
-const FormCreatePost = ({ username }: Props) => {
+const FormCreatePost = () => {
   const { setStep, files, newPostFormRef } = useCreatePost();
+  const addPostToFeed = useFeedPostStore((store) => store.addPost);
+  const addPostToUserPosts = useUserPostStore((store) => store.addPost);
+
+  const { data: session } = useSession();
+  const pathname = usePathname();
 
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -40,9 +45,14 @@ const FormCreatePost = ({ username }: Props) => {
         }
       } else {
         const data = await response.json();
+        const newPost = data.post as TFeedPost;
+        addPostToFeed(newPost);
+        if (pathname === `/${session?.user.username}`) {
+          const { createdAt, urls, id, sumComments, sumLikes } = newPost;
+          addPostToUserPosts({ createdAt, id, sumComments, sumLikes, urls });
+        }
         showToast(data.message, "success");
         setStep("isSubmitted");
-        createPostActionRevalidate();
       }
     } catch {
       toast.error("Failed to create post");
@@ -60,6 +70,8 @@ const FormCreatePost = ({ username }: Props) => {
     cursorPositionRef.current = position ?? 0;
   };
 
+  if (!session) return null;
+
   return (
     <fieldset
       className={cn(
@@ -67,8 +79,11 @@ const FormCreatePost = ({ username }: Props) => {
       )}
     >
       <div className="flex h-[60px] w-full shrink-0 items-center gap-3 px-2 py-2">
-        <Avatar url="/default.jpg" style={{ width: 32, height: 32 }} />
-        <h1 className="text-sm font-medium">{username}</h1>
+        <Avatar
+          url={session?.user.image ?? "/default.jpg"}
+          style={{ width: 32, height: 32 }}
+        />
+        <h1 className="text-sm font-medium">{session?.user.username}</h1>
       </div>
       <form
         ref={newPostFormRef}
@@ -138,7 +153,7 @@ const FormCreatePost = ({ username }: Props) => {
             <path d="M6.51 11.002c0 2.481 2.02 4.5 4.502 4.5 2.48 0 4.499-2.019 4.499-4.5s-2.019-4.5-4.5-4.5a4.506 4.506 0 0 0-4.5 4.5zm7 0c0 1.378-1.12 2.5-2.498 2.5-1.38 0-2.501-1.122-2.501-2.5s1.122-2.5 2.5-2.5a2.502 2.502 0 0 1 2.5 2.5zM23.001 3.002h-2.004V1a1 1 0 1 0-2 0v2.002H17a1 1 0 1 0 0 2h1.998v2.003a1 1 0 1 0 2 0V5.002h2.004a1 1 0 1 0 0-2z"></path>
           </svg>
         </div>
-        <ShareTo username={username} />
+        <ShareTo username={session?.user.username} />
         <Accessibility />
         <AdvanceSettings />
       </form>

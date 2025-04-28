@@ -3,13 +3,13 @@
 import AvatarWithStoryIndicator from "@/components/AvatarWithStoryIndicator";
 import ModalActionOptions from "@/components/ModalActionOptions";
 import PostHeaderOptions from "@/components/PostHeaderOptions";
+import { page } from "@/lib/pages";
+import { useFeedPostStore } from "@/lib/stores/feedPostStore";
 import { formatDistanceToNowStrict } from "date-fns";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useFeedPostContext } from "./Context";
-import Link from "next/link";
-import { page } from "@/lib/pages";
-import { useFeedPosts } from "../store";
-import { useRouter } from "next/navigation";
 
 function Header() {
   const [open, setOpen] = useState(false);
@@ -25,8 +25,8 @@ function Header() {
     }
   }, [post?.createdAt]);
 
-  const bookMark = useFeedPosts((store) => store.savePost);
-  const removePost = useFeedPosts((store) => store.removePost);
+  const bookMark = useFeedPostStore((store) => store.savePost);
+  const removePost = useFeedPostStore((store) => store.removePost);
 
   const navigate = () => {
     if (!post) return;

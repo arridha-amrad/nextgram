@@ -1,6 +1,5 @@
-import { fetchUserProfileDetails } from "@/lib/drizzle/queries/users/fetchUserProfileDetails";
-
 import Footer from "@/components/Footer";
+import { fetchUserProfile } from "@/lib/drizzle/queries/users/fetchUserProfile";
 import { getAuth } from "@/lib/next.auth";
 import { page } from "@/lib/pages";
 import { redirect } from "next/navigation";
@@ -10,7 +9,7 @@ import UpdateAvatar from "./UpdateAvatar";
 const Page = async () => {
   const session = await getAuth();
 
-  const profile = await fetchUserProfileDetails({
+  const profile = await fetchUserProfile({
     username: session?.user.username ?? "",
   });
   if (!session || !profile) {

@@ -97,6 +97,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
         // router.push(`?slide=${currentActiveIndex}`, undefined, { shallow: true }); // Pages Router
       }
     },
+    // eslint-disable-next-line
     [currentId],
   );
 
@@ -113,6 +114,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
       .on("reInit", tweenScale)
       .on("scroll", tweenScale)
       .on("slideFocus", tweenScale);
+    // eslint-disable-next-line
   }, [emblaApi, tweenScale]);
 
   return (

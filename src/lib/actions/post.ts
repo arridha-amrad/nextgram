@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 import { cacheKeys } from "../cacheKeys";
 import PostService from "../drizzle/services/PostService";
@@ -58,10 +58,9 @@ export const removePost = authActionClient
     const fileUrls = post.urls.map((d) => d.publicId);
     await postService.removePostById(post.id);
 
-    // revalidatePostAndNotificationsAnywherePossible();
-    revalidatePath("/");
+    revalidatePostAndNotificationsAnywherePossible();
 
-    // await storageService.remove(fileUrls);
+    await storageService.remove(fileUrls);
     console.log("post removed");
   });
 

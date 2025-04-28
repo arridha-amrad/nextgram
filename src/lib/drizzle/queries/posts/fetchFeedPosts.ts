@@ -146,6 +146,7 @@ export const fetchFeedPosts = unstable_cache(
     total = 0,
   }: Args): Promise<TInfiniteResult<TFeedPost>> => {
     const followingUsers = await getFollowingsUser(userId);
+
     if (total === 0) {
       const [result] = await db
         .select({

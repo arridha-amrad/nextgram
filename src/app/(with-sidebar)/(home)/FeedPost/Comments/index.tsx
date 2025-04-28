@@ -5,7 +5,7 @@ const FeedPostComments = () => {
   const { post } = useFeedPostContext();
 
   return (
-    <section id="post_comments" className="px-2">
+    <section className="px-2">
       {post?.comments.map((comment) => (
         <Comment key={comment.id} comment={comment} />
       ))}

@@ -7,9 +7,9 @@ import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { useFeedPosts } from "../store";
 import { useFeedPostContext } from "./Context";
 import Emoji from "./Emoji";
+import { useFeedPostStore } from "@/lib/stores/feedPostStore";
 
 export default function FeedPostCommentForm() {
   const { post } = useFeedPostContext();
@@ -22,7 +22,7 @@ export default function FeedPostCommentForm() {
   const { theme } = useTheme();
   const pathname = usePathname();
 
-  const { addComment } = useFeedPosts();
+  const addComment = useFeedPostStore((store) => store.addComment);
 
   const action = create.bind(null, post?.id ?? "", pathname);
   const { execute, isPending } = useAction(action, {

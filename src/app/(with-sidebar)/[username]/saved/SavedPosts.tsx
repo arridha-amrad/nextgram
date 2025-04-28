@@ -4,8 +4,8 @@ import Spinner from "@/components/Spinner";
 import { loadMoreUserSavedPosts } from "@/lib/api/posts";
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
 import { InfiniteResult } from "@/lib/drizzle/queries/type";
+import { useUserPostStore } from "@/lib/stores/profilePostStore";
 import { showToast, toMatrixPost } from "@/lib/utils";
-import { useProfileStore } from "@/providers/profile-store-provider";
 import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useParams } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -18,9 +18,9 @@ type Props = {
 };
 
 export default function UserPosts({ initialPosts }: Props) {
-  const addPosts = useProfileStore((state) => state.addPosts);
-  const profilePosts = useProfileStore((state) => state.savedPosts);
-  const hasMore = useProfileStore((state) => state.hasMoreSavedPosts);
+  const addPosts = useUserPostStore((state) => state.addPosts);
+  const profilePosts = useUserPostStore((state) => state.savedPosts);
+  const hasMore = useUserPostStore((state) => state.hasMoreSavedPosts);
 
   const params = useParams();
   const [rowRef, { width }] = useMeasure();

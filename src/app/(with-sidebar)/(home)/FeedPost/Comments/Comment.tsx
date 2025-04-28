@@ -1,16 +1,16 @@
 import { HeartEmptyCommentIcon, HeartRedCommentIcon } from "@/icons/HeartIcon";
 import { likeComment as lc } from "@/lib/actions/comment";
+import { TFeedComment, useFeedPostStore } from "@/lib/stores/feedPostStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { toast } from "react-toastify";
-import { TFeedComment, useFeedPosts } from "../../store";
 
 type Props = {
   comment: TFeedComment;
 };
 
 const Comment = ({ comment }: Props) => {
-  const likeComment = useFeedPosts((state) => state.likeComment);
+  const likeComment = useFeedPostStore((state) => state.likeComment);
   const pathname = usePathname();
 
   const like = async () => {

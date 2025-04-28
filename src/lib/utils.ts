@@ -5,6 +5,12 @@ import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 import { TUserPost } from "./drizzle/queries/posts/fetchUserPosts";
 
+export const convertFileToString = async (file: File) => {
+  const arrayBuffer = await file.arrayBuffer();
+  const base64File = Buffer.from(arrayBuffer).toString("base64");
+  return base64File;
+};
+
 export const toMatrixPost = (data: TUserPost[]) => {
   const size = 3;
   const result: TUserPost[][] = [];

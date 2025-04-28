@@ -1,7 +1,7 @@
-import { useFeedPosts } from "@/app/(with-sidebar)/(home)/store";
 import MySpinner from "@/components/Spinner";
 import { create as createComment } from "@/lib/actions/comment";
 import { create as createReply } from "@/lib/actions/reply";
+import { useFeedPostStore } from "@/lib/stores/feedPostStore";
 import { cn, showToast } from "@/lib/utils";
 import { useAction } from "next-safe-action/hooks";
 import { usePathname } from "next/navigation";
@@ -16,7 +16,7 @@ const CommentForm = () => {
 
   const pathname = usePathname();
 
-  const addCommentToFeedPosts = useFeedPosts((store) => store.addComment);
+  const addCommentToFeedPosts = useFeedPostStore((store) => store.addComment);
 
   const replyTarget = usePostStore((store) => store.replyTarget);
   const setReplySetter = usePostStore((store) => store.setReplySetter);

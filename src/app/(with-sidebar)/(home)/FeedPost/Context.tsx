@@ -1,5 +1,5 @@
+import { FeedPost, useFeedPostStore } from "@/lib/stores/feedPostStore";
 import { createContext, ReactNode, useContext } from "react";
-import { FeedPost, useFeedPosts } from "../store";
 
 const Context = createContext<{
   post: FeedPost | null;
@@ -14,7 +14,7 @@ export const FeedPostProvider = ({
   children: ReactNode;
   postId: string;
 }) => {
-  const feedPosts = useFeedPosts((store) => store.posts);
+  const feedPosts = useFeedPostStore((store) => store.posts);
   const post = feedPosts.find((p) => p.id === postId);
   if (!post) return null;
   return <Context value={{ post }}>{children}</Context>;

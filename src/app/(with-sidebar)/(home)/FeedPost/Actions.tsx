@@ -1,6 +1,5 @@
 "use client";
 
-import { useFeedPosts } from "../store";
 import { likePost as likeFeedPost } from "@/lib/actions/post";
 import { usePathname } from "next/navigation";
 import { useFeedPostContext } from "./Context";
@@ -12,12 +11,13 @@ import CommentIcon from "@/icons/CommentIcon";
 import ShareIcon from "@/icons/ShareIcon";
 import { BookMarkFilledIcon, BookmarkIcon } from "@/icons/BookMarkIcon";
 import { bookmarkFeedPost } from "@/handlers/post";
+import { useFeedPostStore } from "@/lib/stores/feedPostStore";
 
 function Actions() {
   const pathname = usePathname();
   const { post } = useFeedPostContext();
 
-  const like = useFeedPosts((store) => store.likePost);
+  const like = useFeedPostStore((store) => store.likePost);
   const likePost = async () => {
     if (!post) return;
     like(post.id);
@@ -28,7 +28,7 @@ function Actions() {
     }
   };
 
-  const bookMarkPost = useFeedPosts((store) => store.savePost);
+  const bookMarkPost = useFeedPostStore((store) => store.savePost);
 
   const router = useRouter();
 

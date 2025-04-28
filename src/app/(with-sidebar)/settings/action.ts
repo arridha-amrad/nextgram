@@ -1,6 +1,6 @@
 "use server";
 
-import { USERS } from "@/lib/cacheKeys";
+import { cacheKeys } from "@/lib/cacheKeys";
 import { TransactionManager } from "@/lib/drizzle/services/TransactionManager";
 import UserInfoService from "@/lib/drizzle/services/UserInfoService";
 import UserService from "@/lib/drizzle/services/UserService";
@@ -42,8 +42,7 @@ export const updateProfile = authActionClient
       return userUpdate[0].name;
     });
 
-    revalidateTag(USERS.profile);
-    revalidateTag(USERS.profileDetails);
+    revalidateTag(cacheKeys.users.profile);
 
     return {
       name: updateResponse,

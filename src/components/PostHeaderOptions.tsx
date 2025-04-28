@@ -1,13 +1,15 @@
 import { bookmarkFeedPost } from "@/handlers/post";
 import { handleFollow } from "@/handlers/user";
+import { removePost } from "@/lib/actions/post";
 import { page } from "@/lib/pages";
+import { useFeedPostStore } from "@/lib/stores/feedPostStore";
+import { useUserPostStore } from "@/lib/stores/profilePostStore";
+import { showToast } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
-import { removePost } from "@/lib/actions/post";
-import Spinner from "./Spinner";
 import { useTransition } from "react";
-import { showToast } from "@/lib/utils";
+import Spinner from "./Spinner";
 
 type Props = {
   isFollow: boolean;
@@ -34,22 +36,33 @@ function PostHeaderOptions({
   const { data } = useSession();
   const userId = data?.user.id;
 
+  const removePostFromFeed = useFeedPostStore((store) => store.removePost);
+  const removePostFromUserPosts = useUserPostStore((store) => store.removePost);
+
   const [isPending, start] = useTransition();
 
   const handleDeletePost = () => {
     start(async () => {
       await removePost({ postId });
+      removePostFromFeed(postId);
+      removePostFromUserPosts(postId);
       close();
-      router.back();
+      if (pathname !== "/") {
+        router.back();
+      }
       showToast("Post deleted successfully", "success");
     });
   };
 
   if (isPending) {
     return (
-      <div className="flex flex-col items-center justify-center gap-2 py-10">
-        <Spinner />
-        <p className="text-foreground/50 animate-pulse text-sm">Please wait</p>
+      <div className="fixed inset-0 flex w-full items-center justify-center">
+        <div className="bg-bg-secondary flex h-max w-[200px] flex-col items-center justify-center gap-2 rounded-xl py-10">
+          <Spinner />
+          <p className="text-foreground/50 animate-pulse text-sm">
+            Please wait
+          </p>
+        </div>
       </div>
     );
   }

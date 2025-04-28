@@ -4,23 +4,23 @@ import Spinner from "@/components/Spinner";
 import { loadMoreFeedPosts } from "@/lib/api/posts";
 import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
+import { useFeedPostStore } from "@/lib/stores/feedPostStore";
 import { showToast } from "@/lib/utils";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import FeedPost from "./FeedPost";
-import { useFeedPosts } from "./store";
 
 type Props = {
   posts: TInfiniteResult<TFeedPost>;
 };
 
 export default function FeedPosts({ posts: initialPosts }: Props) {
-  const addPosts = useFeedPosts((state) => state.addPosts);
-  const hasMore = useFeedPosts((state) => state.hasMore);
-  const posts = useFeedPosts((state) => state.posts);
-  const total = useFeedPosts((state) => state.total);
-  const setPosts = useFeedPosts((state) => state.setPosts);
+  const addPosts = useFeedPostStore((state) => state.addPosts);
+  const hasMore = useFeedPostStore((state) => state.hasMore);
+  const posts = useFeedPostStore((state) => state.posts);
+  const total = useFeedPostStore((state) => state.total);
+  const setPosts = useFeedPostStore((state) => state.setPosts);
 
   const [currPage, setCurrPage] = useState(0);
   const [hasInitialized, setHasInitialized] = useState(false);

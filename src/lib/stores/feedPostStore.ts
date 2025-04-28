@@ -20,7 +20,7 @@ export type FeedPost = TFeedPost & { comments: TFeedComment[] };
 interface Action {
   setPosts: (data: TInfiniteResult<TFeedPost>) => void;
   addPosts: (data: TInfiniteResult<TFeedPost>) => void;
-  addPost: (data: FeedPost) => void;
+  addPost: (data: TFeedPost) => void;
   likePost: (postId: string) => void;
   savePost: (postId: string) => void;
   likeComment: (comment: TFeedComment) => void;
@@ -28,11 +28,8 @@ interface Action {
   removePost: (id: string) => void;
 }
 interface State {
-  isLoading: boolean;
   posts: FeedPost[];
   total: number;
-  page: number;
-  date: Date;
   hasMore: boolean;
 }
 
@@ -40,15 +37,12 @@ const transform = (posts: TFeedPost[]) => {
   return posts.map((p) => ({ ...p, comments: [] as TFeedComment[] }));
 };
 
-export const useFeedPosts = create<State & Action>()(
+export const useFeedPostStore = create<State & Action>()(
   devtools(
     immer((set) => ({
       hasMore: false,
-      date: new Date(),
       total: 0,
-      page: 0,
       posts: [],
-      isLoading: true,
       savePost(postId) {
         set((state) => {
           const post = state.posts.find((v) => v.id === postId);
@@ -61,22 +55,19 @@ export const useFeedPosts = create<State & Action>()(
           state.posts = state.posts.filter((p) => p.id !== id);
         });
       },
-      setPosts({ data, page, total }) {
+      setPosts({ data, total }) {
         set((state) => {
           state.posts = transform(data);
-          state.isLoading = false;
-          state.date = state.posts[state.posts.length - 1].createdAt;
-          state.page = page;
           state.total = total;
           state.hasMore = total > state.posts.length;
         });
       },
       addPost(data) {
         set((state) => {
-          state.posts.unshift(data);
+          state.posts.unshift({ ...data, comments: [] });
         });
       },
-      addPosts({ data, page }) {
+      addPosts({ data }) {
         set((state) => {
           const old = state.posts;
           const newPosts = filterUniquePosts([
@@ -89,8 +80,6 @@ export const useFeedPosts = create<State & Action>()(
               state.total > newPosts.length;
           }
           state.posts = newPosts;
-          state.page = page;
-          state.date = state.posts[state.posts.length - 1].createdAt;
         });
       },
       likeComment({ id, postId }) {
