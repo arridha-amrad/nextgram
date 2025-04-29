@@ -12,6 +12,7 @@ import { useFeedPostStore } from "@/lib/stores/feedPostStore";
 
 function SomeActions() {
   const post = usePostStore((store) => store.post);
+
   const likeDetailedPost = usePostStore((store) => store.likePost);
   const toggle = usePostStore((store) => store.toggleFocusToCommentForm);
   const bookMarkFeedPost = useFeedPostStore((store) => store.savePost);

@@ -23,9 +23,9 @@ export default function LogoutDialog({ isPending }: Props) {
         <DialogPanel className="bg-bg-secondary w-full max-w-sm rounded-xl">
           <DialogTitle as="div" className="flex items-center justify-center">
             <div className="w-full space-y-2 py-5 text-center">
-              <h1 className="text-xl font-light">Discard post?</h1>
+              <h1 className="text-xl font-light">Logout</h1>
               <p className="text-foreground/70 text-sm">
-                If you leave, your edits won&apos;t be saved.
+                This action will clear your session.
               </p>
             </div>
           </DialogTitle>

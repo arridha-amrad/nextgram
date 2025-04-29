@@ -6,9 +6,8 @@ import {
   UsersTable,
 } from "@/lib/drizzle/schema";
 import { and, desc, eq, lt, sql } from "drizzle-orm";
-import crypto from "crypto";
 import { unstable_cache } from "next/cache";
-import { COMMENTS } from "@/lib/cacheKeys";
+import { cacheKeys } from "@/lib/cacheKeys";
 
 const LIMIT = 10;
 
@@ -63,17 +62,24 @@ const query = async (postId: string, date: Date, userId?: string) => {
 
 export type TComment = Awaited<ReturnType<typeof query>>[number];
 
+export const loadMoreComment = (
+  postId: string,
+  date: Date,
+  userId?: string,
+) => {
+  const data = query(postId, date, userId);
+  return data;
+};
+
 export const fetchComments = unstable_cache(
-  async ({ postId, userId, date = new Date() }: Args): Promise<TComment[]> => {
-    if (!userId) {
-      userId = crypto.randomUUID();
-    }
+  async ({ postId, userId }: Args): Promise<TComment[]> => {
+    const date = new Date();
     const data = await query(postId, date, userId);
     return data;
   },
-  [COMMENTS.post],
+  [cacheKeys.posts.comments],
   {
-    tags: [COMMENTS.post],
+    tags: [cacheKeys.posts.comments],
     revalidate: 60,
   },
 );

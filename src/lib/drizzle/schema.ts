@@ -200,6 +200,7 @@ export const UsersTable = pgTable(
     username: varchar("username").notNull(),
     email: varchar("email").notNull(),
     avatar: text("avatar"),
+    avatarPublicId: text("avatar_pub_id"),
     password: text("password"),
     provider: providerEnum("provider").notNull(),
     verifiedAt: timestamp("verified_at"),

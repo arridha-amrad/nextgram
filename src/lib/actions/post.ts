@@ -18,7 +18,7 @@ const revalidatePostAndNotificationsAnywherePossible = () => {
 
 /**
  * remove post constraints:
- * 1. The Post must exists
+ * 1. The Post must exist
  * 2. The actor is the post owner
  * required actions:
  * 1. delete files related to the post
@@ -35,8 +35,6 @@ export const removePost = authActionClient
     const userId = ctx.session.user.id;
     const postId = parsedInput.postId;
 
-    console.log({ userId, postId });
-
     const postService = new PostService();
     const storageService = new StorageService();
 
@@ -46,13 +44,10 @@ export const removePost = authActionClient
     }
 
     const post = storedPost[0];
-    console.log("post exists : ", post.id);
 
     if (post.userId !== userId) {
       throw new SafeActionError("You are not authorized");
     }
-
-    console.log("you are the post owner");
 
     // remove files from storage
     const fileUrls = post.urls.map((d) => d.publicId);

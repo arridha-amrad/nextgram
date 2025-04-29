@@ -3,9 +3,11 @@ import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import PostService from "@/lib/drizzle/services/PostService";
 import StoryService from "@/lib/drizzle/services/StoryService";
 import { getAuth } from "@/lib/next.auth";
+import { page } from "@/lib/pages";
 import StorageService from "@/lib/StorageService";
 import { convertFileToString } from "@/lib/utils";
 import { revalidateTag } from "next/cache";
+import { redirect, RedirectType } from "next/navigation";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
@@ -13,12 +15,7 @@ import { zfd } from "zod-form-data";
 export const POST = async (request: Request) => {
   const session = await getAuth();
   if (!session) {
-    return NextResponse.json(
-      { message: "You are not authorized" },
-      {
-        status: 400,
-      },
-    );
+    redirect(page.login, RedirectType.replace);
   }
 
   const schema = zfd.formData({

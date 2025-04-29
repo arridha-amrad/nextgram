@@ -1,28 +1,14 @@
 "use server";
 
-import { searchUser as su } from "@/lib/drizzle/queries/users/searchUser";
 import { revalidateTag } from "next/cache";
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { USERS } from "../cacheKeys";
+import { cacheKeys } from "../cacheKeys";
 import UserService from "../drizzle/services/UserService";
-import { actionClient, authActionClient } from "../safeAction";
 import { SafeActionError } from "../errors/SafeActionError";
-import {
-  deleteFileFromPinataByUrl,
-  uploadFileToPinata,
-} from "../fileUploadHandler";
-
-export const searchUser = actionClient
-  .schema(
-    zfd.formData({
-      key: zfd.text(z.string()),
-    }),
-  )
-  .action(async ({ parsedInput: { key } }) => {
-    const users = await su(key);
-    return users;
-  });
+import { authActionClient } from "../safeAction";
+import StorageService from "../StorageService";
+import { convertFileToString } from "../utils";
 
 const MAX_FILE_SIZE = 1024 * 1024;
 export const updateAvatar = authActionClient
@@ -36,6 +22,7 @@ export const updateAvatar = authActionClient
   .bindArgsSchemas<[pathname: z.ZodString]>([z.string()])
   .action(async ({ ctx: { session }, parsedInput: { image } }) => {
     const userService = new UserService();
+    const storageService = new StorageService();
 
     const { id } = session.user;
     const user = await userService.findUserById(id);
@@ -43,19 +30,24 @@ export const updateAvatar = authActionClient
       throw new SafeActionError("User not found");
     }
 
-    const avatarUrl = user[0].avatar;
-    if (avatarUrl && avatarUrl.includes("mypinata")) {
-      await deleteFileFromPinataByUrl(avatarUrl);
+    const avatarPublicId = user[0].avatarPublicId;
+    if (avatarPublicId) {
+      await storageService.remove([avatarPublicId]);
     }
 
-    const newUrl = await uploadFileToPinata(image);
+    const fileStr = await convertFileToString(image);
+    const { url, fileId } = await storageService.upload(
+      fileStr,
+      image.name,
+      "avatar",
+    );
 
     const [result] = await userService.updateUser(id, {
-      avatar: newUrl,
+      avatar: url,
+      avatarPublicId: fileId,
     });
 
-    revalidateTag(USERS.profile);
-    revalidateTag(USERS.profileDetails);
+    revalidateTag(cacheKeys.users.profile);
 
     return {
       id: result.id,
@@ -79,7 +71,7 @@ export const saveUserToSearchHistory = authActionClient
       userId: session.user.id,
       searchId,
     });
-    revalidateTag(USERS.searchHistories);
+    revalidateTag(cacheKeys.users.histories);
     return result;
   });
 
@@ -90,7 +82,7 @@ export const removeAllSearchHistories = authActionClient
     const result = await userService.removeAllUserFromSearchHistory(
       session.user.id,
     );
-    revalidateTag(USERS.searchHistories);
+    revalidateTag(cacheKeys.users.histories);
     return result;
   });
 
@@ -107,6 +99,6 @@ export const removeUserFromSearchHistory = authActionClient
       searchId,
       userId: session.user.id,
     });
-    revalidateTag(USERS.searchHistories);
+    revalidateTag(cacheKeys.users.histories);
     return result;
   });

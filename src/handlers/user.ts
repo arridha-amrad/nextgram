@@ -11,7 +11,7 @@ export const handleFollow = async (
     const result = await follow.bind(
       null,
       pathname,
-    )({ followId: userToFollowId });
+    )({ targetId: userToFollowId });
     if (result?.data && result.data === "request") {
       callback();
     }

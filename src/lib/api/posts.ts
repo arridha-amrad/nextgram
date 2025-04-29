@@ -1,5 +1,5 @@
 import { InfiniteResult, TInfiniteResult } from "@/lib/drizzle/queries/type";
-import { POST } from "../cacheKeys";
+import { cacheKeys } from "../cacheKeys";
 import { TFeedPost } from "../drizzle/queries/posts/fetchFeedPosts";
 import { TLikeUsers } from "../drizzle/queries/posts/fetchPostLikes";
 import { TUserPost } from "../drizzle/queries/posts/fetchUserPosts";
@@ -16,7 +16,7 @@ export const getLikes = async ({
   try {
     const res = await fetch(
       `/api/posts/${postId}/likes?page=${page}&date=${date}`,
-      { next: { revalidate: 60, tags: [POST.likes] } },
+      { next: { revalidate: 60, tags: [cacheKeys.posts.likes] } },
     );
     if (!res.ok) {
       throw new Error("Something went wrong");

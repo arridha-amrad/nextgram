@@ -26,7 +26,7 @@ const UserCardWithFollowButton = ({
       null,
       pathname,
     )({
-      followId: id,
+      targetId: id,
     });
     if (result?.serverError) {
       showToast("something went wrong", "error");

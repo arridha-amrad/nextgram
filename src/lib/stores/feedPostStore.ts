@@ -1,6 +1,6 @@
 import { TFeedPost } from "@/lib/drizzle/queries/posts/fetchFeedPosts";
 import { TInfiniteResult } from "@/lib/drizzle/queries/type";
-import { filterUniquePosts } from "@/lib/utils";
+import { getUniqueById } from "@/lib/utils";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -70,10 +70,7 @@ export const useFeedPostStore = create<State & Action>()(
       addPosts({ data }) {
         set((state) => {
           const old = state.posts;
-          const newPosts = filterUniquePosts([
-            ...state.posts,
-            ...transform(data),
-          ]);
+          const newPosts = getUniqueById([...state.posts, ...transform(data)]);
           if (old.length !== newPosts.length) {
             state.hasMore =
               data.length === MAX_POST_PER_QUERY &&

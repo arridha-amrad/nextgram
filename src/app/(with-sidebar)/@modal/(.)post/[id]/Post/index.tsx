@@ -1,11 +1,11 @@
 "use client";
 
+import { TComment } from "@/lib/drizzle/queries/comments/fetchComments";
 import { TPost } from "@/lib/drizzle/queries/posts/fetchPost";
+import { useEffect } from "react";
 import Carousel from "./Carousel";
 import Right from "./Right";
-import { TComment } from "@/lib/drizzle/queries/comments/fetchComments";
 import { usePostStore } from "./store";
-import { useEffect } from "react";
 
 type Props = {
   post: TPost;
@@ -13,14 +13,10 @@ type Props = {
 };
 
 function Post({ post, comments }: Props) {
-  const setComments = usePostStore((store) => store.setComments);
-  const setTotal = usePostStore((store) => store.setTotal);
-  const setPost = usePostStore((store) => store.setPost);
+  const init = usePostStore((store) => store.init);
 
   useEffect(() => {
-    setPost(post);
-    setComments(comments);
-    setTotal(post.sumComments);
+    init(post, comments);
     // eslint-disable-next-line
   }, []);
 

@@ -87,14 +87,14 @@ export const rgbDataURL = (r: number, g: number, b: number) => {
   }/yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==`;
 };
 
-export const filterUniquePosts = <T extends { id: string }>(currPosts: T[]) => {
+export const getUniqueById = <T extends { id: string }>(currPosts: T[]) => {
   const seenIds = new Set<string>();
-  const posts = [] as T[];
+  const result = [] as T[];
   for (const post of currPosts) {
     if (!seenIds.has(post.id)) {
-      posts.push(post);
+      result.push(post);
       seenIds.add(post.id);
     }
   }
-  return posts;
+  return result;
 };

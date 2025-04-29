@@ -1,5 +1,5 @@
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
-import { filterUniquePosts } from "@/lib/utils";
+import { getUniqueById } from "@/lib/utils";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
@@ -71,7 +71,7 @@ export const useUserPostStore = create<ProfileStore>()(
         set((state) => {
           if (type === "default") {
             const old = state.posts;
-            const newPosts = filterUniquePosts([...state.posts, ...posts]);
+            const newPosts = getUniqueById([...state.posts, ...posts]);
             if (old.length !== newPosts.length) {
               state.hasMorePosts =
                 posts.length === MAX_POST_PER_QUERY &&
@@ -81,7 +81,7 @@ export const useUserPostStore = create<ProfileStore>()(
           }
           if (type === "saved") {
             const old = state.savedPosts;
-            const newPosts = filterUniquePosts([...state.savedPosts, ...posts]);
+            const newPosts = getUniqueById([...state.savedPosts, ...posts]);
             if (old.length !== newPosts.length) {
               state.hasMoreSavedPosts =
                 posts.length === MAX_POST_PER_QUERY &&

@@ -25,7 +25,7 @@ const UserCard = ({ user: { name, username, avatar, id } }: Props) => {
         null,
         pathname,
       )({
-        followId: id,
+        targetId: id,
       });
       if (result?.serverError) {
         showToast(result.serverError, "error");

@@ -14,14 +14,12 @@ type Props = {
 };
 
 function Post({ post, comments }: Props) {
-  const setComments = usePostStore((state) => state.setComments);
-  const setTotal = usePostStore((state) => state.setTotal);
+  const init = usePostStore((state) => state.init);
 
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setComments(comments);
-    setTotal(post.sumComments);
+    init(post, comments);
     // eslint-disable-next-line
   }, []);
 
