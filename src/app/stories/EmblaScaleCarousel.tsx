@@ -1,29 +1,61 @@
 "use client";
 
-import {
-  EmblaCarouselType,
-  EmblaEventType,
-  EmblaOptionsType,
-} from "embla-carousel";
+import { EmblaCarouselType, EmblaEventType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
-import React, { useCallback, useEffect, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import OtherStory from "./OtherStory";
+import { useStoryStore } from "./store";
+import StoryPlayer from "./StoryPlayer";
 import "./style.css";
 
-const TWEEN_FACTOR_BASE = 0.5;
+const TWEEN_FACTOR_BASE = 0.3;
 
 const numberWithinRange = (number: number, min: number, max: number): number =>
   Math.min(Math.max(number, min), max);
 
-type PropType = {
-  slides: number[];
-  options?: EmblaOptionsType;
-};
+const EmblaCarousel = () => {
+  const [startIndex, setStartIndex] = useState(0);
 
-const EmblaCarousel: React.FC<PropType> = (props) => {
-  const { slides, options } = props;
-  const [emblaRef, emblaApi] = useEmblaCarousel(options);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    containScroll: false,
+    align: "center",
+    startIndex,
+    watchDrag: false,
+  });
+
+  const stories = useStoryStore((store) => store.stories);
+
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const usernameFromParam = searchParams.get("username");
+
+  useEffect(() => {
+    if (usernameFromParam) {
+      const idx = stories.findIndex((v) => v.username === usernameFromParam);
+      console.log(idx);
+      if (idx >= 0) {
+        setStartIndex(idx);
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
+
   const tweenFactor = useRef(0);
   const tweenNodes = useRef<HTMLElement[]>([]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    router.push(
+      `?username=${stories[emblaApi.selectedScrollSnap()].username}`,
+      {
+        scroll: false,
+      },
+    );
+    // eslint-disable-next-line
+  }, [emblaApi]);
 
   const setTweenNodes = useCallback((emblaApi: EmblaCarouselType): void => {
     tweenNodes.current = emblaApi.slideNodes().map((slideNode) => {
@@ -76,14 +108,23 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
     [],
   );
 
+  useEffect(() => {}, [emblaApi]);
+
+  const jumpToSlide = (index: number) => {
+    if (!emblaApi) return;
+    emblaApi.scrollTo(index);
+  };
+
   useEffect(() => {
     if (!emblaApi) return;
 
     setTweenNodes(emblaApi);
     setTweenFactor(emblaApi);
     tweenScale(emblaApi);
+    onSelect();
 
     emblaApi
+      .on("select", onSelect)
       .on("reInit", setTweenNodes)
       .on("reInit", setTweenFactor)
       .on("reInit", tweenScale)
@@ -93,12 +134,31 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
   }, [emblaApi, tweenScale]);
 
   return (
-    <div className="container mx-auto flex h-screen w-full items-center justify-center border">
+    <div className="container mx-auto flex h-screen w-full items-center justify-center">
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {slides.map((index) => (
-            <div className="embla__slide" key={index}>
-              <div className="embla__slide__number">{index + 1}</div>
+          {stories.map((data, index) => (
+            <div
+              onClick={() => jumpToSlide(index)}
+              className="embla__slide cursor-pointer"
+              key={data.username}
+            >
+              <div className="embla__slide__number relative">
+                {usernameFromParam === data.username ? (
+                  <StoryPlayer
+                    avatar={data.avatar}
+                    stories={data.stories}
+                    username={data.username}
+                    onCompleteCallback={() => jumpToSlide(index + 1)}
+                  />
+                ) : (
+                  <OtherStory
+                    avatar={data.avatar}
+                    username={data.username}
+                    contentUrl={data.stories[0].content}
+                  />
+                )}
+              </div>
             </div>
           ))}
         </div>

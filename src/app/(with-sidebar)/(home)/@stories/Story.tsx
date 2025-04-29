@@ -29,7 +29,7 @@ export default function Story({
         <div
           onClick={() => {
             setIsClicked(true);
-            router.push(`/stories/${username}`, { scroll: false });
+            router.push(`/stories?username=${username}`, { scroll: false });
           }}
           className="bg-background relative cursor-pointer rounded-full p-0.5"
         >

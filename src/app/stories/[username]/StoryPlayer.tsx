@@ -29,9 +29,6 @@ export default function StoryPlayer({ data }: Props) {
 
   const prevAction = () => {
     if (index === 0) {
-      // if (prevStory) {
-      //   router.push(`/stories/${prevStory.username}`);
-      // }
     } else {
       setIndex((val) => (val -= 1));
     }
@@ -39,9 +36,6 @@ export default function StoryPlayer({ data }: Props) {
 
   const nextAction = () => {
     if (index === data.length - 1) {
-      // if (nextStory) {
-      //   router.push(`/stories/${nextStory.username}`);
-      // }
     } else {
       setIndex((val) => (val += 1));
     }
@@ -55,9 +49,6 @@ export default function StoryPlayer({ data }: Props) {
       } else {
         setIsDone(true);
       }
-      // if (nextStory) {
-      // router.push(`/stories/${nextStory.username}`);
-      // }
     }
     // eslint-disable-next-line
   }, [progress]);
