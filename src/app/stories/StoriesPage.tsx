@@ -18,10 +18,18 @@ type Props = {
 export default function StoriesPage({ stories, date }: Props) {
   const setStories = useStoryStore((store) => store.setStories);
 
+  const watchedIds = useStoryStore((store) => store.watchedIds);
+
   useEffect(() => {
     setStories(stories, date);
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    return () => {
+      console.log({ watchedIds });
+    };
+  }, [watchedIds]);
 
   return <EmblaCarousel />;
 }
