@@ -1,10 +1,8 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 import { cacheKeys } from "../cacheKeys";
-import { fetchUserFollowers } from "../drizzle/queries/users/fetchUserFollowers";
 import FollowService from "../drizzle/services/FollowService";
 import NotificationService from "../drizzle/services/NotificationService";
 import UserService from "../drizzle/services/UserService";
@@ -16,9 +14,15 @@ import { authActionClient } from "../safeAction";
  * 1. The target user must be existed(targetId)
  * 2. The actor must be authenticated(userId)
  * actions:
- * 1. If the action is follow and user account is private then create notification to target user that he/she has got follow request from another user.
- * 2. If the action is follow and account is public insert new data to follow table
- * 2. If the action is unFollow delete a data from follow table
+ * 1. Determined if this action is follow or unFollow against the following table
+ *    if no record found, there are 3 possibility actions: follow or send-following-request or cancel-following-request
+ *    if there is a record this action is unFollow
+ * 2. If the user account is private then check if the notification exists.
+ *    if it is, delete the notification-- it means that the user cancel his following request
+ *    if it is not, create a notification to target user that he/she has got following-request from another user.
+ * 3. If the user account is public
+ *    add new data to following table
+ * 4. If the action is unFollow delete the related data from following and notification table.
  */
 export const follow = authActionClient
   .schema(
@@ -43,15 +47,31 @@ export const follow = authActionClient
       followId: targetId,
       userId: actorId,
     });
+
     let message = "";
+
     if (rowExists.length === 0) {
       if (targetUser.isProtected) {
-        await notifService.create({
+        const storedNotification = await notifService.find({
           actorId,
           userId: targetId,
           type: "follow",
         });
-        message = "request";
+        if (storedNotification.length === 0) {
+          await notifService.create({
+            actorId,
+            userId: targetId,
+            type: "follow",
+          });
+          message = "request";
+        } else {
+          await notifService.remove({
+            actorId,
+            userId: targetId,
+            type: "follow",
+          });
+          message = "cancel-request";
+        }
       } else {
         await followService.create({ followId: targetId, userId: actorId });
         message = "follow";
@@ -70,27 +90,3 @@ export const follow = authActionClient
     revalidateTag(cacheKeys.posts.home);
     return message;
   });
-
-export const loadMoreFollowers = authActionClient
-  .schema(
-    z.object({
-      username: z.string(),
-    }),
-  )
-  .bindArgsSchemas<[pathname: z.ZodString]>([z.string()])
-  .action(
-    async ({
-      ctx: { session },
-      parsedInput: { username },
-      bindArgsParsedInputs: [pathname],
-    }) => {
-      if (!session) {
-        return redirect(`/login?cb_url?=${pathname}`);
-      }
-      const result = await fetchUserFollowers({
-        username,
-        authUserId: session.user.id,
-      });
-      return result;
-    },
-  );

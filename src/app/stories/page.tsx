@@ -1,4 +1,4 @@
-import StoriesPage from "./Stories";
+import StoriesPage from "./StoriesPage";
 import { getAuth } from "@/lib/next.auth";
 import { redirect } from "next/navigation";
 import { page } from "@/lib/pages";
@@ -11,11 +11,11 @@ export default async function Page() {
   if (!session) {
     redirect(`${page.login}?cbUrl=/stories`);
   }
-  const stories = await fetchStories(session.user.id);
+  const { data, date } = await fetchStories(session.user.id);
 
   return (
     <main className="h-screen w-screen overflow-hidden">
-      <StoriesPage stories={stories} />
+      <StoriesPage stories={data} date={date} />
       <div className="fixed top-4 left-4 hidden shrink-0 sm:block">
         <InstagramLogo className="text-2xl" />
       </div>

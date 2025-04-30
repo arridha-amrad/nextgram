@@ -66,11 +66,13 @@ export default function StoryPlayer({
     <div className="relative h-full w-full overflow-hidden">
       <div className="h-full w-full px-4">
         <div className="relative z-[99] flex h-max w-full items-center gap-2">
-          {stories.map((_, i) => (
+          {stories.map(({ hasWatched }, i) => (
             <Indicator
               onClick={() => {
                 setIndex(i);
               }}
+              isPlaying={i === index}
+              hasWatched={hasWatched}
               progress={i === index ? progress : 0}
               key={i}
             />
@@ -80,6 +82,7 @@ export default function StoryPlayer({
           setIsDone={setIsDone}
           isDone={isDone}
           setProgress={setProgress}
+          hasWatched={stories[index].hasWatched}
           contentUrl={stories[index].content}
           duration={stories[index].duration}
           id={stories[index].id}

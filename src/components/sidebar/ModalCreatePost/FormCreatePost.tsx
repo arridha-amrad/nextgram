@@ -99,7 +99,7 @@ const FormCreatePost = () => {
           onClick={handleCursorPosition}
           onKeyUp={handleCursorPosition}
           name="description"
-          className="bg-bg-secondary w-full resize-none rounded-lg outline-0"
+          className="bg-bg-secondary custom-scrollbar w-full resize-none rounded-lg outline-0"
           rows={7}
         ></textarea>
 

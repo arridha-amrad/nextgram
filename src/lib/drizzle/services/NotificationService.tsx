@@ -13,6 +13,34 @@ export default class NotificationService extends BaseService {
     return result;
   }
 
+  public async find(data: Partial<NotifType>) {
+    const conditions = [];
+    if (data.actorId) {
+      conditions.push(eq(NotificationsTable.actorId, data.actorId));
+    }
+    if (data.commentId) {
+      conditions.push(eq(NotificationsTable.commentId, data.commentId));
+    }
+    if (data.postId) {
+      conditions.push(eq(NotificationsTable.postId, data.postId));
+    }
+    if (data.replyId) {
+      conditions.push(eq(NotificationsTable.replyId, data.replyId));
+    }
+    if (data.type) {
+      conditions.push(eq(NotificationsTable.type, data.type));
+    }
+    if (data.userId) {
+      conditions.push(eq(NotificationsTable.userId, data.userId));
+    }
+
+    const result = await this.db
+      .select()
+      .from(NotificationsTable)
+      .where(and(...conditions));
+    return result;
+  }
+
   public async remove(data: Partial<NotifType>) {
     const conditions = [];
     if (data.actorId) {

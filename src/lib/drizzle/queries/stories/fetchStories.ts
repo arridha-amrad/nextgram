@@ -1,6 +1,8 @@
-import { eq, and, gte, lte, inArray, desc, sql } from "drizzle-orm";
+import { cacheKeys } from "@/lib/cacheKeys";
+import { and, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
+import { unstable_cache } from "next/cache";
 import { db } from "../../db";
-import { StoriesTable, UsersTable } from "../../schema";
+import { StoriesTable, StoryWatchers, UsersTable } from "../../schema";
 import { getFollowingsUserIds } from "../helpers";
 
 export type TStory = {
@@ -12,6 +14,7 @@ export type TStory = {
     content: string;
     createdAt: Date;
     duration: number;
+    hasWatched: boolean;
   }[];
 };
 
@@ -28,6 +31,13 @@ const query = async (userId: string, followingUserIds: string[]) => {
       content: StoriesTable.url,
       createdAt: StoriesTable.createdAt,
       duration: sql<number>`3000`,
+      hasWatched: sql<boolean>`
+        CASE WHEN EXISTS(
+          SELECT 1 FROM ${StoryWatchers}
+          WHERE ${StoryWatchers.storyId} = ${StoriesTable.id}
+          AND ${StoryWatchers.userId} = ${userId}
+        ) THEN true ELSE false END
+      `,
     })
     .from(StoriesTable)
     .innerJoin(UsersTable, eq(StoriesTable.userId, UsersTable.id))
@@ -53,6 +63,7 @@ const query = async (userId: string, followingUserIds: string[]) => {
             duration: row.duration,
             id: row.id,
             type: row.type,
+            hasWatched: row.hasWatched,
           },
         ],
       });
@@ -64,6 +75,7 @@ const query = async (userId: string, followingUserIds: string[]) => {
         duration: row.duration,
         id: row.id,
         type: row.type,
+        hasWatched: row.hasWatched,
       });
     }
     return acc;
@@ -72,8 +84,16 @@ const query = async (userId: string, followingUserIds: string[]) => {
   return groupedByUsername;
 };
 
-export const fetchStories = async (userId: string) => {
-  const followingUserIds = await getFollowingsUserIds(userId);
-  const data = await query(userId, followingUserIds);
-  return data;
-};
+export const fetchStories = unstable_cache(
+  async (userId: string) => {
+    const followingUserIds = await getFollowingsUserIds(userId);
+    const data = await query(userId, followingUserIds);
+    const date = new Date();
+    return { data, date };
+  },
+  [cacheKeys.stories.index],
+  {
+    revalidate: 60,
+    tags: [cacheKeys.stories.index],
+  },
+);

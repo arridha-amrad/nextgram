@@ -84,7 +84,14 @@ export const loadMoreUserPosts = async ({
 export const fetchUserPosts = unstable_cache(
   async (username: string): Promise<InfiniteResult<TUserPost>> => {
     const data = await fn(username, new Date());
-    const [{ userId }] = await p1.execute({ username });
+    const storedUser = await p1.execute({ username });
+
+    if (storedUser.length === 0) {
+      throw new Error("User not found");
+    }
+
+    const userId = storedUser[0].userId;
+
     const [result] = await db
       .select({
         total: sql<number>`cast(count(${PostsTable.id}) as int)`,

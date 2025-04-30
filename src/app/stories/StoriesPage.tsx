@@ -12,13 +12,14 @@ import { useStoryStore } from "./store";
 
 type Props = {
   stories: TStory[];
+  date: Date;
 };
 
-export default function StoriesPage({ stories }: Props) {
+export default function StoriesPage({ stories, date }: Props) {
   const setStories = useStoryStore((store) => store.setStories);
 
   useEffect(() => {
-    setStories(stories);
+    setStories(stories, date);
     // eslint-disable-next-line
   }, []);
 

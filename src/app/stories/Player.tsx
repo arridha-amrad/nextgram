@@ -3,6 +3,7 @@ import { rgbDataURL } from "@/lib/utils";
 import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { useStoryStore } from "./store";
 
 type Props = {
   avatar: string | null;
@@ -14,6 +15,7 @@ type Props = {
   isDone: boolean;
   setProgress: Dispatch<SetStateAction<number>>;
   setIsDone: Dispatch<SetStateAction<boolean>>;
+  hasWatched: boolean;
 };
 
 export default function Player({
@@ -26,10 +28,13 @@ export default function Player({
   id,
   isDone,
   setIsDone,
+  hasWatched,
 }: Props) {
   const [isPaused, setIsPaused] = useState<boolean>(false);
 
   const [date, setDate] = useState("");
+
+  const watchStory = useStoryStore((store) => store.watch);
 
   useEffect(() => {
     if (isDone) {
@@ -89,6 +94,9 @@ export default function Player({
     elapsedRef.current = 0;
     setIsPaused(false);
     startTimer();
+    if (!hasWatched) {
+      watchStory(id, username);
+    }
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
