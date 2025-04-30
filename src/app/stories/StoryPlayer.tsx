@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Indicator from "./Indicator";
 import Player from "./Player";
-import { useStoryStore } from "./store";
+import { useStoryStore } from "@/lib/stores/storyStore";
 
 type Props = {
   stories: TStory["stories"];

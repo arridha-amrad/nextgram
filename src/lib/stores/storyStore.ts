@@ -8,10 +8,7 @@ type State = {
 };
 
 type Action = {
-  fetchedDate: Date | null;
-  setStories: (data: TStory[], date: Date) => void;
-  watch: (id: string, username: string) => void;
-  watchedIds: string[];
+  setStories: (data: TStory[]) => void;
 };
 
 export const useStoryStore = create<State & Action>()(
@@ -19,13 +16,9 @@ export const useStoryStore = create<State & Action>()(
     persist(
       immer((set) => ({
         stories: [],
-        watchedIds: [],
-        fetchedDate: null,
-        setStories(data, date) {
+        setStories(data) {
           set((state) => {
-            state.fetchedDate = date;
             state.stories = data;
-            state.watchedIds = [];
           });
         },
         watch(id: string, username: string) {
@@ -35,8 +28,6 @@ export const useStoryStore = create<State & Action>()(
             const stories = state.stories[idx].stories.map((s) =>
               s.id === id ? { ...s, hasWatched: true } : s,
             );
-            const arr = Array.from(new Set([...state.watchedIds, id]));
-            state.watchedIds = arr;
             state.stories[idx].stories = stories;
           });
         },

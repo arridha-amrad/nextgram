@@ -5,10 +5,10 @@ import Story from "./Story";
 import { EmblaCarouselType } from "embla-carousel";
 import { useState, useCallback, useEffect } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { TFeedStory } from "@/lib/drizzle/queries/stories/fetchStoriesAtFeeds";
+import { TStory } from "@/lib/drizzle/queries/stories/fetchStories";
 
 type Props = {
-  data: TFeedStory[];
+  data: TStory[];
 };
 
 function Carousel({ data }: Props) {
@@ -57,7 +57,7 @@ function Carousel({ data }: Props) {
               transform: "translate3d(0,0,0)",
             }}
           >
-            <Story avatar={s.avatar} username={s.username} />
+            <Story story={s} />
           </div>
         ))}
       </div>

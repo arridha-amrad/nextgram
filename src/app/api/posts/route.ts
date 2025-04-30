@@ -82,8 +82,17 @@ export const POST = async (request: Request) => {
     session.user.id,
   );
 
+  let hasWatched = false;
+  const hasWatchedData = await storyService.hasUserStoriesWatched(userId);
+  console.log({ hasWatchedData });
+
+  if (hasWatchedData.length === 1) {
+    hasWatched = hasWatchedData[0].hasWatched;
+  }
+
   const feedPost: TFeedPost = {
     ...newPost,
+    hasWatched,
     avatar: session.user.image,
     username: session.user.username,
     isLiked: false,

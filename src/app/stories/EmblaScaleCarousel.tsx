@@ -5,7 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import OtherStory from "./OtherStory";
-import { useStoryStore } from "./store";
+import { useStoryStore } from "../../lib/stores/storyStore";
 import StoryPlayer from "./StoryPlayer";
 import "./style.css";
 
@@ -35,7 +35,6 @@ const EmblaCarousel = () => {
   useEffect(() => {
     if (usernameFromParam) {
       const idx = stories.findIndex((v) => v.username === usernameFromParam);
-      console.log(idx);
       if (idx >= 0) {
         setStartIndex(idx);
       }

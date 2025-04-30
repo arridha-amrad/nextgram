@@ -1,19 +1,22 @@
 "use client";
 
+import { TStory } from "@/lib/drizzle/queries/stories/fetchStories";
 import { cn, rgbDataURL } from "@/lib/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function Story({
-  username,
-  avatar,
-}: {
-  username: string;
-  avatar: string | null;
-}) {
+type Props = {
+  story: TStory;
+};
+
+export default function Story({ story }: Props) {
   const [isClicked, setIsClicked] = useState(false);
   const router = useRouter();
+  const { avatar, username, stories } = story;
+
+  const isWatchAll = stories.every((val) => val.hasWatched === true);
+
   return (
     <div className="w-[70px]">
       <div className="relative flex size-[66px] shrink-0 items-center justify-center select-none">
@@ -23,8 +26,10 @@ export default function Story({
               "absolute top-0 left-0 size-[66px] animate-spin rounded-full border-2 border-transparent border-t-[#e1306c] border-r-[#e1306c]",
             )}
           ></div>
+        ) : isWatchAll ? (
+          <div className="bg-bg-secondary absolute inset-0 size-[66px] rounded-full" />
         ) : (
-          <div className="absolute inset-0 size-[66px] rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600"></div>
+          <div className="absolute inset-0 size-[66px] rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600" />
         )}
         <div
           onClick={() => {

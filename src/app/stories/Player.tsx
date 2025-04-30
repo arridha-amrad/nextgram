@@ -3,7 +3,7 @@ import { rgbDataURL } from "@/lib/utils";
 import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { useStoryStore } from "./store";
+import { readStory } from "@/lib/actions/stories";
 
 type Props = {
   avatar: string | null;
@@ -33,8 +33,6 @@ export default function Player({
   const [isPaused, setIsPaused] = useState<boolean>(false);
 
   const [date, setDate] = useState("");
-
-  const watchStory = useStoryStore((store) => store.watch);
 
   useEffect(() => {
     if (isDone) {
@@ -95,7 +93,7 @@ export default function Player({
     setIsPaused(false);
     startTimer();
     if (!hasWatched) {
-      watchStory(id, username);
+      readStory({ storyId: id });
     }
     return () => {
       if (intervalRef.current) {
@@ -146,15 +144,15 @@ export default function Player({
 
 const Actions = ({ username }: { username: string }) => (
   <div className="absolute inset-x-0 bottom-0">
-    <div className="relative flex h-max items-center gap-4 px-4 py-6">
-      <form className="h-max w-full" action="">
+    <div className="relative flex items-center gap-4 px-4 py-6">
+      <form className="relative flex w-full items-center" action="">
         <input
           type="text"
           className="w-full rounded-full border-2 border-white/50 px-4 py-3 text-sm outline-0"
           placeholder={`Reply to ${username}`}
         />
       </form>
-      <div className="flex items-center gap-2 pt-10">
+      <div className="flex items-center gap-4">
         <button>
           <EmptyLikeIcon />
         </button>

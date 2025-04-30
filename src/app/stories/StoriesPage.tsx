@@ -7,29 +7,21 @@ const EmblaCarousel = dynamic(() => import("./EmblaScaleCarousel"), {
 });
 
 import { TStory } from "@/lib/drizzle/queries/stories/fetchStories";
+import { useStoryStore } from "@/lib/stores/storyStore";
 import { useEffect } from "react";
-import { useStoryStore } from "./store";
 
 type Props = {
   stories: TStory[];
   date: Date;
 };
 
-export default function StoriesPage({ stories, date }: Props) {
+export default function StoriesPage({ stories }: Props) {
   const setStories = useStoryStore((store) => store.setStories);
 
-  const watchedIds = useStoryStore((store) => store.watchedIds);
-
   useEffect(() => {
-    setStories(stories, date);
+    setStories(stories);
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    return () => {
-      console.log({ watchedIds });
-    };
-  }, [watchedIds]);
 
   return <EmblaCarousel />;
 }

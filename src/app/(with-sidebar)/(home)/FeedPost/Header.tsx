@@ -46,7 +46,7 @@ function Header() {
       <AvatarWithStoryIndicator
         onClick={navigate}
         isStoryExists={post.isUserStoryExists}
-        isStoryWatched={false}
+        isStoryWatched={post.hasWatched}
         size={32}
         avatarUrl={post.avatar}
       />

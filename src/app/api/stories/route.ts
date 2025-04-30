@@ -63,7 +63,7 @@ export const POST = async (req: Request) => {
     userId,
   });
 
-  revalidateTag(cacheKeys.stories.feed);
+  revalidateTag(cacheKeys.stories.index);
   revalidateTag(cacheKeys.stories.user);
 
   return NextResponse.json(

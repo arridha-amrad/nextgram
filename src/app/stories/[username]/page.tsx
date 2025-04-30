@@ -27,7 +27,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <main className="flex h-screen w-screen items-center justify-center">
-      <Stories stories={storyData} />
+      <Stories data={storyData} />
       <div className="fixed top-4 left-4 hidden shrink-0 sm:block">
         <InstagramLogo className="text-2xl" />
       </div>
