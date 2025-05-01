@@ -2,11 +2,11 @@
 
 import { z } from "zod";
 import { zfd } from "zod-form-data";
-import { fetchReplies, TReply } from "../drizzle/queries/replies/fetchReplies";
-import ReplyService from "../drizzle/services/ReplyService";
-import { authActionClient } from "../safeAction";
+import { TReply } from "../drizzle/queries/replies/fetchReplies";
 import CommentService from "../drizzle/services/CommentService";
 import NotificationService from "../drizzle/services/NotificationService";
+import ReplyService from "../drizzle/services/ReplyService";
+import { authActionClient } from "../safeAction";
 
 export const create = authActionClient
   .schema(
@@ -91,21 +91,4 @@ export const likeReply = authActionClient
       message = "dislike";
     }
     return message;
-  });
-
-export const loadMoreReplies = authActionClient
-  .schema(
-    z.object({
-      commentId: z.string(),
-      page: z.number(),
-    }),
-  )
-  .bindArgsSchemas<[pathname: z.ZodString]>([z.string()])
-  .action(async ({ ctx: { session }, parsedInput: { commentId, page } }) => {
-    const data = await fetchReplies({
-      commentId,
-      userId: session.user.id,
-      page,
-    });
-    return data;
   });

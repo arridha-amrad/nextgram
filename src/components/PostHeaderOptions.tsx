@@ -1,5 +1,4 @@
 import { bookmarkFeedPost } from "@/handlers/post";
-import { handleFollow } from "@/handlers/user";
 import { removePost } from "@/lib/actions/post";
 import { page } from "@/lib/pages";
 import { useFeedPostStore } from "@/lib/stores/feedPostStore";
@@ -10,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "nextjs-toploader/app";
 import { useTransition } from "react";
 import Spinner from "./Spinner";
+import { follow } from "@/lib/actions/follow";
 
 type Props = {
   isFollow: boolean;
@@ -26,7 +26,6 @@ function PostHeaderOptions({
   postId,
   postOwnerId,
   bookMarkCallback,
-  followCallback,
   isFollow,
   isFavorite,
 }: Props) {
@@ -37,6 +36,9 @@ function PostHeaderOptions({
   const userId = data?.user.id;
 
   const removePostFromFeed = useFeedPostStore((store) => store.removePost);
+  const removePostAfterUnfollow = useFeedPostStore(
+    (store) => store.removePostAfterUnfollow,
+  );
   const removePostFromUserPosts = useUserPostStore((store) => store.removePost);
 
   const [isPending, start] = useTransition();
@@ -51,6 +53,18 @@ function PostHeaderOptions({
         router.back();
       }
       showToast("Post deleted successfully", "success");
+    });
+  };
+
+  const handleUnfollow = () => {
+    start(async () => {
+      await follow.bind(null, pathname)({ targetId: postOwnerId });
+      removePostAfterUnfollow(postOwnerId);
+      close();
+      if (pathname !== "/") {
+        router.back();
+      }
+      showToast("Unfollow", "success");
     });
   };
 
@@ -70,7 +84,7 @@ function PostHeaderOptions({
   return (
     <>
       <button
-        onClick={() => alert("not implemented")}
+        onClick={() => alert("Currently this feature is not available")}
         className="h-12 w-max self-center text-sm font-medium text-red-400"
       >
         Report
@@ -80,10 +94,7 @@ function PostHeaderOptions({
       {isFollow && (
         <>
           <button
-            onClick={async () => {
-              await handleFollow(postOwnerId, pathname, followCallback);
-              close();
-            }}
+            onClick={handleUnfollow}
             className="h-12 w-max self-center text-sm font-medium text-red-400"
           >
             Unfollow

@@ -180,7 +180,7 @@ function NotificationCard({
         size={44}
         avatarUrl={actorAvatar}
       />
-      {content}
+      <div className="max-w-[250px] whitespace-break-spaces">{content}</div>
       {postData && (
         <div className="size-[44px] shrink-0 overflow-hidden rounded-lg">
           <Image

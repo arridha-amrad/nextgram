@@ -21,7 +21,10 @@ const Comments = () => {
   const loadMore = async () => {
     setLoading(true);
     try {
-      const result = await loadMoreComments(id as string, lastCommentDate);
+      const result = await loadMoreComments(
+        id as string,
+        new Date(lastCommentDate),
+      );
       addComments(result);
     } catch (err) {
       console.log(err);
@@ -43,7 +46,7 @@ const Comments = () => {
         <button
           disabled={loading}
           onClick={loadMore}
-          className="border-skin-border text-skin-muted relative flex w-full items-center justify-center border py-2"
+          className="border-foreground/10 text-foreground/50 relative flex w-full items-center justify-center border py-2 text-sm"
         >
           load more
           {loading && (

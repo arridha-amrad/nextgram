@@ -62,12 +62,12 @@ const query = async (postId: string, date: Date, userId?: string) => {
 
 export type TComment = Awaited<ReturnType<typeof query>>[number];
 
-export const loadMoreComment = (
+export const loadMoreComment = async (
   postId: string,
   date: Date,
   userId?: string,
 ) => {
-  const data = query(postId, date, userId);
+  const data = await query(postId, date, userId);
   return data;
 };
 

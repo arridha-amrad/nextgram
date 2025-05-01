@@ -26,6 +26,7 @@ interface Action {
   likeComment: (comment: TFeedComment) => void;
   addComment: (comment: TFeedComment) => void;
   removePost: (id: string) => void;
+  removePostAfterUnfollow: (postOwnerId: string) => void;
 }
 interface State {
   posts: FeedPost[];
@@ -43,6 +44,12 @@ export const useFeedPostStore = create<State & Action>()(
       hasMore: false,
       total: 0,
       posts: [],
+      removePostAfterUnfollow(postOwnerId) {
+        set((state) => {
+          const posts = state.posts.filter((v) => v.userId !== postOwnerId);
+          state.posts = posts;
+        });
+      },
       savePost(postId) {
         set((state) => {
           const post = state.posts.find((v) => v.id === postId);
@@ -52,7 +59,8 @@ export const useFeedPostStore = create<State & Action>()(
       },
       removePost(id) {
         set((state) => {
-          state.posts = state.posts.filter((p) => p.id !== id);
+          const posts = state.posts.filter((p) => p.id !== id);
+          state.posts = posts;
         });
       },
       setPosts({ data, total }) {

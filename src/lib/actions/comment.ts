@@ -8,6 +8,8 @@ import NotificationService from "../drizzle/services/NotificationService";
 import PostService from "../drizzle/services/PostService";
 import { SafeActionError } from "../errors/SafeActionError";
 import { authActionClient } from "../safeAction";
+import { revalidateTag } from "next/cache";
+import { cacheKeys } from "../cacheKeys";
 
 /**
  * create comment constraints:
@@ -68,6 +70,10 @@ export const create = authActionClient
         sumReplies: 0,
         username,
       };
+
+      revalidateTag(cacheKeys.posts.detail);
+      revalidateTag(cacheKeys.posts.comments);
+
       return data;
     },
   );

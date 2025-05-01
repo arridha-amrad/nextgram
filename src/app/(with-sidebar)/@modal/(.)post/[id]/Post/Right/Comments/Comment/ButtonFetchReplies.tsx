@@ -1,11 +1,14 @@
 "use client";
 
 import MySpinner from "@/components/Spinner";
-import { loadMoreReplies } from "@/lib/actions/reply";
+import { loadMoreReplies } from "@/lib/api/replies";
+import {
+  LIMIT_REPLIES,
+  TReply,
+} from "@/lib/drizzle/queries/replies/fetchReplies";
 import { showToast } from "@/lib/utils";
-import { usePathname } from "next/navigation";
-import { Dispatch, SetStateAction, useState, useTransition } from "react";
-import { usePostStore, Comment } from "../../../store";
+import { Dispatch, SetStateAction, useState } from "react";
+import { Comment, usePostStore } from "../../../store";
 
 type Props = {
   comment: Comment;
@@ -21,30 +24,28 @@ const ButtonFetchReplies = ({
   const setReplies = usePostStore((store) => store.setReplies);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
-  const pathname = usePathname();
 
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
 
   const fetchReplies = async () => {
-    startTransition(async () => {
-      const result = await loadMoreReplies.bind(
-        null,
-        pathname,
-      )({
+    setLoading(true);
+    try {
+      const replies = (await loadMoreReplies({
         commentId: comment.id,
         page,
-      });
-      if (result?.serverError) {
-        showToast(result.serverError, "error");
+        postId: comment.postId,
+      })) as TReply[];
+      setPage((val) => (val += 1));
+      if (replies.length < LIMIT_REPLIES) {
+        setHasMore(false);
       }
-      if (result?.data) {
-        if (result.data.length < 5) {
-          setHasMore(false);
-        }
-        setPage((val) => val + 1);
-        setReplies(result.data);
-      }
-    });
+      setReplies(replies);
+    } catch (err) {
+      console.log(err);
+      showToast("Failed to fetch replies", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // When there are more replies available to fetch
@@ -54,14 +55,14 @@ const ButtonFetchReplies = ({
         <div className="bg-foreground/50 h-0.5 w-[30px]" />
         <button
           onClick={fetchReplies}
-          disabled={isPending}
+          disabled={loading}
           type="submit"
           className="text-foreground/50 text-xs font-medium"
         >
           View {comment.sumReplies - comment.replies.length}{" "}
           {page > 1 && "more"} replies
         </button>
-        {isPending && (
+        {loading && (
           <div className="bg-background/80 absolute inset-0 flex items-center justify-center">
             <MySpinner />
           </div>

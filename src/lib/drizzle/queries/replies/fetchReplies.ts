@@ -3,7 +3,7 @@ import { asc, eq, sql } from "drizzle-orm";
 import { RepliesTable, ReplyLikesTable, UsersTable } from "../../schema";
 import crypto from "crypto";
 
-const LIMIT = 5;
+export const LIMIT_REPLIES = 5;
 
 type Props = {
   commentId: string;
@@ -42,8 +42,8 @@ const query = async (commentId: string, page: number, userId?: string) => {
     .innerJoin(UsersTable, eq(UsersTable.id, RepliesTable.userId))
     .groupBy(RepliesTable.id, UsersTable.username, UsersTable.avatar)
     .orderBy(asc(RepliesTable.createdAt))
-    .offset((page - 1) * LIMIT)
-    .limit(LIMIT);
+    .offset((page - 1) * LIMIT_REPLIES)
+    .limit(LIMIT_REPLIES);
 };
 
 export type TReply = Awaited<ReturnType<typeof query>>[number];
