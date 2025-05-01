@@ -21,7 +21,7 @@ function Post({ post, comments }: Props) {
   }, []);
 
   return (
-    <div className="flex overflow-hidden rounded-lg">
+    <div className="flex overflow-hidden">
       <Carousel />
       <Right />
     </div>

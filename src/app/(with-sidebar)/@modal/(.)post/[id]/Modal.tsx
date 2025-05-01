@@ -43,7 +43,7 @@ const Modal = ({ children }: Props) => {
         )}
       />
       <div className="fixed inset-0 flex items-center justify-center">
-        <DialogPanel className="w-max">{children}</DialogPanel>
+        <DialogPanel>{children}</DialogPanel>
       </div>
     </Dialog>
   );
