@@ -66,6 +66,7 @@ const fn = async (username: string, date: Date) => {
 };
 
 export type Result = Omit<InfiniteResult<TUserPost>, "total">;
+
 export const loadMoreUserPosts = async ({
   date,
   username,

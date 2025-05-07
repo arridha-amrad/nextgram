@@ -24,6 +24,8 @@ const Reply = ({ reply }: Props) => {
     likeReply(commentId, reply.id);
     const result = await lr.bind(null, pathname)({ replyId: reply.id });
     if (result?.serverError) {
+      console.log(result.serverError);
+
       showToast("Something went wrong", "error");
       likeReply(commentId, reply.id);
     }

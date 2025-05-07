@@ -45,32 +45,43 @@ const TagIcon = () => (
 
 type Props = {
   username: string;
+  isAuthUser: boolean;
 };
 
-export default function Tabs({ username }: Props) {
+export default function Tabs({ username, isAuthUser }: Props) {
   const t = useTranslations("ProfilePage");
-  const tabs = [
-    {
-      name: t("posts"),
-      href: "",
-      icon: <GridIcon />,
-      fillIcon: <GridFilledIcon />,
-    },
-    {
-      name: t("saved"),
-      href: "saved",
-      icon: <TabSavedIcon />,
-      fillIcon: <TabSavedIcon />,
-    },
-    {
-      name: t("tagged"),
-      href: "tagged",
-      icon: <TagIcon />,
-      fillIcon: <TagIcon />,
-    },
-  ];
+
+  const tabs = isAuthUser
+    ? [
+        {
+          name: t("posts"),
+          href: "",
+          icon: <GridIcon />,
+          fillIcon: <GridFilledIcon />,
+        },
+        {
+          name: t("saved"),
+          href: "saved",
+          icon: <TabSavedIcon />,
+          fillIcon: <TabSavedIcon />,
+        },
+        {
+          name: t("tagged"),
+          href: "tagged",
+          icon: <TagIcon />,
+          fillIcon: <TagIcon />,
+        },
+      ]
+    : [
+        {
+          name: t("posts"),
+          href: "",
+          icon: <GridIcon />,
+          fillIcon: <GridFilledIcon />,
+        },
+      ];
   return (
-    <section className="border-foreground/20 mt-20 w-full border-t">
+    <section className="border-foreground/20 w-full border-t">
       <div className="flex items-center justify-center gap-4">
         {tabs.map((tab) => (
           <Tab key={tab.name} username={username} tab={tab} />

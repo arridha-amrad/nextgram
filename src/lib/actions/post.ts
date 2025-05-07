@@ -14,6 +14,7 @@ const revalidatePostAndNotificationsAnywherePossible = () => {
   revalidateTag(cacheKeys.posts.detail);
   revalidateTag(cacheKeys.posts.user);
   revalidateTag(cacheKeys.users.notifications);
+  revalidateTag(cacheKeys.posts.save);
 };
 
 /**

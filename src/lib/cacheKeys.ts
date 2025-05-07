@@ -17,6 +17,7 @@ export const cacheKeys = {
     metadata: "post-metadata",
     comments: "post-comments",
     replies: "post-comments-replies",
+    explore: "explore-posts",
   },
 
   stories: {

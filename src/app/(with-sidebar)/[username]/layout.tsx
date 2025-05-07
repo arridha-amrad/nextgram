@@ -12,6 +12,7 @@ import Highlights from "./Highlights";
 import PrivateAccountInfo from "./PrivateAccountInfo";
 import Profile from "./Profile";
 import Tabs from "./Tabs";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ username: string }>;
@@ -44,17 +45,7 @@ const Layout = async ({ children, modal, params }: Props) => {
   });
 
   if (profile === null) {
-    return (
-      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-6">
-        <h1 className="text-2xl font-semibold">
-          Sorry, this page isn&apos;t available.
-        </h1>
-        <p>
-          The link you followed may be broken, or the page may have been
-          removed. Go back to Instagram.
-        </p>
-      </div>
-    );
+    return notFound();
   }
 
   const isAuthUser = session?.user.username === username;
@@ -77,13 +68,13 @@ const Layout = async ({ children, modal, params }: Props) => {
           <InstagramLogo className="text-3xl" />
           <div className="flex items-center gap-2">
             <Link
-              className="bg-skin-primary roundedLg flex h-8 items-center justify-center px-4 text-sm font-medium"
+              className="bg-skin-primary flex h-8 items-center justify-center rounded-lg px-4 text-sm font-medium"
               href={page.login}
             >
               Login
             </Link>
             <Link
-              className="text-skin-primary roundedLg flex h-8 items-center justify-center px-4 text-sm font-medium"
+              className="text-skin-primary flex h-8 items-center justify-center rounded-lg px-4 text-sm font-medium"
               href={page.signup}
             >
               Signup
@@ -94,8 +85,8 @@ const Layout = async ({ children, modal, params }: Props) => {
       <Profile isAuthUser={isAuthUser} profile={profile} />
       {isAuthUser && <Highlights />}
       {canYouSee ? (
-        <div className="flex-1">
-          <Tabs username={username} />
+        <div className="mt-20 flex-1">
+          {isAuthUser && <Tabs isAuthUser={isAuthUser} username={username} />}
           {children}
           {modal}
         </div>

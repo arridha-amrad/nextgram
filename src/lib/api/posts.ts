@@ -4,6 +4,19 @@ import { TFeedPost } from "../drizzle/queries/posts/fetchFeedPosts";
 import { TLikeUsers } from "../drizzle/queries/posts/fetchPostLikes";
 import { TUserPost } from "../drizzle/queries/posts/fetchUserPosts";
 
+export const loadMoreExplorePosts = async (date: Date) => {
+  try {
+    const res = await fetch(`/api/posts/explore?date=${date.toISOString()}`);
+    if (!res.ok) {
+      throw new Error("Something went wrong");
+    }
+    const data = await res.json();
+    return data.posts as TUserPost[];
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const getLikes = async ({
   date,
   page,
@@ -15,7 +28,7 @@ export const getLikes = async ({
 }) => {
   try {
     const res = await fetch(
-      `/api/posts/${postId}/likes?page=${page}&date=${date}`,
+      `/api/posts/${postId}/likes?page=${page}&date=${date.toISOString()}`,
       { next: { revalidate: 60, tags: [cacheKeys.posts.likes] } },
     );
     if (!res.ok) {

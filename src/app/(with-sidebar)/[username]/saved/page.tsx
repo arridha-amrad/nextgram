@@ -1,13 +1,24 @@
 import { fetchUserSavedPosts } from "@/lib/drizzle/queries/posts/fetchSavedPosts";
-import React from "react";
 import SavedPosts from "./SavedPosts";
+import { getAuth } from "@/lib/next.auth";
 
 type Props = {
   params: Promise<{ username: string }>;
 };
 
 export default async function Page({ params }: Props) {
-  const username = (await params).username;
+  const username = decodeURIComponent((await params).username);
+  const session = await getAuth();
+
+  const isAuthorizedToSee = session?.user.username === username;
+
+  if (!isAuthorizedToSee) {
+    return (
+      <div className="text-foreground/50 pt-4 text-center">
+        <h1>You are not authorized to see other user&apos; saved posts</h1>
+      </div>
+    );
+  }
 
   const posts = await fetchUserSavedPosts(username);
 

@@ -1,48 +1,50 @@
 "use client";
 
 import Spinner from "@/components/Spinner";
-import { loadMoreUserSavedPosts } from "@/lib/api/posts";
+import { loadMoreExplorePosts } from "@/lib/api/posts";
 import { TUserPost } from "@/lib/drizzle/queries/posts/fetchUserPosts";
 import { InfiniteResult } from "@/lib/drizzle/queries/type";
-import { useUserPostStore } from "@/lib/stores/profilePostStore";
 import { showToast, toMatrixPost } from "@/lib/utils";
 import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
-import { useParams } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import useMeasure from "react-use-measure";
-import Post from "../PostCard";
+import Post from "./PostCard";
 
 type Props = {
   initialPosts: InfiniteResult<TUserPost>;
 };
 
-export default function UserPosts({ initialPosts }: Props) {
-  const addPosts = useUserPostStore((state) => state.addPosts);
-  const profilePosts = useUserPostStore((state) => state.savedPosts);
-  const hasMore = useUserPostStore((state) => state.hasMoreSavedPosts);
+export default function ExplorePosts({ initialPosts }: Props) {
+  const [explorePosts, setExplorePosts] = useState<TUserPost[]>([]);
 
-  const params = useParams();
   const [rowRef, { width }] = useMeasure();
   const { ref: refObserver, inView } = useInView({ threshold: 1 });
-  const posts = toMatrixPost(profilePosts);
+  const posts = toMatrixPost(explorePosts);
   const parentRef = useRef<HTMLDivElement | null>(null);
-  const parentOffsetRef = useRef(0);
   const [latestDate, setLatestDate] = useState(new Date());
   const [hasInitialized, setHasInitialized] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [stop, setStop] = useState(false);
 
   useEffect(() => {
     if (initialPosts.data.length > 0) {
-      addPosts(initialPosts.data, "saved");
-      const d = initialPosts.data[initialPosts.data.length - 1].createdAt;
-      setLatestDate(d);
-      const id = setTimeout(() => {
-        setHasInitialized(true);
-      }, 1000);
-      return () => {
-        clearTimeout(id);
-      };
+      console.log(initialPosts.total);
+
+      setExplorePosts(initialPosts.data);
+      if (initialPosts.total < 24) {
+        setStop(false);
+      } else {
+        console.log("here...");
+
+        const d = initialPosts.data[initialPosts.data.length - 1].createdAt;
+        setLatestDate(d);
+        const id = setTimeout(() => {
+          setHasInitialized(true);
+        }, 1000);
+        return () => {
+          clearTimeout(id);
+        };
+      }
     }
     // eslint-disable-next-line
   }, []);
@@ -50,30 +52,37 @@ export default function UserPosts({ initialPosts }: Props) {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { data } = await loadMoreUserSavedPosts({
-          date: new Date(latestDate),
-          username: params.username as string,
-        });
-        addPosts(data, "saved");
-        const date = data[data.length - 1].createdAt;
-        setLatestDate(date);
+        const data = await loadMoreExplorePosts(new Date(latestDate));
+        console.log({ data });
+
+        if (data.length > 0) {
+          setExplorePosts((posts) => [...posts, ...data]);
+          if (data.length < 24) {
+            setStop(true);
+          } else {
+            const date = data[data.length - 1].createdAt;
+            setLatestDate(date);
+          }
+        } else {
+          setStop(true);
+        }
       } catch {
         showToast("Something went wrong", "error");
-        setHasError(true);
+        setStop(true);
       }
     };
+    console.log({ inView, hasInitialized });
+
     if (inView && hasInitialized) {
+      console.log("go fetch");
+
       fetchPosts();
     }
     // eslint-disable-next-line
   }, [inView]);
 
-  useLayoutEffect(() => {
-    parentOffsetRef.current = parentRef.current?.offsetTop ?? 0;
-  }, []);
-
   const rowVirtualizer = useWindowVirtualizer({
-    count: hasMore && !hasError ? posts.length + 1 : posts.length,
+    count: !stop ? posts.length + 1 : posts.length,
     estimateSize: () => 100,
     overscan: 5,
   });
@@ -112,7 +121,7 @@ export default function UserPosts({ initialPosts }: Props) {
               }}
               className="relative w-full"
             >
-              {isLoaderRow ? (
+              {isLoaderRow && !stop ? (
                 <div
                   className="flex w-full items-center justify-center py-4"
                   ref={refObserver}
